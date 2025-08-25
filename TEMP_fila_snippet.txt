@@ -1,0 +1,11 @@
+
+      revalidatePath('/fila')
+      return {
+        success: true,
+        data: queueItem,
+        message: `Cliente ${queueItem.clientes.nome} removido da fila`,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
