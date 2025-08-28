@@ -37,6 +37,8 @@ const config = {
     '!src/**/types/*',
     '!src/app/layout.tsx',
     '!src/app/globals.css',
+    // Ignorar implementação antiga deslocada (já removida)
+    '!src/actions/agendamentos.impl.ts',
   ],
 
   // Coverage thresholds
