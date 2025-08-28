@@ -12,71 +12,61 @@ import {
   Button,
   Divider,
   Alert,
-} from '@mui/material'
-import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
+} from '@mui/material';
+import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
 
 // 🔌 Server Actions — alinhe caminhos / contratos conforme seu backend
 // - listProfessionals()
 // - listServices()
 // - createAppointment(formData)
-import { listProfessionals } from '@/actions/professionals'
-import { listServices } from '@/actions/services'
-import { createAppointment } from '@/actions/appointments'
+import { listProfessionals } from '@/actions/professionals';
+import { listServices } from '@/actions/services';
+import { createAppointment } from '@/actions/appointments';
 
 /** Tipos básicos (alinhar ao backend real) **/
-export type Professional = { id: string; name: string }
-export type Service = { id: string; name: string; duration_minutes?: number }
+export type Professional = { id: string; name: string };
+export type Service = { id: string; name: string; duration_minutes?: number };
 
 export const metadata: Metadata = {
   title: 'Novo Agendamento | Trato',
   description: 'Criar novo agendamento',
-}
+};
 
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 
 export default async function NovoAgendamentoPage({
   searchParams,
 }: {
-  searchParams: { [k: string]: string | string[] | undefined }
+  searchParams: { [k: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // Prefill via querystring
-  const qDate = coerceString(searchParams.date) || '' // YYYY-MM-DD
-  const qTime = coerceString(searchParams.time) || '' // HH:mm
-  const qProfessionalId = coerceString(searchParams.professionalId) || ''
-  const qServiceId = coerceString(searchParams.serviceId) || ''
+  const qDate = coerceString(searchParams.date) || ''; // YYYY-MM-DD
+  const qTime = coerceString(searchParams.time) || ''; // HH:mm
+  const qProfessionalId = coerceString(searchParams.professionalId) || '';
+  const qServiceId = coerceString(searchParams.serviceId) || '';
 
   const [professionals, services] = await Promise.all([
     listProfessionals() as Promise<Professional[]>,
     listServices() as Promise<Service[]>,
-  ])
+  ]);
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ py: 3 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 1 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
           <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
             Novo Agendamento
           </Typography>
           <Stack direction="row" spacing={1}>
-            <Button
-              component={Link}
-              href="/agenda"
-              variant="text"
-              color="inherit"
-            >
+            <Button component={Link} href="/agenda" variant="text" color="inherit">
               Voltar à Agenda
             </Button>
           </Stack>
@@ -84,22 +74,18 @@ export default async function NovoAgendamentoPage({
 
         <Paper variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
           <Alert severity="info" sx={{ mb: 2 }}>
-            Preencha os dados do cliente, escolha o serviço e o profissional. A
-            duração sugerida é baseada no serviço selecionado.
+            Preencha os dados do cliente, escolha o serviço e o profissional. A duração sugerida é
+            baseada no serviço selecionado.
           </Alert>
 
           {/* Form SSR com Server Action */}
           <form
             action={async (formData: FormData) => {
-              await createAppointment(formData)
+              await createAppointment(formData);
             }}
             method="post"
           >
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ mb: 2 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 2 }}>
               <TextField
                 name="customer_name"
                 label="Cliente"
@@ -122,11 +108,7 @@ export default async function NovoAgendamentoPage({
               />
             </Stack>
 
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ mb: 2 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 2 }}>
               <FormControl sx={{ minWidth: 240 }}>
                 <InputLabel id="serviceId-label">Serviço</InputLabel>
                 <Select
@@ -205,12 +187,7 @@ export default async function NovoAgendamentoPage({
               <Button type="submit" variant="contained">
                 Salvar
               </Button>
-              <Button
-                component={Link}
-                href="/agenda"
-                variant="text"
-                color="inherit"
-              >
+              <Button component={Link} href="/agenda" variant="text" color="inherit">
                 Cancelar
               </Button>
             </Stack>
@@ -227,17 +204,11 @@ export default async function NovoAgendamentoPage({
           </Typography>
           <ul style={{ margin: 0, paddingLeft: 18 }}>
             <li>Confirme o agendamento por WhatsApp no dia anterior.</li>
-            <li>
-              Use intervalos coerentes com a duração do serviço para evitar
-              atrasos.
-            </li>
-            <li>
-              Registre observações importantes (alergias, preferências,
-              histórico).
-            </li>
+            <li>Use intervalos coerentes com a duração do serviço para evitar atrasos.</li>
+            <li>Registre observações importantes (alergias, preferências, histórico).</li>
           </ul>
         </Paper>
       </Box>
     </Container>
-  )
+  );
 }

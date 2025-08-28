@@ -1,22 +1,23 @@
-'use client'
+'use client';
 
-import { Grid, TextField, MenuItem, InputAdornment } from '@mui/material'
-import { Search as SearchIcon } from '@mui/icons-material'
+import { Grid, MenuItem, InputAdornment } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
+import { DSTextField } from '@/components/ui';
 
 interface ProdutosFiltersProps {
-  searchTerm: string
-  onSearchChange: (value: string) => void
-  statusFilter: string
-  onStatusChange: (value: string) => void
-  categoriaFilter: string
-  onCategoriaChange: (value: string) => void
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+  statusFilter: string;
+  onStatusChange: (value: string) => void;
+  categoriaFilter: string;
+  onCategoriaChange: (value: string) => void;
 }
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'Todos os status' },
   { value: 'active', label: 'Ativos' },
   { value: 'inactive', label: 'Inativos' },
-]
+];
 
 const CATEGORIA_OPTIONS = [
   { value: 'all', label: 'Todas as categorias' },
@@ -26,7 +27,7 @@ const CATEGORIA_OPTIONS = [
   { value: 'barba', label: 'Barba' },
   { value: 'hidratantes', label: 'Hidratantes' },
   { value: 'acessorios', label: 'Acessórios' },
-]
+];
 
 export default function ProdutosFilters({
   searchTerm,
@@ -39,7 +40,7 @@ export default function ProdutosFilters({
   return (
     <Grid container spacing={2} alignItems="center">
       <Grid item xs={12} sm={6} md={4}>
-        <TextField
+        <DSTextField
           label="Buscar produtos"
           placeholder="Nome, descrição..."
           value={searchTerm}
@@ -52,43 +53,40 @@ export default function ProdutosFilters({
             ),
           }}
           fullWidth
-          size="small"
         />
       </Grid>
 
       <Grid item xs={12} sm={6} md={4}>
-        <TextField
+        <DSTextField
           select
           label="Status"
           value={statusFilter}
           onChange={(e) => onStatusChange(e.target.value)}
           fullWidth
-          size="small"
         >
           {STATUS_OPTIONS.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           ))}
-        </TextField>
+        </DSTextField>
       </Grid>
 
       <Grid item xs={12} sm={6} md={4}>
-        <TextField
+        <DSTextField
           select
           label="Categoria"
           value={categoriaFilter}
           onChange={(e) => onCategoriaChange(e.target.value)}
           fullWidth
-          size="small"
         >
           {CATEGORIA_OPTIONS.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           ))}
-        </TextField>
+        </DSTextField>
       </Grid>
     </Grid>
-  )
+  );
 }

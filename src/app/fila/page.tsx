@@ -1,11 +1,11 @@
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
-import { FilaContent } from './components/FilaContent'
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
+import { FilaContent } from './components/FilaContent';
 
 // 🔌 Server Actions
-import { listQueue } from '@/actions/queue'
-import { listUnits } from '@/actions/units'
-import { listProfessionals } from '@/actions/professionals'
+import { listQueue } from '@/actions/queue';
+import { listUnits } from '@/actions/units';
+import { listProfessionals } from '@/actions/professionals';
 
 /** Tipos **/
 export type QueueStatus =
@@ -14,67 +14,67 @@ export type QueueStatus =
   | 'in_service'
   | 'completed'
   | 'canceled'
-  | 'no_show'
+  | 'no_show';
 
 export type QueueItem = {
-  id: string
-  ticket: string
-  customer_name?: string | null
-  service_name?: string | null
-  unit_id: string
-  unit_name?: string
-  professional_id?: string | null
-  professional_name?: string | null
-  status: QueueStatus
-  arrival_time: string
-  called_at?: string | null
-  started_at?: string | null
-  finished_at?: string | null
-  notes?: string | null
-  estimated_duration?: number | null
-}
+  id: string;
+  ticket: string;
+  customer_name?: string | null;
+  service_name?: string | null;
+  unit_id: string;
+  unit_name?: string;
+  professional_id?: string | null;
+  professional_name?: string | null;
+  status: QueueStatus;
+  arrival_time: string;
+  called_at?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  notes?: string | null;
+  estimated_duration?: number | null;
+};
 
 export type Unit = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type Professional = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type QueueResponse = {
-  items: QueueItem[]
-  total: number
-}
+  items: QueueItem[];
+  total: number;
+};
 
 export const metadata: Metadata = {
   title: 'Fila | Trato',
   description: 'Painel principal da fila',
-}
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // 🔎 Filtros
-  const q = coerceString(searchParams.q) ?? ''
-  const unitId = coerceString(searchParams.unitId) || ''
-  const professionalId = coerceString(searchParams.professionalId) || ''
-  const status = coerceString(searchParams.status) || ''
-  const sortBy = coerceString(searchParams.sortBy) || 'arrival'
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'
+  const q = coerceString(searchParams.q) ?? '';
+  const unitId = coerceString(searchParams.unitId) || '';
+  const professionalId = coerceString(searchParams.professionalId) || '';
+  const status = coerceString(searchParams.status) || '';
+  const sortBy = coerceString(searchParams.sortBy) || 'arrival';
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
 
   // 📥 Dados (mock para agora, integrar com backend depois)
   const [queueData, unitsData, professionalsData] = await Promise.all([
@@ -146,7 +146,7 @@ export default async function Page({
       { id: 'prof2', name: 'Ana Silva' },
       { id: 'prof3', name: 'Carlos Santos' },
     ] as Professional[]),
-  ])
+  ]);
 
   const searchParamsObj = {
     q,
@@ -155,7 +155,7 @@ export default async function Page({
     status,
     sortBy,
     sortDir,
-  }
+  };
 
   return (
     <FilaContent
@@ -164,5 +164,5 @@ export default async function Page({
       professionals={professionalsData}
       searchParams={searchParamsObj}
     />
-  )
+  );
 }

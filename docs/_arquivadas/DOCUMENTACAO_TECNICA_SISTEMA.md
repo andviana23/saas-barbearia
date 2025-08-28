@@ -1,0 +1,1 @@
+(Arquivado) Conteúdo integrado em DOCUMENTACAO_OFICIAL_SISTEMA.md e REGRAS_DE_IMPLEMENTACAO.md.

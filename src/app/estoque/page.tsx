@@ -1,5 +1,5 @@
-import { Box, Container, Typography } from '@mui/material'
-import EstoqueContent from './components/EstoqueContent'
+import { Box, Container, Typography } from '@mui/material';
+import EstoqueContent from './components/EstoqueContent';
 
 export default function EstoquePage() {
   return (
@@ -15,10 +15,10 @@ export default function EstoquePage() {
 
       <EstoqueContent />
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Controle de Estoque | Trato',
   description: 'Gestão e controle de estoque de produtos',
-}
+};

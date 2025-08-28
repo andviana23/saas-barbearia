@@ -1,38 +1,25 @@
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/database'
+import type { Database } from '@/types/database';
+import { createBrowserClient } from '@supabase/ssr';
 
-const supabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321'
-const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
 
-// Apenas avisar no console se as variáveis estão faltando, mas não quebrar
-if (
-  !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-) {
-  console.warn(
-    'Usando valores padrão do Supabase. Configure as variáveis de ambiente em .env.local'
-  )
+// Falhar explicitamente se variáveis não estiverem presentes (somente nuvem)
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Supabase env vars ausentes');
 }
 
 /**
  * Cliente Supabase para uso no lado do cliente (Client Components)
  * Usa a chave anônima e respeita RLS (Row Level Security)
+ * Baseado em @supabase/ssr para compatibilidade com Next.js App Router
  */
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-  },
-  db: {
-    schema: 'public',
-  },
-  global: {
-    headers: {
-      'x-client-info': 'trato-web-client',
-    },
-  },
-})
+export function createBrowserSupabase() {
+  return createBrowserClient<Database>(supabaseUrl as string, supabaseAnonKey as string);
+}
+
+/**
+ * Instância singleton do cliente Supabase para uso em Client Components
+ * Use apenas em Client Components, hooks e código client-side
+ */
+export const supabase = createBrowserSupabase();

@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Box,
   Card,
@@ -11,15 +11,15 @@ import {
   Tooltip,
   Alert,
   TextField,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Category as CategoryIcon,
-} from '@mui/icons-material'
-import { Button, Table, Modal, EmptyState, PageHeader } from '@/components/ui'
-import type { Column } from '@/components/ui/Table'
+} from '@mui/icons-material';
+import { DSButton, DSTable, DSDialog, EmptyState, PageHeader } from '@/components/ui';
+import type { Column } from '@/components/ui/DSTable';
 
 // Mock data - substituir por dados reais quando implementar backend
 const MOCK_CATEGORIAS = [
@@ -65,73 +65,66 @@ const MOCK_CATEGORIAS = [
     ativo: false,
     produtosCount: 0,
   },
-]
+];
 
-type Categoria = (typeof MOCK_CATEGORIAS)[0]
+type Categoria = (typeof MOCK_CATEGORIAS)[0];
 
 type CategoriaColumn = Column<Categoria> & {
-  render: (categoria: Categoria) => React.ReactNode
-}
+  render: (categoria: Categoria) => React.ReactNode;
+};
 
 export default function CategoriasProdutosContent() {
-  const [categorias, setCategorias] = useState<Categoria[]>(MOCK_CATEGORIAS)
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(
-    null
-  )
+  const [categorias, setCategorias] = useState<Categoria[]>(MOCK_CATEGORIAS);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null);
 
   const handleCreate = () => {
-    setEditingCategoria(null)
-    setIsFormOpen(true)
-  }
+    setEditingCategoria(null);
+    setIsFormOpen(true);
+  };
 
   const handleEdit = (categoria: Categoria) => {
-    setEditingCategoria(categoria)
-    setIsFormOpen(true)
-  }
+    setEditingCategoria(categoria);
+    setIsFormOpen(true);
+  };
 
   const handleDelete = async (categoria: Categoria) => {
     if (categoria.produtosCount > 0) {
-      alert(
-        `Não é possível excluir uma categoria que possui ${categoria.produtosCount} produtos.`
-      )
-      return
+      alert(`Não é possível excluir uma categoria que possui ${categoria.produtosCount} produtos.`);
+      return;
     }
 
-    if (
-      confirm(`Tem certeza que deseja excluir a categoria "${categoria.nome}"?`)
-    ) {
-      setCategorias((prev) => prev.filter((c) => c.id !== categoria.id))
+    if (confirm(`Tem certeza que deseja excluir a categoria "${categoria.nome}"?`)) {
+      setCategorias((prev) => prev.filter((c) => c.id !== categoria.id));
     }
-  }
+  };
 
   const handleFormClose = () => {
-    setIsFormOpen(false)
-    setEditingCategoria(null)
-  }
+    setIsFormOpen(false);
+    setEditingCategoria(null);
+  };
 
   const handleSave = (data: { nome: string; descricao: string }) => {
     if (editingCategoria) {
       setCategorias((prev) =>
-        prev.map((c) => (c.id === editingCategoria.id ? { ...c, ...data } : c))
-      )
+        prev.map((c) => (c.id === editingCategoria.id ? { ...c, ...data } : c)),
+      );
     } else {
       const newCategoria: Categoria = {
         id: Date.now().toString(),
         ...data,
         ativo: true,
         produtosCount: 0,
-      }
-      setCategorias((prev) => [...prev, newCategoria])
+      };
+      setCategorias((prev) => [...prev, newCategoria]);
     }
-    handleFormClose()
-  }
+    handleFormClose();
+  };
 
   const columns: CategoriaColumn[] = [
     {
-      id: 'nome',
+      key: 'nome',
       label: 'Nome',
-      minWidth: 200,
       render: (categoria: Categoria) => (
         <Box display="flex" alignItems="center" gap={1}>
           <CategoryIcon color="primary" />
@@ -147,9 +140,8 @@ export default function CategoriasProdutosContent() {
       ),
     },
     {
-      id: 'produtosCount',
+      key: 'produtosCount',
       label: 'Produtos',
-      minWidth: 120,
       render: (categoria: Categoria) => (
         <Typography variant="body1" fontWeight={500}>
           {categoria.produtosCount}
@@ -157,9 +149,8 @@ export default function CategoriasProdutosContent() {
       ),
     },
     {
-      id: 'ativo',
+      key: 'ativo',
       label: 'Status',
-      minWidth: 100,
       render: (categoria: Categoria) => (
         <Chip
           label={categoria.ativo ? 'Ativa' : 'Inativa'}
@@ -169,17 +160,12 @@ export default function CategoriasProdutosContent() {
       ),
     },
     {
-      id: 'id',
+      key: 'id',
       label: 'Ações',
-      minWidth: 150,
       render: (categoria: Categoria) => (
         <Box display="flex" gap={1}>
           <Tooltip title="Editar categoria">
-            <IconButton
-              size="small"
-              onClick={() => handleEdit(categoria)}
-              color="primary"
-            >
+            <IconButton size="small" onClick={() => handleEdit(categoria)} color="primary">
               <EditIcon />
             </IconButton>
           </Tooltip>
@@ -196,30 +182,23 @@ export default function CategoriasProdutosContent() {
         </Box>
       ),
     },
-  ]
+  ];
 
   return (
     <Box>
       {/* Header com ações */}
-      <PageHeader
-        title="Categorias"
-        subtitle={`${categorias.length} categorias cadastradas`}
-      />
+      <PageHeader title="Categorias" subtitle={`${categorias.length} categorias cadastradas`} />
 
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleCreate}
-        >
+        <DSButton variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
           Nova Categoria
-        </Button>
+        </DSButton>
       </Box>
 
       {/* Lista de categorias */}
       <Card>
         {categorias.length > 0 ? (
-          <Table
+          <DSTable
             columns={columns}
             data={categorias}
             onRowClick={() => {}} // Não implementar clique na linha por enquanto
@@ -244,58 +223,49 @@ export default function CategoriasProdutosContent() {
         onSave={handleSave}
       />
     </Box>
-  )
+  );
 }
 
 // Componente de formulário para categoria
 interface CategoriaFormDialogProps {
-  open: boolean
-  onClose: () => void
-  categoria: Categoria | null
-  onSave: (data: { nome: string; descricao: string }) => void
+  open: boolean;
+  onClose: () => void;
+  categoria: Categoria | null;
+  onSave: (data: { nome: string; descricao: string }) => void;
 }
 
-function CategoriaFormDialog({
-  open,
-  onClose,
-  categoria,
-  onSave,
-}: CategoriaFormDialogProps) {
+function CategoriaFormDialog({ open, onClose, categoria, onSave }: CategoriaFormDialogProps) {
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
-  })
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (formData.nome.trim()) {
-      onSave(formData)
+      onSave(formData);
     }
-  }
+  };
 
   const handleClose = () => {
-    setFormData({ nome: '', descricao: '' })
-    onClose()
-  }
+    setFormData({ nome: '', descricao: '' });
+    onClose();
+  };
 
   return (
-    <Modal
+    <DSDialog
       open={open}
       onClose={handleClose}
       title={categoria ? 'Editar Categoria' : 'Nova Categoria'}
       maxWidth="sm"
       actions={
         <>
-          <Button variant="outlined" onClick={handleClose}>
+          <DSButton variant="outlined" onClick={handleClose}>
             Cancelar
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            disabled={!formData.nome.trim()}
-          >
+          </DSButton>
+          <DSButton variant="contained" onClick={handleSubmit} disabled={!formData.nome.trim()}>
             {categoria ? 'Salvar' : 'Criar'}
-          </Button>
+          </DSButton>
         </>
       }
     >
@@ -305,9 +275,7 @@ function CategoriaFormDialog({
             <TextField
               label="Nome da categoria"
               value={formData.nome}
-              onChange={(e) =>
-                setFormData({ ...formData, nome: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
               fullWidth
               required
               placeholder="Ex: Shampoos, Condicionadores..."
@@ -318,9 +286,7 @@ function CategoriaFormDialog({
             <TextField
               label="Descrição"
               value={formData.descricao}
-              onChange={(e) =>
-                setFormData({ ...formData, descricao: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               fullWidth
               multiline
               rows={3}
@@ -329,6 +295,6 @@ function CategoriaFormDialog({
           </Grid>
         </Grid>
       </Box>
-    </Modal>
-  )
+    </DSDialog>
+  );
 }

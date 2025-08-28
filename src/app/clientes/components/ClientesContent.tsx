@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -14,7 +14,7 @@ import {
   Chip,
   Alert,
   Snackbar,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Add as AddIcon,
   Edit as EditIcon,
@@ -22,23 +22,23 @@ import {
   Unarchive as UnarchiveIcon,
   Visibility as ViewIcon,
   FileUpload as ImportIcon,
-} from '@mui/icons-material'
-import { PageHeader, DSTable } from '@/components/ui'
-import { useClientes, useUpdateCliente } from '@/hooks/use-clientes'
-import { safeValidate } from '@/lib/validation'
-import { UpdateClienteSchema } from '@/schemas'
-import ClientesFilters from './ClientesFilters'
-import ClienteFormDialog from './ClienteFormDialog'
-import ClienteDetailDialog from './ClienteDetailDialog'
-import ImportClientesDialog from './ImportClientesDialog'
+} from '@mui/icons-material';
+import { PageHeader, DSTable } from '@/components/ui';
+import { useClientes, useUpdateCliente } from '@/hooks/use-clientes';
+import { safeValidate } from '@/lib/validation';
+import { UpdateClienteSchema } from '@/schemas';
+import ClientesFilters from './ClientesFilters';
+import ClienteFormDialog from './ClienteFormDialog';
+import ClienteDetailDialog from './ClienteDetailDialog';
+import ImportClientesDialog from './ImportClientesDialog';
 
 interface ClientesContentProps {}
 
 interface ClientesData {
-  clientes: any[]
-  total: number
-  page: number
-  limit: number
+  clientes: any[];
+  total: number;
+  page: number;
+  limit: number;
 }
 
 export default function ClientesContent({}: ClientesContentProps) {
@@ -48,118 +48,118 @@ export default function ClientesContent({}: ClientesContentProps) {
     page: 0,
     limit: 10,
     order: 'desc' as const,
-  })
+  });
 
   const [formDialog, setFormDialog] = useState<{
-    open: boolean
-    mode: 'create' | 'edit'
-    cliente?: any
+    open: boolean;
+    mode: 'create' | 'edit';
+    cliente?: any;
   }>({
     open: false,
     mode: 'create',
-  })
+  });
 
   const [detailDialog, setDetailDialog] = useState<{
-    open: boolean
-    cliente?: any
+    open: boolean;
+    cliente?: any;
   }>({
     open: false,
-  })
+  });
 
-  const [importDialog, setImportDialog] = useState(false)
+  const [importDialog, setImportDialog] = useState(false);
   const [snackbar, setSnackbar] = useState<{
-    open: boolean
-    message: string
-    severity: 'success' | 'error'
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
   }>({
     open: false,
     message: '',
     severity: 'success',
-  })
+  });
 
   // Queries e mutations
-  const { data: clientesData, isLoading, error } = useClientes(filters)
-  const updateClienteMutation = useUpdateCliente()
+  const { data: clientesData, isLoading, error } = useClientes(filters);
+  const updateClienteMutation = useUpdateCliente();
 
-  const clientes = (clientesData?.data as ClientesData)?.clientes || []
-  const totalCount = (clientesData?.data as ClientesData)?.total || 0
+  const clientes = (clientesData?.data as ClientesData)?.clientes || [];
+  const totalCount = (clientesData?.data as ClientesData)?.total || 0;
 
   // Handlers
   const handleCreateCliente = () => {
     setFormDialog({
       open: true,
       mode: 'create',
-    })
-  }
+    });
+  };
 
   const handleEditCliente = (cliente: any) => {
     setFormDialog({
       open: true,
       mode: 'edit',
       cliente,
-    })
-  }
+    });
+  };
 
   const handleViewCliente = (cliente: any) => {
     setDetailDialog({
       open: true,
       cliente,
-    })
-  }
+    });
+  };
 
   const handleToggleStatus = async (cliente: any) => {
     try {
-      const formData = new FormData()
-      formData.append('ativo', (!cliente.ativo).toString())
+      const formData = new FormData();
+      formData.append('ativo', (!cliente.ativo).toString());
 
       const result = await updateClienteMutation.mutateAsync({
         id: cliente.id,
         formData,
-      })
+      });
 
       if (result.success) {
         setSnackbar({
           open: true,
           message: `Cliente ${cliente.ativo ? 'arquivado' : 'reativado'} com sucesso`,
           severity: 'success',
-        })
+        });
       } else {
-        throw new Error(result.message || 'Erro ao atualizar cliente')
+        throw new Error(result.message || 'Erro ao atualizar cliente');
       }
     } catch (error) {
       setSnackbar({
         open: true,
         message: error instanceof Error ? error.message : 'Erro desconhecido',
         severity: 'error',
-      })
+      });
     }
-  }
+  };
 
   const handleFiltersChange = (newFilters: any) => {
-    setFilters((prev) => ({ ...prev, ...newFilters, page: 0 }))
-  }
+    setFilters((prev) => ({ ...prev, ...newFilters, page: 0 }));
+  };
 
   const handlePageChange = (page: number) => {
-    setFilters((prev) => ({ ...prev, page }))
-  }
+    setFilters((prev) => ({ ...prev, page }));
+  };
 
   const handleFormSuccess = (message: string) => {
-    setFormDialog({ open: false, mode: 'create' })
+    setFormDialog({ open: false, mode: 'create' });
     setSnackbar({
       open: true,
       message,
       severity: 'success',
-    })
-  }
+    });
+  };
 
   const handleImportSuccess = (message: string) => {
-    setImportDialog(false)
+    setImportDialog(false);
     setSnackbar({
       open: true,
       message,
       severity: 'success',
-    })
-  }
+    });
+  };
 
   // Configuração das colunas da tabela
   const columns = [
@@ -188,8 +188,8 @@ export default function ClientesContent({}: ClientesContentProps) {
       key: 'created_at',
       label: 'Cadastrado em',
       render: (cliente: any) => {
-        const date = new Date(cliente.created_at)
-        return date.toLocaleDateString('pt-BR')
+        const date = new Date(cliente.created_at);
+        return date.toLocaleDateString('pt-BR');
       },
     },
     {
@@ -236,28 +236,22 @@ export default function ClientesContent({}: ClientesContentProps) {
         </Stack>
       ),
     },
-  ]
+  ];
 
   if (error) {
     return (
       <Container maxWidth="xl">
-        <PageHeader
-          title="Clientes"
-          subtitle="Gestão completa de clientes da barbearia"
-        />
+        <PageHeader title="Clientes" subtitle="Gestão completa de clientes da barbearia" />
         <Alert severity="error" sx={{ mt: 2 }}>
           Erro ao carregar clientes: {error.message}
         </Alert>
       </Container>
-    )
+    );
   }
 
   return (
     <Container maxWidth="xl">
-      <PageHeader
-        title="Clientes"
-        subtitle="Gestão completa de clientes da barbearia"
-      />
+      <PageHeader title="Clientes" subtitle="Gestão completa de clientes da barbearia" />
 
       <Stack spacing={3}>
         {/* Filtros e ações */}
@@ -269,10 +263,7 @@ export default function ClientesContent({}: ClientesContentProps) {
               alignItems={{ sm: 'center' }}
               justifyContent="space-between"
             >
-              <ClientesFilters
-                filters={filters}
-                onChange={handleFiltersChange}
-              />
+              <ClientesFilters filters={filters} onChange={handleFiltersChange} />
 
               <Stack direction="row" spacing={1}>
                 <Button
@@ -283,11 +274,7 @@ export default function ClientesContent({}: ClientesContentProps) {
                   Importar
                 </Button>
 
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={handleCreateCliente}
-                >
+                <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreateCliente}>
                   Novo Cliente
                 </Button>
               </Stack>
@@ -307,8 +294,7 @@ export default function ClientesContent({}: ClientesContentProps) {
               limit: filters.limit,
               total: totalCount,
               onPageChange: handlePageChange,
-              onLimitChange: (limit) =>
-                setFilters((prev) => ({ ...prev, limit, page: 0 })),
+              onLimitChange: (limit) => setFilters((prev) => ({ ...prev, limit, page: 0 })),
             }}
           />
         </Card>
@@ -352,5 +338,5 @@ export default function ClientesContent({}: ClientesContentProps) {
         </Alert>
       </Snackbar>
     </Container>
-  )
+  );
 }

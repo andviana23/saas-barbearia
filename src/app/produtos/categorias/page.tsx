@@ -1,5 +1,5 @@
-import { Box, Container, Typography } from '@mui/material'
-import CategoriasProdutosContent from './components/CategoriasProdutosContent'
+import { Box, Container, Typography } from '@mui/material';
+import CategoriasProdutosContent from './components/CategoriasProdutosContent';
 
 export default function CategoriasProdutosPage() {
   return (
@@ -15,10 +15,10 @@ export default function CategoriasProdutosPage() {
 
       <CategoriasProdutosContent />
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Categorias de Produtos | Trato',
   description: 'Gestão de categorias de produtos',
-}
+};

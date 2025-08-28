@@ -1,9 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { ActionResult } from '@/types'
-import { createProfile, updateProfile, deleteProfile } from '@/actions/profiles'
-import { ProfileFilterData } from '@/schemas'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ActionResult } from '@/types';
+import { createProfile, updateProfile, deleteProfile } from '@/actions/profiles';
+import { ProfileFilterData } from '@/schemas';
 
-export const PROFILES_QUERY_KEY = 'profiles'
+export const PROFILES_QUERY_KEY = 'profiles';
 
 export function useProfiles(filters?: ProfileFilterData) {
   return useQuery({
@@ -13,7 +13,7 @@ export function useProfiles(filters?: ProfileFilterData) {
       // TODO: Implementar integração com Neon/Supabase
 
       // Simular delay da API
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       // Dados mockados para desenvolvimento
       return {
@@ -46,10 +46,10 @@ export function useProfiles(filters?: ProfileFilterData) {
         total: 2,
         page: filters?.page || 0,
         limit: filters?.limit || 10,
-      }
+      };
     },
     staleTime: 1000 * 60 * 5, // 5 minutos
-  })
+  });
 }
 
 export function useProfile(id: string) {
@@ -60,7 +60,7 @@ export function useProfile(id: string) {
       // TODO: Implementar integração com Neon/Supabase
 
       // Simular delay da API
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Dados mockados para desenvolvimento
       return {
@@ -74,63 +74,63 @@ export function useProfile(id: string) {
         ativo: true,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z',
-      }
+      };
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 5, // 5 minutos
-  })
+  });
 }
 
 export function useCreateProfile() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData): Promise<ActionResult> => {
-      return await createProfile(formData)
+      return await createProfile(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
-        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] });
       }
     },
-  })
+  });
 }
 
 export function useUpdateProfile() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
       id,
       formData,
     }: {
-      id: string
-      formData: FormData
+      id: string;
+      formData: FormData;
     }): Promise<ActionResult> => {
-      return await updateProfile(id, formData)
+      return await updateProfile(id, formData);
     },
     onSuccess: (result, variables) => {
       if (result.success) {
-        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] });
         queryClient.invalidateQueries({
           queryKey: [PROFILES_QUERY_KEY, variables.id],
-        })
+        });
       }
     },
-  })
+  });
 }
 
 export function useDeleteProfile() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string): Promise<ActionResult> => {
-      return await deleteProfile(id)
+      return await deleteProfile(id);
     },
     onSuccess: (result) => {
       if (result.success) {
-        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [PROFILES_QUERY_KEY] });
       }
     },
-  })
+  });
 }

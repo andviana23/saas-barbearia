@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 import {
   Box,
   Container,
@@ -14,66 +14,66 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Home as HomeIcon,
   Refresh as RefreshIcon,
   Support as SupportIcon,
   BugReport as BugReportIcon,
   ArrowBack as ArrowBackIcon,
-} from '@mui/icons-material'
-import { useRouter } from 'next/navigation'
-import { logUserAction } from '@/lib/logging/logger'
+} from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
+import { logUserAction } from '@/lib/logging/logger';
 
 interface ErrorPageProps {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleGoHome = () => {
     logUserAction('error_page_navigation', {
       action: 'go_home',
       error: error.message,
-    })
-    router.push('/dashboard')
-  }
+    });
+    router.push('/dashboard');
+  };
 
   const handleRefresh = () => {
     logUserAction('error_page_navigation', {
       action: 'refresh',
       error: error.message,
-    })
-    reset()
-  }
+    });
+    reset();
+  };
 
   const handleGoBack = () => {
     logUserAction('error_page_navigation', {
       action: 'go_back',
       error: error.message,
-    })
-    router.back()
-  }
+    });
+    router.back();
+  };
 
   const handleReportBug = () => {
     logUserAction('error_page_navigation', {
       action: 'report_bug',
       error: error.message,
-    })
+    });
     // Em produção, abrir modal ou redirecionar para sistema de tickets
-    window.open('mailto:suporte@trato.com.br?subject=Reporte de Erro', '_blank')
-  }
+    window.open('mailto:suporte@trato.com.br?subject=Reporte de Erro', '_blank');
+  };
 
   const handleContactSupport = () => {
     logUserAction('error_page_navigation', {
       action: 'contact_support',
       error: error.message,
-    })
+    });
     // Em produção, abrir chat ou redirecionar para suporte
-    window.open('https://trato.com.br/suporte', '_blank')
-  }
+    window.open('https://trato.com.br/suporte', '_blank');
+  };
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -81,17 +81,11 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <Typography variant="h1" component="h1" color="error.main" gutterBottom>
           Ops! Algo deu errado
         </Typography>
-        <Typography
-          variant="h5"
-          component="h2"
-          color="text.secondary"
-          gutterBottom
-        >
+        <Typography variant="h5" component="h2" color="text.secondary" gutterBottom>
           Encontramos um problema inesperado
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Não se preocupe, nossa equipe foi notificada e está trabalhando para
-          resolver.
+          Não se preocupe, nossa equipe foi notificada e está trabalhando para resolver.
         </Typography>
       </Box>
 
@@ -176,12 +170,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           Voltar
         </Button>
 
-        <Button
-          variant="outlined"
-          startIcon={<HomeIcon />}
-          onClick={handleGoHome}
-          size="large"
-        >
+        <Button variant="outlined" startIcon={<HomeIcon />} onClick={handleGoHome} size="large">
           Dashboard
         </Button>
       </Box>
@@ -221,11 +210,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             </Button>
           </Box>
 
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ mt: 2, textAlign: 'center' }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
             Nossa equipe de suporte está disponível 24/7 para ajudar você.
           </Typography>
         </CardContent>
@@ -233,10 +218,9 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
       <Box sx={{ mt: 4, textAlign: 'center' }}>
         <Typography variant="caption" color="text.secondary">
-          Se este problema persistir, por favor, inclua o ID do erro ao contatar
-          o suporte.
+          Se este problema persistir, por favor, inclua o ID do erro ao contatar o suporte.
         </Typography>
       </Box>
     </Container>
-  )
+  );
 }

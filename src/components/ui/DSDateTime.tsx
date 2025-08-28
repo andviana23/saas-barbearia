@@ -1,17 +1,17 @@
-'use client'
-import * as React from 'react'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { Dayjs } from 'dayjs'
+'use client';
+import * as React from 'react';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { Dayjs } from 'dayjs';
 
 interface DSDateTimeProps {
-  label: string
-  value: Dayjs | null
-  onChange: (date: Dayjs | null) => void
-  error?: boolean
-  helperText?: string
-  disabled?: boolean
-  minDateTime?: Dayjs
-  maxDateTime?: Dayjs
+  label: string;
+  value: Dayjs | null;
+  onChange: (date: Dayjs | null) => void;
+  error?: boolean;
+  helperText?: string;
+  disabled?: boolean;
+  minDateTime?: Dayjs;
+  maxDateTime?: Dayjs;
 }
 
 export default function DSDateTime({
@@ -44,5 +44,5 @@ export default function DSDateTime({
         },
       }}
     />
-  )
+  );
 }

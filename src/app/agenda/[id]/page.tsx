@@ -15,37 +15,34 @@ import {
   Tabs,
   Tab,
   Skeleton,
-} from '@mui/material'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import EditIcon from '@mui/icons-material/Edit'
-import PrintIcon from '@mui/icons-material/Print'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CancelIcon from '@mui/icons-material/Cancel'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+} from '@mui/material';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import PrintIcon from '@mui/icons-material/Print';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 interface AgendamentoDetailPageProps {
-  params: { id: string }
-  searchParams?: { tab?: string }
+  params: { id: string };
+  searchParams?: { tab?: string };
 }
 
 export const metadata = {
   title: 'Detalhes do Agendamento | Trato',
   description: 'Visualizar detalhes do agendamento',
-}
+};
 
 export default function AgendamentoDetailPage({
   params,
   searchParams,
 }: AgendamentoDetailPageProps) {
-  const id = params?.id
-  if (!id) return notFound()
+  const id = params?.id;
+  if (!id) return notFound();
 
-  const currentTab = (searchParams?.tab ?? 'detalhes') as
-    | 'detalhes'
-    | 'historico'
-    | 'pagamentos'
+  const currentTab = (searchParams?.tab ?? 'detalhes') as 'detalhes' | 'historico' | 'pagamentos';
 
   return (
     <Container maxWidth="xl">
@@ -79,11 +76,7 @@ export default function AgendamentoDetailPage({
               {currentTab === 'detalhes' && (
                 <>
                   {/* TODO: Implementar AgendamentoCard component com todas informações, observações e anexos */}
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                     Informações do Agendamento
                   </Typography>
                   <AgendamentoInfoPlaceholder />
@@ -93,11 +86,7 @@ export default function AgendamentoDetailPage({
               {currentTab === 'historico' && (
                 <>
                   {/* TODO: Implementar Timeline/Histórico (criação, confirmações, remarcações, check-in/checkout, cancelamentos) */}
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                     Histórico de eventos
                   </Typography>
                   <HistoricoPlaceholder />
@@ -107,11 +96,7 @@ export default function AgendamentoDetailPage({
               {currentTab === 'pagamentos' && (
                 <>
                   {/* TODO: Implementar PagamentosSection (transações, métodos, comprovantes, estorno) */}
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
+                  <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                     Pagamentos
                   </Typography>
                   <PagamentosPlaceholder />
@@ -122,19 +107,14 @@ export default function AgendamentoDetailPage({
         </Stack>
       </Box>
     </Container>
-  )
+  );
 }
 
 function Header({ id }: { id: string }) {
   return (
     <Box>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
-        <MUILink
-          component={Link}
-          href="/agenda"
-          underline="hover"
-          color="inherit"
-        >
+        <MUILink component={Link} href="/agenda" underline="hover" color="inherit">
           Agenda
         </MUILink>
         <Typography color="text.primary">Agendamento #{id}</Typography>
@@ -151,7 +131,7 @@ function Header({ id }: { id: string }) {
         </Box>
       </Stack>
     </Box>
-  )
+  );
 }
 
 function ToolbarActions({ id }: { id: string }) {
@@ -179,26 +159,21 @@ function ToolbarActions({ id }: { id: string }) {
         Mais
       </Button>
     </Stack>
-  )
+  );
 }
 
 type Resumo = {
-  status:
-    | 'PENDENTE'
-    | 'CONFIRMADO'
-    | 'CANCELADO'
-    | 'CONCLUIDO'
-    | 'NAO_COMPARECEU'
-  cliente: { nome: string; telefone?: string }
-  profissional: { nome: string }
-  servico: { nome: string }
-  data: string // ISO yyyy-mm-dd
-  hora: string // HH:mm
-  duracaoMin: number
-  preco: number
-  unidade?: string
-  origem?: string
-}
+  status: 'PENDENTE' | 'CONFIRMADO' | 'CANCELADO' | 'CONCLUIDO' | 'NAO_COMPARECEU';
+  cliente: { nome: string; telefone?: string };
+  profissional: { nome: string };
+  servico: { nome: string };
+  data: string; // ISO yyyy-mm-dd
+  hora: string; // HH:mm
+  duracaoMin: number;
+  preco: number;
+  unidade?: string;
+  origem?: string;
+};
 
 function ResumeGrid({ resumo }: { resumo: Resumo }) {
   const statusColor: Record<
@@ -210,14 +185,13 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
     CONCLUIDO: 'success',
     CANCELADO: 'error',
     NAO_COMPARECEU: 'default',
-  }
+  };
 
-  const money = (v: number) =>
-    v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  const money = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
   const dateBR = (date: string, time: string) => {
     try {
-      const d = new Date(`${date}T${time}:00`)
+      const d = new Date(`${date}T${time}:00`);
       return d.toLocaleString('pt-BR', {
         weekday: 'short',
         day: '2-digit',
@@ -225,11 +199,11 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-      })
+      });
     } catch {
-      return `${date} ${time}`
+      return `${date} ${time}`;
     }
-  }
+  };
 
   return (
     <Grid container spacing={2}>
@@ -243,11 +217,7 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
               sx={{ mb: 2 }}
             >
               <Typography variant="h6">Resumo</Typography>
-              <Chip
-                label={resumo.status}
-                color={statusColor[resumo.status]}
-                size="small"
-              />
+              <Chip label={resumo.status} color={statusColor[resumo.status]} size="small" />
             </Stack>
 
             <Grid container spacing={2}>
@@ -258,18 +228,11 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
               />
               <InfoItem label="Profissional" value={resumo.profissional.nome} />
               <InfoItem label="Serviço" value={resumo.servico.nome} />
-              <InfoItem
-                label="Data & Hora"
-                value={dateBR(resumo.data, resumo.hora)}
-              />
+              <InfoItem label="Data & Hora" value={dateBR(resumo.data, resumo.hora)} />
               <InfoItem label="Duração" value={`${resumo.duracaoMin} min`} />
               <InfoItem label="Preço" value={money(resumo.preco)} />
-              {resumo.unidade && (
-                <InfoItem label="Unidade" value={resumo.unidade} />
-              )}
-              {resumo.origem && (
-                <InfoItem label="Origem" value={resumo.origem} />
-              )}
+              {resumo.unidade && <InfoItem label="Unidade" value={resumo.unidade} />}
+              {resumo.origem && <InfoItem label="Origem" value={resumo.origem} />}
             </Grid>
           </CardContent>
         </Card>
@@ -283,11 +246,7 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
             </Typography>
             <Stack spacing={1}>
               {/* TODO: Conectar com modais/rotas específicas */}
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<CheckCircleIcon />}
-              >
+              <Button fullWidth variant="contained" startIcon={<CheckCircleIcon />}>
                 Confirmar presença
               </Button>
               <Button fullWidth variant="outlined" startIcon={<CancelIcon />}>
@@ -301,18 +260,10 @@ function ResumeGrid({ resumo }: { resumo: Resumo }) {
         </Card>
       </Grid>
     </Grid>
-  )
+  );
 }
 
-function InfoItem({
-  label,
-  value,
-  extra,
-}: {
-  label: string
-  value: string
-  extra?: string
-}) {
+function InfoItem({ label, value, extra }: { label: string; value: string; extra?: string }) {
   return (
     <Grid item xs={12} sm={6}>
       <Typography variant="caption" color="text.secondary">
@@ -327,21 +278,21 @@ function InfoItem({
         </Typography>
       )}
     </Grid>
-  )
+  );
 }
 
 function TabsNav({
   id,
   current,
 }: {
-  id: string
-  current: 'detalhes' | 'historico' | 'pagamentos'
+  id: string;
+  current: 'detalhes' | 'historico' | 'pagamentos';
 }) {
   const tabs = [
     { value: 'detalhes', label: 'Detalhes' },
     { value: 'historico', label: 'Histórico' },
     { value: 'pagamentos', label: 'Pagamentos' },
-  ] as const
+  ] as const;
 
   return (
     <Tabs
@@ -361,7 +312,7 @@ function TabsNav({
         />
       ))}
     </Tabs>
-  )
+  );
 }
 
 /**
@@ -399,32 +350,23 @@ function AgendamentoInfoPlaceholder() {
         </Card>
       </Grid>
     </Grid>
-  )
+  );
 }
 
 function HistoricoPlaceholder() {
   return (
     <Stack spacing={1}>
-      <ItemLine
-        primary="Agendamento criado"
-        secondary="por Ana (recepção) — 10/09/2025 09:12"
-      />
+      <ItemLine primary="Agendamento criado" secondary="por Ana (recepção) — 10/09/2025 09:12" />
       <ItemLine
         primary="Status atualizado para CONFIRMADO"
         secondary="via App — 10/09/2025 09:15"
       />
       {/* TODO: Timeline real */}
     </Stack>
-  )
+  );
 }
 
-function ItemLine({
-  primary,
-  secondary,
-}: {
-  primary: string
-  secondary?: string
-}) {
+function ItemLine({ primary, secondary }: { primary: string; secondary?: string }) {
   return (
     <Box>
       <Typography variant="body1">{primary}</Typography>
@@ -435,7 +377,7 @@ function ItemLine({
       )}
       <Divider sx={{ my: 1 }} />
     </Box>
-  )
+  );
 }
 
 function PagamentosPlaceholder() {
@@ -459,7 +401,7 @@ function PagamentosPlaceholder() {
         <Button variant="outlined">Emitir recibo</Button>
       </Stack>
     </Stack>
-  )
+  );
 }
 
 function ResumeSkeleton() {
@@ -501,5 +443,5 @@ function ResumeSkeleton() {
         </Card>
       </Grid>
     </Grid>
-  )
+  );
 }

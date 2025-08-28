@@ -1,53 +1,48 @@
-'use client'
+'use client';
 
-import { Box, Grid, Typography, Chip, Divider, Alert } from '@mui/material'
-import { Modal, Card } from '@/components/ui'
+import { Box, Grid, Typography, Chip, Divider, Alert } from '@mui/material';
+import { DSDialog, Card } from '@/components/ui';
 
 // Tipo local para Produto
 interface Produto {
-  id: string
-  nome: string
-  descricao?: string
-  categoria?: string
-  preco: number
-  estoque: number
-  ativo: boolean
-  unidade_id?: string
-  created_at?: string
-  updated_at?: string
+  id: string;
+  nome: string;
+  descricao?: string;
+  categoria?: string;
+  preco: number;
+  estoque: number;
+  ativo: boolean;
+  unidade_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface ProdutoDetailDialogProps {
-  open: boolean
-  onClose: () => void
-  produto: Produto | null
+  open: boolean;
+  onClose: () => void;
+  produto: Produto | null;
 }
 
-export default function ProdutoDetailDialog({
-  open,
-  onClose,
-  produto,
-}: ProdutoDetailDialogProps) {
-  if (!produto) return null
+export default function ProdutoDetailDialog({ open, onClose, produto }: ProdutoDetailDialogProps) {
+  if (!produto) return null;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value)
-  }
+    }).format(value);
+  };
 
   const getEstoqueStatus = (estoque: number) => {
-    if (estoque === 0) return { label: 'Sem estoque', color: 'error' as const }
-    if (estoque <= 5)
-      return { label: 'Estoque baixo', color: 'warning' as const }
-    return { label: 'Em estoque', color: 'success' as const }
-  }
+    if (estoque === 0) return { label: 'Sem estoque', color: 'error' as const };
+    if (estoque <= 5) return { label: 'Estoque baixo', color: 'warning' as const };
+    return { label: 'Em estoque', color: 'success' as const };
+  };
 
-  const estoqueStatus = getEstoqueStatus(produto.estoque)
+  const estoqueStatus = getEstoqueStatus(produto.estoque);
 
   return (
-    <Modal
+    <DSDialog
       open={open}
       onClose={onClose}
       title={produto.nome}
@@ -175,8 +170,8 @@ export default function ProdutoDetailDialog({
         {produto.estoque <= 5 && (
           <Alert severity="warning" sx={{ mb: 3 }}>
             <Typography variant="body2">
-              <strong>Atenção:</strong> Este produto está com estoque baixo (
-              {produto.estoque} unidades). Considere fazer um novo pedido.
+              <strong>Atenção:</strong> Este produto está com estoque baixo ({produto.estoque}{' '}
+              unidades). Considere fazer um novo pedido.
             </Typography>
           </Alert>
         )}
@@ -184,8 +179,8 @@ export default function ProdutoDetailDialog({
         {produto.estoque === 0 && (
           <Alert severity="error" sx={{ mb: 3 }}>
             <Typography variant="body2">
-              <strong>Crítico:</strong> Este produto está sem estoque. É
-              necessário fazer um pedido urgente.
+              <strong>Crítico:</strong> Este produto está sem estoque. É necessário fazer um pedido
+              urgente.
             </Typography>
           </Alert>
         )}
@@ -202,11 +197,7 @@ export default function ProdutoDetailDialog({
                 <Typography variant="body2" color="text.secondary">
                   ID do produto
                 </Typography>
-                <Typography
-                  variant="body1"
-                  fontFamily="monospace"
-                  sx={{ mt: 1 }}
-                >
+                <Typography variant="body1" fontFamily="monospace" sx={{ mt: 1 }}>
                   {produto.id}
                 </Typography>
               </Grid>
@@ -223,6 +214,6 @@ export default function ProdutoDetailDialog({
           </Box>
         </Card>
       </Box>
-    </Modal>
-  )
+    </DSDialog>
+  );
 }

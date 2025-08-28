@@ -1,146 +1,50 @@
-# Regras de Implementação - SaaS Barbearia
+# Regras de Implementação
 
-## Fluxo Oficial de Desenvolvimento de Banco de Dados com Supabase
+## Estrutura
 
-### 1. Criação de Migrations
+- Módulos protegidos em `src/app/(protected)`.
+- Rotas públicas em `src/app/(public)`.
+- Features desacopladas em `components/features/<feature>`.
+- UI compartilhada em `components/ui`.
 
-**Regra Fundamental:** Todas as alterações de schema (tabelas, colunas, índices, RLS etc.) devem ser feitas via arquivos `.sql` dentro de `supabase/migrations/`.
+## Server Actions
 
-- ✅ **PERMITIDO**: Criar arquivos de migration em `supabase/migrations/`
-- ❌ **PROIBIDO**: Alterar diretamente o banco de produção
-- ❌ **PROIBIDO**: Executar comandos SQL manuais na nuvem sem estar em migration
+- Definidas em `_actions.ts` dentro do diretório do módulo.
+- Validação com Zod antes de qualquer I/O.
+- Retornar sempre `ActionResult`.
 
-### 2. Ambiente Local com Docker
+## Banco
 
-**Comando obrigatório:** Sempre rodar o Supabase local com:
+- Migrations nomeadas com timestamp.
+- Função `current_unit_id` garante escopo multi-tenant.
+- Nenhuma query sem filtro de unidade quando aplicável.
+- Tabelas de integração externas devem registrar eventos para idempotência (`*_webhook_events`).
+- Views auxiliares podem expor filas (`view_*_pending`) apenas para leitura/monitoramento.
 
-```bash
-npx supabase start
-```
+## Código
 
-**Para aplicar e testar todas as migrations do zero:**
+- Sem `any` não justificado.
+- Imports absolutos `@/`.
+- Evitar lógica de negócio em componentes – delegar para services/actions.
 
-```bash
-npx supabase db reset
-```
+## Testes
 
-**Verificação obrigatória:** Conferir as tabelas e regras no Studio local antes de prosseguir.
+- Unit: lógica pura (schemas, utils, mappers).
+- Integration: Server Actions + Supabase (usa banco isolado ou schema de teste).
+- E2E: Fluxos críticos (login, criar agendamento, cancelar assinatura).
+- Smoke obrigatório no CI.
 
-### 3. Validação Obrigatória
+## Commits
 
-Toda migration deve ser:
+- `chore(structure): ...`
+- `refactor(agenda): ...`
+- `feat(asaas): ...`
+- `build(db): ...`
+- `test: ...`
+- `docs: ...`
 
-- ✅ Testada localmente
-- ✅ Validada quanto à integridade
-- ✅ Validada quanto às constraints
-- ✅ Validada quanto ao RLS (Row Level Security)
-- ✅ Testada com inserts de exemplo
+## Observabilidade
 
-**Regra:** Só após aprovação local, a alteração pode ser considerada estável.
-
-### 4. Deploy na Nuvem
-
-**Comando para produção:** Apenas após validação local completa:
-
-```bash
-npx supabase db push
-```
-
-**Regras de segurança:**
-
-- ❌ Nunca executar comandos SQL manuais na nuvem
-- ❌ Nunca fazer push sem validação local prévia
-
-### 5. Política de Rollback
-
-**Em caso de erro em produção:**
-
-1. Criar imediatamente uma nova migration de rollback
-2. Exemplo: `006_rollback_nome_tabela.sql`
-3. ❌ **NUNCA** apagar migrations antigas
-4. ❌ **NUNCA** editar migrations existentes
-
-### 6. Checklist Obrigatório Antes do Push
-
-Antes de executar `npx supabase db push`, verificar:
-
-- [ ] 1. Criar migration no repositório
-- [ ] 2. Rodar `npx supabase db reset` e validar no ambiente local
-- [ ] 3. Revisar e confirmar integridade dos dados de teste
-- [ ] 4. Validar RLS e permissões
-- [ ] 5. **SOMENTE ENTÃO** rodar `npx supabase db push`
-
-### 7. Convenções de Nomenclatura
-
-**Migrations:**
-
-- Formato: `XXX_descricao_da_alteracao.sql`
-- Exemplo: `005_produtos_vendas.sql`
-- Sempre usar numeração sequencial
-
-**Rollbacks:**
-
-- Formato: `XXX_rollback_nome_tabela.sql`
-- Exemplo: `006_rollback_produtos_vendas.sql`
-
-### 8. Estrutura de Arquivos
-
-```
-supabase/
-├── migrations/
-│   ├── 001_initial_schema.sql
-│   ├── 002_auth_setup.sql
-│   ├── 003_unidades_profiles.sql
-│   ├── 004_servicos_agendamentos.sql
-│   └── 005_produtos_vendas.sql
-└── config.toml
-```
-
-### 9. Padrões de Validação (conforme PADROES_VALIDACAO.md)
-
-**Integração com Schemas Zod:**
-
-- Validações de frontend devem estar alinhadas com constraints do banco
-- Usar schemas TypeScript gerados a partir das migrations
-- Manter consistência entre validação client-side e server-side
-
-**ActionResult Pattern:**
-
-```typescript
-interface ActionResult<T = any> {
-  success: boolean
-  data?: T
-  error?: string
-  message?: string
-  errors?: ValidationError[]
-}
-```
-
-### 10. Fluxo de Desenvolvimento Completo
-
-1. **Análise:** Identificar necessidade de alteração no banco
-2. **Migration:** Criar arquivo `.sql` em `supabase/migrations/`
-3. **Reset Local:** `npx supabase db reset`
-4. **Validação:** Testar no Studio local
-5. **Schemas:** Atualizar schemas Zod se necessário
-6. **Actions:** Criar/atualizar Server Actions
-7. **Hooks:** Criar/atualizar React Query hooks
-8. **Deploy:** `npx supabase db push` após todas as validações
-
-### 11. Tratamento de Erros
-
-**Em desenvolvimento:**
-
-- Sempre verificar logs do Supabase local
-- Validar RLS policies com diferentes tipos de usuário
-- Testar constraints e foreign keys
-
-**Em produção:**
-
-- Monitorar logs após deploy
-- Ter migration de rollback pronta
-- Documentar problemas encontrados
-
----
-
-**⚠️ IMPORTANTE:** Este fluxo é obrigatório para manter a consistência e segurança do banco de dados. Qualquer desvio deve ser documentado e aprovado pela equipe.
+- Capturar erros de SA críticos no Sentry.
+- Planejar métricas de consumo (limites de assinatura) via serviço dedicado.
+- Webhooks: logar criação de evento, processamento e erro (com `event_id`).

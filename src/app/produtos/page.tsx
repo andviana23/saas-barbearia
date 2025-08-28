@@ -1,5 +1,5 @@
-import { Box, Container, Typography } from '@mui/material'
-import ProdutosContent from './components/ProdutosContent'
+import { Box, Container, Typography } from '@mui/material';
+import ProdutosContent from './components/ProdutosContent';
 
 export default function ProdutosPage() {
   return (
@@ -15,10 +15,10 @@ export default function ProdutosPage() {
 
       <ProdutosContent />
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Produtos | Trato',
   description: 'Gestão de produtos e controle de estoque',
-}
+};

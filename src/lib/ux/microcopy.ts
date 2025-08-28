@@ -2,16 +2,16 @@
 // Princípios de usabilidade e feedback consistente
 
 export interface MicrocopyConfig {
-  tone: 'formal' | 'friendly' | 'professional'
-  language: 'pt-BR' | 'en'
-  showEmojis: boolean
+  tone: 'formal' | 'friendly' | 'professional';
+  language: 'pt-BR' | 'en';
+  showEmojis: boolean;
 }
 
 export const DEFAULT_MICROCOPY_CONFIG: MicrocopyConfig = {
   tone: 'friendly',
   language: 'pt-BR',
   showEmojis: true,
-}
+};
 
 // Microcópias para formulários
 export const formMicrocopy = {
@@ -57,7 +57,7 @@ export const formMicrocopy = {
     next: 'Próximo',
     previous: 'Anterior',
   },
-}
+};
 
 // Microcópias para tabelas
 export const tableMicrocopy = {
@@ -98,7 +98,7 @@ export const tableMicrocopy = {
     active: 'Filtros ativos',
     noFilters: 'Nenhum filtro aplicado',
   },
-}
+};
 
 // Microcópias para notificações
 export const notificationMicrocopy = {
@@ -136,7 +136,7 @@ export const notificationMicrocopy = {
     noResults: 'Nenhum resultado encontrado.',
     help: 'Precisa de ajuda? Consulte a documentação.',
   },
-}
+};
 
 // Microcópias para agendamentos
 export const appointmentMicrocopy = {
@@ -168,7 +168,7 @@ export const appointmentMicrocopy = {
     reminder: 'Lembrete: seu agendamento é em',
     confirmation: 'Agendamento confirmado para',
   },
-}
+};
 
 // Microcópias para fila
 export const queueMicrocopy = {
@@ -189,7 +189,7 @@ export const queueMicrocopy = {
     called: 'Chamando próximo cliente',
     priority: 'Cliente prioritário',
   },
-}
+};
 
 // Microcópias para financeiro
 export const financialMicrocopy = {
@@ -210,49 +210,49 @@ export const financialMicrocopy = {
     receipt: 'Recibo gerado',
     invoice: 'Fatura emitida',
   },
-}
+};
 
 // Função para aplicar configurações de microcópias
 export function applyMicrocopyConfig(
   text: string,
-  config: MicrocopyConfig = DEFAULT_MICROCOPY_CONFIG
+  config: MicrocopyConfig = DEFAULT_MICROCOPY_CONFIG,
 ): string {
-  let result = text
+  let result = text;
 
   // Aplicar tom
   if (config.tone === 'formal') {
-    result = result.replace(/!/g, '.')
-    result = result.replace(/😊/g, '')
+    result = result.replace(/!/g, '.');
+    result = result.replace(/😊/g, '');
   }
 
   // Aplicar idioma
   if (config.language === 'en') {
     // Traduções básicas (em produção usar i18n)
-    result = result.replace(/Salvar/g, 'Save')
-    result = result.replace(/Cancelar/g, 'Cancel')
-    result = result.replace(/Erro/g, 'Error')
+    result = result.replace(/Salvar/g, 'Save');
+    result = result.replace(/Cancelar/g, 'Cancel');
+    result = result.replace(/Erro/g, 'Error');
   }
 
   // Aplicar emojis
   if (!config.showEmojis) {
-    result = result.replace(/[😊✅❌⚠️]/g, '')
+    result = result.replace(/[😊✅❌⚠️]/g, '');
   }
 
-  return result
+  return result;
 }
 
 // Hook para usar microcópias
 export function useMicrocopy(config?: MicrocopyConfig) {
-  const microcopyConfig = config || DEFAULT_MICROCOPY_CONFIG
+  const microcopyConfig = config || DEFAULT_MICROCOPY_CONFIG;
 
   const getText = (key: string, category: keyof typeof formMicrocopy) => {
-    const categoryData = formMicrocopy[category] as any
-    const text = categoryData[key] || key
-    return applyMicrocopyConfig(text, microcopyConfig)
-  }
+    const categoryData = formMicrocopy[category] as any;
+    const text = categoryData[key] || key;
+    return applyMicrocopyConfig(text, microcopyConfig);
+  };
 
   return {
     getText,
     config: microcopyConfig,
-  }
+  };
 }

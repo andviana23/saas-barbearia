@@ -22,50 +22,50 @@ import {
   IconButton,
   Tooltip,
   Paper,
-} from '@mui/material'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import { unstable_noStore as noStore } from 'next/cache'
-import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
+} from '@mui/material';
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { unstable_noStore as noStore } from 'next/cache';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 // 🔌 Server Actions (BACKEND FIRST): assumimos que já existem.
 // Ajuste os caminhos conforme seu projeto.
-import { listServices, listServiceCategories } from '@/actions/services'
+import { listServices, listServiceCategories } from '@/actions/services';
 
 /**
  * Tipos do catálogo de serviços (alinhar com o backend EP6)
  */
 type ServiceCategory = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 type ServiceItem = {
-  id: string
-  name: string
-  category_id: string | null
-  category_name?: string | null
-  duration_minutes: number // duração em minutos
-  price_cents: number // valor em centavos
-  is_active: boolean
-}
+  id: string;
+  name: string;
+  category_id: string | null;
+  category_name?: string | null;
+  duration_minutes: number; // duração em minutos
+  price_cents: number; // valor em centavos
+  is_active: boolean;
+};
 
 type ServicesResponse = {
-  items: ServiceItem[]
-  total: number
-}
+  items: ServiceItem[];
+  total: number;
+};
 
 export const metadata: Metadata = {
   title: 'Serviços | Trato',
   description: 'Lista de serviços com filtros e paginação',
-}
+};
 
 /**
  * Utilitários
  */
 function moneyBRL(cents: number) {
-  return (cents ?? 0) / 100
+  return (cents ?? 0) / 100;
 }
 
 function formatCurrencyBRL(cents: number) {
@@ -73,35 +73,32 @@ function formatCurrencyBRL(cents: number) {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(moneyBRL(cents))
+    }).format(moneyBRL(cents));
   } catch {
-    return `R$ ${moneyBRL(cents).toFixed(2)}`
+    return `R$ ${moneyBRL(cents).toFixed(2)}`;
   }
 }
 
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 
 function coerceNumber(x: unknown): number | undefined {
-  const s = coerceString(x)
-  if (!s) return undefined
-  const n = Number(s)
-  return Number.isFinite(n) ? n : undefined
+  const s = coerceString(x);
+  if (!s) return undefined;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : undefined;
 }
 
-function buildQuery(
-  params: URLSearchParams,
-  patch: Record<string, string | undefined>
-) {
-  const next = new URLSearchParams(params)
+function buildQuery(params: URLSearchParams, patch: Record<string, string | undefined>) {
+  const next = new URLSearchParams(params);
   Object.entries(patch).forEach(([k, v]) => {
-    if (v === undefined || v === '') next.delete(k)
-    else next.set(k, v)
-  })
-  return `?${next.toString()}`
+    if (v === undefined || v === '') next.delete(k);
+    else next.set(k, v);
+  });
+  return `?${next.toString()}`;
 }
 
 /**
@@ -111,31 +108,28 @@ function buildQuery(
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // 🔎 Leitura dos filtros da URL
-  const q = coerceString(searchParams.q) ?? ''
-  const categoryId = coerceString(searchParams.categoryId) || ''
-  const status = coerceString(searchParams.status) || '' // "active", "inactive" ou ""
-  const minPrice = coerceNumber(searchParams.minPrice)
-  const maxPrice = coerceNumber(searchParams.maxPrice)
-  const minDuration = coerceNumber(searchParams.minDuration)
-  const maxDuration = coerceNumber(searchParams.maxDuration)
-  const sortBy = coerceString(searchParams.sortBy) || 'name' // name|price|duration|category|status
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc' // asc|desc
-  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0)
-  const pageSize = Math.min(
-    100,
-    Math.max(5, coerceNumber(searchParams.pageSize) ?? 10)
-  )
+  const q = coerceString(searchParams.q) ?? '';
+  const categoryId = coerceString(searchParams.categoryId) || '';
+  const status = coerceString(searchParams.status) || ''; // "active", "inactive" ou ""
+  const minPrice = coerceNumber(searchParams.minPrice);
+  const maxPrice = coerceNumber(searchParams.maxPrice);
+  const minDuration = coerceNumber(searchParams.minDuration);
+  const maxDuration = coerceNumber(searchParams.maxDuration);
+  const sortBy = coerceString(searchParams.sortBy) || 'name'; // name|price|duration|category|status
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'; // asc|desc
+  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0);
+  const pageSize = Math.min(100, Math.max(5, coerceNumber(searchParams.pageSize) ?? 10));
 
   // 📥 Busca de dados via Server Actions
   const [categories, servicesRaw] = await Promise.all([
     listServiceCategories() as Promise<ServiceCategory[]>,
     listServices() as Promise<unknown>,
-  ])
+  ]);
 
   // Normalizar resposta de serviços: alguns backends retornam array simples
   const services: ServicesResponse = Array.isArray(servicesRaw)
@@ -143,7 +137,7 @@ export default async function Page({
         items: servicesRaw as ServiceItem[],
         total: (servicesRaw as ServiceItem[]).length,
       }
-    : (servicesRaw as ServicesResponse)
+    : (servicesRaw as ServicesResponse);
 
   return (
     <Container maxWidth="xl">
@@ -163,11 +157,7 @@ export default async function Page({
             disableGutters
             sx={{ justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}
           >
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ flex: 1 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ flex: 1 }}>
               <TextField
                 name="q"
                 label="Pesquisar"
@@ -197,12 +187,7 @@ export default async function Page({
 
               <FormControl sx={{ minWidth: 180 }}>
                 <InputLabel id="status-label">Status</InputLabel>
-                <Select
-                  labelId="status-label"
-                  name="status"
-                  label="Status"
-                  defaultValue={status}
-                >
+                <Select labelId="status-label" name="status" label="Status" defaultValue={status}>
                   <MenuItem value="">
                     <em>Todos</em>
                   </MenuItem>
@@ -275,7 +260,7 @@ export default async function Page({
         </Paper>
       </Box>
     </Container>
-  )
+  );
 }
 
 /**
@@ -290,33 +275,33 @@ function ServicesTable({
   sortDir,
   currentParams,
 }: {
-  data: ServiceItem[]
-  total: number
-  page: number
-  pageSize: number
-  sortBy: string
-  sortDir: 'asc' | 'desc'
-  currentParams: { [key: string]: string | string[] | undefined }
+  data: ServiceItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  sortBy: string;
+  sortDir: 'asc' | 'desc';
+  currentParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = new URLSearchParams()
+  const params = new URLSearchParams();
   Object.entries(currentParams).forEach(([k, v]) => {
-    if (Array.isArray(v)) params.set(k, v[0] as string)
-    else if (typeof v === 'string') params.set(k, v)
-  })
+    if (Array.isArray(v)) params.set(k, v[0] as string);
+    else if (typeof v === 'string') params.set(k, v);
+  });
 
   const handleSortQuery = (column: string) => {
-    const isAsc = sortBy === column && sortDir === 'asc'
+    const isAsc = sortBy === column && sortDir === 'asc';
     return buildQuery(params, {
       sortBy: column,
       sortDir: isAsc ? 'desc' : 'asc',
       page: '0',
-    })
-  }
+    });
+  };
 
   const handlePageChangeQuery = (nextPage: number) =>
-    buildQuery(params, { page: String(nextPage) })
+    buildQuery(params, { page: String(nextPage) });
   const handlePageSizeChangeQuery = (nextSize: number) =>
-    buildQuery(params, { pageSize: String(nextSize), page: '0' })
+    buildQuery(params, { pageSize: String(nextSize), page: '0' });
 
   return (
     <>
@@ -333,10 +318,7 @@ function ServicesTable({
                 </TableSortLabel>
               </Link>
             </TableCell>
-            <TableCell
-              sortDirection={sortBy === 'category' ? sortDir : false}
-              sx={{ width: 260 }}
-            >
+            <TableCell sortDirection={sortBy === 'category' ? sortDir : false} sx={{ width: 260 }}>
               <Link href={handleSortQuery('category')}>
                 <TableSortLabel
                   active={sortBy === 'category'}
@@ -397,9 +379,7 @@ function ServicesTable({
           {data.length === 0 && (
             <TableRow>
               <TableCell colSpan={6}>
-                <Box
-                  sx={{ py: 6, textAlign: 'center', color: 'text.secondary' }}
-                >
+                <Box sx={{ py: 6, textAlign: 'center', color: 'text.secondary' }}>
                   Nenhum serviço encontrado com os filtros atuais.
                 </Box>
               </TableCell>
@@ -422,9 +402,7 @@ function ServicesTable({
                 )}
               </TableCell>
               <TableCell align="right">{s.duration_minutes} min</TableCell>
-              <TableCell align="right">
-                {formatCurrencyBRL(s.price_cents)}
-              </TableCell>
+              <TableCell align="right">{formatCurrencyBRL(s.price_cents)}</TableCell>
               <TableCell align="center">
                 {s.is_active ? (
                   <Chip label="Ativo" color="success" size="small" />
@@ -457,19 +435,19 @@ function ServicesTable({
           rowsPerPage={pageSize}
           onPageChange={(_, newPage) => {
             // Como estamos em Server Components, usamos <Link> para navegar.
-            const href = handlePageChangeQuery(newPage)
+            const href = handlePageChangeQuery(newPage);
             // fallback para ambientes sem client nav
-            window.location.href = href
+            window.location.href = href;
           }}
           onRowsPerPageChange={(e) => {
-            const newSize = Number(e.target.value)
-            const href = handlePageSizeChangeQuery(newSize)
-            window.location.href = href
+            const newSize = Number(e.target.value);
+            const href = handlePageSizeChangeQuery(newSize);
+            window.location.href = href;
           }}
           rowsPerPageOptions={[5, 10, 20, 50]}
           labelRowsPerPage="Por página"
         />
       </Box>
     </>
-  )
+  );
 }

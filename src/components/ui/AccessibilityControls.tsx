@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 import {
   Box,
   Card,
@@ -14,19 +14,19 @@ import {
   Divider,
   IconButton,
   Tooltip,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Accessibility as AccessibilityIcon,
   Contrast as HighContrastIcon,
   VisibilityOff as VisibilityOffIcon,
   ZoomIn as ZoomInIcon,
   ZoomOut as ZoomOutIcon,
-} from '@mui/icons-material'
-import { useAccessibilityContext } from '@/lib/a11y'
+} from '@mui/icons-material';
+import { useAccessibilityContext } from '@/lib/a11y';
 
 export default function AccessibilityControls() {
   const { config, toggleHighContrast, toggleReducedMotion, setFontSize } =
-    useAccessibilityContext()
+    useAccessibilityContext();
 
   return (
     <Card sx={{ maxWidth: 400, mb: 2 }}>
@@ -112,5 +112,5 @@ export default function AccessibilityControls() {
         </Box>
       </CardContent>
     </Card>
-  )
+  );
 }

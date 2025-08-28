@@ -1,20 +1,20 @@
 // Mock actions para funcionalidades de profissionais
 
 export type Professional = {
-  id: string
-  name: string
-  email?: string
-  phone?: string
-  specialty?: string
-  commission_rate?: number
-  is_active: boolean
-  avatar_url?: string
-  created_at?: string
-}
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  specialty?: string;
+  commission_rate?: number;
+  is_active: boolean;
+  avatar_url?: string;
+  created_at?: string;
+};
 
 export async function listProfessionals(): Promise<Professional[]> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   return [
     {
@@ -39,32 +39,32 @@ export async function listProfessionals(): Promise<Professional[]> {
       avatar_url: undefined,
       created_at: '2025-01-01T00:00:00Z',
     },
-  ]
+  ];
 }
 
 export async function createProfessional(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Create professional:', Object.fromEntries(formData))
+  console.log('Create professional:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }
 
 export async function updateProfessional(id: string, formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Update professional:', id, Object.fromEntries(formData))
+  console.log('Update professional:', id, Object.fromEntries(formData));
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function deleteProfessional(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Delete professional:', id)
+  console.log('Delete professional:', id);
 
-  return { success: true }
+  return { success: true };
 }

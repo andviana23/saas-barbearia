@@ -1,5 +1,5 @@
-import { Box, Container, Typography } from '@mui/material'
-import MovimentacoesEstoqueContent from './components/MovimentacoesEstoqueContent'
+import { Box, Container, Typography } from '@mui/material';
+import MovimentacoesEstoqueContent from './components/MovimentacoesEstoqueContent';
 
 export default function MovimentacoesEstoquePage() {
   return (
@@ -15,10 +15,10 @@ export default function MovimentacoesEstoquePage() {
 
       <MovimentacoesEstoqueContent />
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Movimentações de Estoque | Trato',
   description: 'Histórico de movimentações de estoque',
-}
+};

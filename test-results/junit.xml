@@ -1,0 +1,4562 @@
+<testsuites id="" name="" tests="1098" failures="0" skipped="1098" errors="0" time="0.406112">
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="firefox" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="webkit" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-chrome" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="mobile-safari" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="agenda.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Agenda › deve carregar calendário de agendamentos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar novo agendamento com sucesso" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve editar agendamento existente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar conflitos de horário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve cancelar agendamento corretamente" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve filtrar agendamentos por profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve alternar entre visualizações do calendário" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve criar agendamento com múltiplos serviços" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar disponibilidade de profissional" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve integrar agendamento com sistema de fila" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve calcular tempo estimado de atendimento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve validar horário de funcionamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve permitir reagendamento" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Agenda › deve notificar sobre agendamentos próximos" classname="agenda.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="assinaturas.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Assinaturas (Asaas) › deve carregar lista de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve criar nova assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve editar assinatura existente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar campos obrigatórios" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve ativar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve cancelar assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve simular webhook Asaas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve gerar cobrança recorrente" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve exibir histórico de pagamentos" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve filtrar assinaturas por status" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve validar datas de assinatura" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Assinaturas (Asaas) › deve calcular valor total de assinaturas" classname="assinaturas.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Autenticação › deve fazer login com credenciais válidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve bloquear acesso a rotas protegidas sem autenticação" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve fazer logout corretamente" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve mostrar erro com credenciais inválidas" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve manter sessão após refresh da página" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Autenticação › deve redirecionar usuário autenticado para dashboard ao acessar login" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="clientes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="Clientes › deve listar clientes corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve criar novo cliente com sucesso" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve editar cliente existente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve arquivar cliente corretamente" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve filtrar clientes por nome" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve validar campos obrigatórios no formulário" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Clientes › deve navegar entre páginas da listagem" classname="clientes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="configuracoes.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Configurações › deve carregar painel de configurações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar dados da empresa" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar horário de funcionamento" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar serviços padrão" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar notificações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar integrações" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar usuários e permissões" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar campos obrigatórios" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de CNPJ" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve validar formato de email" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar backup automático" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve executar backup manual" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve restaurar backup" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar tema e aparência" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Configurações › deve configurar idioma e fuso horário" classname="configuracoes.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="fila.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="Fila › deve carregar painel da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve adicionar cliente à fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve chamar próximo cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular estimativa de tempo corretamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve remover cliente da fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve priorizar cliente na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar status da fila em tempo real" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve sincronizar fila entre múltiplos dispositivos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve notificar sobre mudanças na fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve filtrar fila por profissional" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve gerenciar fila com múltiplos profissionais" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve calcular tempo de espera dinamicamente" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve mostrar histórico de atendimentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve permitir pausar e retomar fila" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Fila › deve integrar com sistema de agendamentos" classname="fila.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="financeiro.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="18" failures="0" skipped="18" time="0" errors="0">
+<testcase name="Financeiro › deve carregar painel financeiro" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer lançamento financeiro simples" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve fazer fechamento de caixa diário" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve filtrar movimentações por período" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve exportar movimentações em CSV" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve mostrar resumo financeiro correto" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar campos obrigatórios no lançamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve editar lançamento existente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular comissões automaticamente" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve processar venda de produtos" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerar relatório financeiro detalhado" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar fluxo de caixa em tempo real" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve validar limites e alertas financeiros" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve integrar com sistema de assinaturas" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve controlar conciliação bancária" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve calcular métricas de performance" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve gerenciar múltiplas formas de pagamento" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Financeiro › deve emitir recibos e comprovantes" classname="financeiro.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="not-found.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="27" failures="0" skipped="27" time="0" errors="0">
+<testcase name="Página Not Found (404) › deve exibir página 404 para rota inexistente" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir mensagem de erro amigável" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para voltar ao dashboard" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para ir à página inicial" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir botão para contatar suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para dashboard ao clicar em voltar" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para página inicial ao clicar no botão" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve abrir modal de contato ao clicar em suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir informações de contato no modal" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir fechar modal de suporte" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir breadcrumb correto na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve permitir navegação pelo breadcrumb" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir logo da empresa na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir footer na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir links úteis no footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve navegar para páginas através dos links do footer" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para subrotas inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com parâmetros inválidos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve manter estado de autenticação na página 404" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas de API inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para arquivos estáticos inexistentes" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com caracteres especiais" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas muito longas" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com números" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com símbolos" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas vazias" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Página Not Found (404) › deve exibir página 404 para rotas com extensões" classname="not-found.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="observabilidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Observabilidade › deve capturar erros com ErrorBoundary" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de sucesso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de erro" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar notificações de aviso" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve fechar notificações automaticamente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve permitir fechar notificações manualmente" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar página de erro 404" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve registrar logs de ações críticas" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Observabilidade › deve mostrar loading states durante operações" classname="observabilidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="profissionais.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Profissionais e Horários › deve carregar lista de profissionais" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve criar novo profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve editar profissional existente" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve validar campos obrigatórios" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve configurar horários de trabalho" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve detectar conflitos de horários" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve arquivar profissional" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve filtrar profissionais por especialidade" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Profissionais e Horários › deve navegar entre páginas da lista" classname="profissionais.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="relatorios.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="14" failures="0" skipped="14" time="0" errors="0">
+<testcase name="Relatórios › deve carregar painel de relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de clientes" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório financeiro" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de agendamentos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve gerar relatório de profissionais" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para PDF" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exportar relatório para Excel" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve agendar relatório recorrente" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve validar filtros obrigatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir gráficos nos relatórios" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve filtrar relatórios por unidade" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve salvar relatórios favoritos" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve compartilhar relatório por email" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Relatórios › deve exibir histórico de relatórios gerados" classname="relatorios.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="servicos.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Serviços › deve carregar catálogo de serviços" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve criar novo serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve editar serviço existente" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar campos obrigatórios" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve vincular serviço a profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve remover vínculo com profissional" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve arquivar serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve filtrar serviços por categoria" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve buscar serviços por nome" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve ordenar serviços por preço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve exibir detalhes do serviço" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serviços › deve validar preço e duração" classname="servicos.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="smoke.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Smoke Tests › deve carregar dashboard principal" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de clientes" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de profissionais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de serviços" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de agenda" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página da fila" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página financeira" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de relatórios" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar página de configurações" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve navegar entre módulos principais" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar componentes de layout consistentemente" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve responder a mudanças de viewport" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Smoke Tests › deve carregar páginas com performance aceitável" classname="smoke.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="troca-unidade.spec.ts" timestamp="2025-08-23T19:28:29.314Z" hostname="tablet" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Troca de Unidade › deve exibir seletor de unidade atual" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve permitir trocar para outra unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve isolar dados entre unidades (RLS)" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve persistir seleção de unidade no localStorage" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar contexto de usuário ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar permissões por unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve limpar cache ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve atualizar breadcrumbs ao trocar unidade" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve mostrar indicador de carregamento durante troca" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve validar unidade ativa antes de operações" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve sincronizar unidade entre abas" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Troca de Unidade › deve exibir informações da unidade selecionada" classname="troca-unidade.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

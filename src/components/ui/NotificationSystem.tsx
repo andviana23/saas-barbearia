@@ -1,56 +1,45 @@
-'use client'
+'use client';
 
-import React, { createContext, useContext, useState, useCallback } from 'react'
-import {
-  Snackbar,
-  Alert,
-  AlertTitle,
-  Box,
-  IconButton,
-  Collapse,
-} from '@mui/material'
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { Snackbar, Alert, AlertTitle, Box, IconButton, Collapse } from '@mui/material';
 import {
   Close as CloseIcon,
   CheckCircle as SuccessIcon,
   Error as ErrorIcon,
   Warning as WarningIcon,
   Info as InfoIcon,
-} from '@mui/icons-material'
-import { notificationMicrocopy } from '@/lib/ux/microcopy'
+} from '@mui/icons-material';
+import { notificationMicrocopy } from '@/lib/ux/microcopy';
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info'
+export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
 export interface Notification {
-  id: string
-  type: NotificationType
-  title: string
-  message: string
-  duration?: number
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  duration?: number;
   action?: {
-    label: string
-    onClick: () => void
-  }
+    label: string;
+    onClick: () => void;
+  };
 }
 
 interface NotificationContextType {
-  notifications: Notification[]
-  addNotification: (notification: Omit<Notification, 'id'>) => void
-  removeNotification: (id: string) => void
-  clearAll: () => void
+  notifications: Notification[];
+  addNotification: (notification: Omit<Notification, 'id'>) => void;
+  removeNotification: (id: string) => void;
+  clearAll: () => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
-)
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function useNotifications() {
-  const context = useContext(NotificationContext)
+  const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error(
-      'useNotifications deve ser usado dentro de NotificationProvider'
-    )
+    throw new Error('useNotifications deve ser usado dentro de NotificationProvider');
   }
-  return context
+  return context;
 }
 
 // Componente de Toast individual
@@ -58,36 +47,36 @@ function NotificationToast({
   notification,
   onClose,
 }: {
-  notification: Notification
-  onClose: () => void
+  notification: Notification;
+  onClose: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   const getIcon = () => {
     switch (notification.type) {
       case 'success':
-        return <SuccessIcon />
+        return <SuccessIcon />;
       case 'error':
-        return <ErrorIcon />
+        return <ErrorIcon />;
       case 'warning':
-        return <WarningIcon />
+        return <WarningIcon />;
       case 'info':
-        return <InfoIcon />
+        return <InfoIcon />;
       default:
-        return <InfoIcon />
+        return <InfoIcon />;
     }
-  }
+  };
 
   const getSeverity = (): 'success' | 'error' | 'warning' | 'info' => {
-    return notification.type
-  }
+    return notification.type;
+  };
 
   const handleActionClick = () => {
     if (notification.action) {
-      notification.action.onClick()
-      onClose()
+      notification.action.onClick();
+      onClose();
     }
-  }
+  };
 
   return (
     <Alert
@@ -105,11 +94,7 @@ function NotificationToast({
               {notification.action.label}
             </IconButton>
           )}
-          <IconButton
-            size="small"
-            onClick={onClose}
-            aria-label="Fechar notificação"
-          >
+          <IconButton size="small" onClick={onClose} aria-label="Fechar notificação">
             <CloseIcon />
           </IconButton>
         </Box>
@@ -124,9 +109,7 @@ function NotificationToast({
       }}
     >
       <AlertTitle>{notification.title}</AlertTitle>
-      <Collapse in={expanded || notification.message.length < 100}>
-        {notification.message}
-      </Collapse>
+      <Collapse in={expanded || notification.message.length < 100}>{notification.message}</Collapse>
       {notification.message.length >= 100 && (
         <Box
           component="span"
@@ -142,52 +125,45 @@ function NotificationToast({
         </Box>
       )}
     </Alert>
-  )
+  );
 }
 
 // Provider principal
-export function NotificationProvider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+export function NotificationProvider({ children }: { children: React.ReactNode }) {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = useCallback(
-    (notification: Omit<Notification, 'id'>) => {
-      const id = Math.random().toString(36).substr(2, 9)
-      const newNotification: Notification = {
-        ...notification,
-        id,
-        duration: notification.duration ?? 6000, // 6 segundos padrão
-      }
+  const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    const newNotification: Notification = {
+      ...notification,
+      id,
+      duration: notification.duration ?? 6000, // 6 segundos padrão
+    };
 
-      setNotifications((prev) => [...prev, newNotification])
+    setNotifications((prev) => [...prev, newNotification]);
 
-      // Auto-remover após duração
-      if (newNotification.duration && newNotification.duration > 0) {
-        setTimeout(() => {
-          removeNotification(id)
-        }, newNotification.duration)
-      }
-    },
-    []
-  )
+    // Auto-remover após duração
+    if (newNotification.duration && newNotification.duration > 0) {
+      setTimeout(() => {
+        removeNotification(id);
+      }, newNotification.duration);
+    }
+  }, []);
 
   const removeNotification = useCallback((id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id))
-  }, [])
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
 
   const clearAll = useCallback(() => {
-    setNotifications([])
-  }, [])
+    setNotifications([]);
+  }, []);
 
   const value: NotificationContextType = {
     notifications,
     addNotification,
     removeNotification,
     clearAll,
-  }
+  };
 
   return (
     <NotificationContext.Provider value={value}>
@@ -208,12 +184,12 @@ export function NotificationProvider({
         </Snackbar>
       ))}
     </NotificationContext.Provider>
-  )
+  );
 }
 
 // Hook de conveniência para notificações rápidas
 export function useQuickNotifications() {
-  const { addNotification } = useNotifications()
+  const { addNotification } = useNotifications();
 
   const showSuccess = useCallback(
     (title: string, message: string) => {
@@ -221,10 +197,10 @@ export function useQuickNotifications() {
         type: 'success',
         title,
         message,
-      })
+      });
     },
-    [addNotification]
-  )
+    [addNotification],
+  );
 
   const showError = useCallback(
     (title: string, message: string) => {
@@ -232,10 +208,10 @@ export function useQuickNotifications() {
         type: 'error',
         title,
         message,
-      })
+      });
     },
-    [addNotification]
-  )
+    [addNotification],
+  );
 
   const showWarning = useCallback(
     (title: string, message: string) => {
@@ -243,10 +219,10 @@ export function useQuickNotifications() {
         type: 'warning',
         title,
         message,
-      })
+      });
     },
-    [addNotification]
-  )
+    [addNotification],
+  );
 
   const showInfo = useCallback(
     (title: string, message: string) => {
@@ -254,15 +230,15 @@ export function useQuickNotifications() {
         type: 'info',
         title,
         message,
-      })
+      });
     },
-    [addNotification]
-  )
+    [addNotification],
+  );
 
   return {
     showSuccess,
     showError,
     showWarning,
     showInfo,
-  }
+  };
 }

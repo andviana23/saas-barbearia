@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Typography,
@@ -24,46 +24,46 @@ import {
   Divider,
   Paper,
   CircularProgress,
-} from '@mui/material'
-import DownloadIcon from '@mui/icons-material/Download'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import SortIcon from '@mui/icons-material/Sort'
-import SearchIcon from '@mui/icons-material/Search'
+} from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import SortIcon from '@mui/icons-material/Sort';
+import SearchIcon from '@mui/icons-material/Search';
 
 // ==============================
 // Configurações & Tipos
 // ==============================
-type MovimentoTipo = 'entrada' | 'saida'
-type MetodoPagamento = 'dinheiro' | 'cartao' | 'pix' | 'transferencia' | 'outro'
-type StatusMov = 'confirmado' | 'pendente' | 'estornado'
+type MovimentoTipo = 'entrada' | 'saida';
+type MetodoPagamento = 'dinheiro' | 'cartao' | 'pix' | 'transferencia' | 'outro';
+type StatusMov = 'confirmado' | 'pendente' | 'estornado';
 
 type Movimento = {
-  id: string
-  data: string // ISO yyyy-mm-dd
-  hora?: string // HH:mm (opcional)
-  descricao: string
-  tipo: MovimentoTipo
-  metodo: MetodoPagamento
-  valor: number // positivo
-  operador: string
-  status: StatusMov
-  referencia?: string // ex: #PED-123, ou null
-}
+  id: string;
+  data: string; // ISO yyyy-mm-dd
+  hora?: string; // HH:mm (opcional)
+  descricao: string;
+  tipo: MovimentoTipo;
+  metodo: MetodoPagamento;
+  valor: number; // positivo
+  operador: string;
+  status: StatusMov;
+  referencia?: string; // ex: #PED-123, ou null
+};
 
-type Ordem = 'asc' | 'desc'
+type Ordem = 'asc' | 'desc';
 
 const BRL = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
-})
+});
 const DATE_BR = (iso: string) => {
   try {
-    const [y, m, d] = iso.split('-').map(Number)
-    return new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString('pt-BR')
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString('pt-BR');
   } catch {
-    return iso
+    return iso;
   }
-}
+};
 
 // ==============================
 // Mock (funciona out-of-the-box)
@@ -127,10 +127,10 @@ const MOCK_DATA: Movimento[] = [
     operador: 'Admin',
     status: 'estornado',
   },
-]
+];
 
 // Alterar para false quando integrar backend real
-const USE_MOCK = true
+const USE_MOCK = true;
 
 // ==============================
 // Utilidades
@@ -147,15 +147,15 @@ function toCSV(rows: Movimento[]): string {
     'operador',
     'status',
     'referencia',
-  ]
+  ];
   const escape = (v: unknown) => {
-    if (v == null) return ''
-    const s = String(v)
+    if (v == null) return '';
+    const s = String(v);
     if (s.includes(';') || s.includes('"') || s.includes('\n')) {
-      return `"${s.replace(/"/g, '""')}"`
+      return `"${s.replace(/"/g, '""')}"`;
     }
-    return s
-  }
+    return s;
+  };
   const lines = [
     header.join(';'),
     ...rows.map((r) =>
@@ -172,41 +172,37 @@ function toCSV(rows: Movimento[]): string {
         r.referencia ?? '',
       ]
         .map(escape)
-        .join(';')
+        .join(';'),
     ),
-  ]
-  return lines.join('\n')
+  ];
+  return lines.join('\n');
 }
 
-function download(
-  filename: string,
-  content: string,
-  mime = 'text/csv;charset=utf-8;'
-) {
-  const blob = new Blob([content], { type: mime })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url)
+function download(filename: string, content: string, mime = 'text/csv;charset=utf-8;') {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 function statusChip(status: StatusMov) {
   const map: Record<
     StatusMov,
     {
-      label: string
-      color: 'success' | 'warning' | 'default' | 'error' | 'info'
+      label: string;
+      color: 'success' | 'warning' | 'default' | 'error' | 'info';
     }
   > = {
     confirmado: { label: 'Confirmado', color: 'success' },
     pendente: { label: 'Pendente', color: 'warning' },
     estornado: { label: 'Estornado', color: 'default' },
-  }
-  const cfg = map[status]
+  };
+  const cfg = map[status];
   return (
     <Chip
       size="small"
@@ -214,7 +210,7 @@ function statusChip(status: StatusMov) {
       label={cfg.label}
       variant={status === 'estornado' ? 'outlined' : 'filled'}
     />
-  )
+  );
 }
 
 function tipoChip(tipo: MovimentoTipo) {
@@ -225,7 +221,7 @@ function tipoChip(tipo: MovimentoTipo) {
       color={tipo === 'entrada' ? 'success' : 'error'}
       variant="outlined"
     />
-  )
+  );
 }
 
 function metodoLabel(m: MetodoPagamento) {
@@ -235,8 +231,8 @@ function metodoLabel(m: MetodoPagamento) {
     pix: 'PIX',
     transferencia: 'Transferência',
     outro: 'Outro',
-  }
-  return map[m]
+  };
+  return map[m];
 }
 
 // ==============================
@@ -245,15 +241,15 @@ function metodoLabel(m: MetodoPagamento) {
 async function fetchMovimentos(): Promise<Movimento[]> {
   if (USE_MOCK) {
     // Simula latência
-    await new Promise((r) => setTimeout(r, 300))
-    return MOCK_DATA
+    await new Promise((r) => setTimeout(r, 300));
+    return MOCK_DATA;
   }
   // Exemplo de integração real:
   // const res = await fetch("/api/caixa/movimentacoes", { cache: "no-store" });
   // if (!res.ok) throw new Error("Falha ao carregar movimentos");
   // const data = await res.json();
   // return data as Movimento[];
-  return []
+  return [];
 }
 
 // ==============================
@@ -262,11 +258,11 @@ async function fetchMovimentos(): Promise<Movimento[]> {
 function SummaryCards({ data }: { data: Movimento[] }) {
   const entradas = data
     .filter((m) => m.tipo === 'entrada' && m.status !== 'estornado')
-    .reduce((a, b) => a + b.valor, 0)
+    .reduce((a, b) => a + b.valor, 0);
   const saidas = data
     .filter((m) => m.tipo === 'saida' && m.status !== 'estornado')
-    .reduce((a, b) => a + b.valor, 0)
-  const saldo = entradas - saidas
+    .reduce((a, b) => a + b.valor, 0);
+  const saldo = entradas - saidas;
 
   const CardStat = ({ title, value }: { title: string; value: string }) => (
     <Card variant="outlined" sx={{ borderRadius: 3 }}>
@@ -279,7 +275,7 @@ function SummaryCards({ data }: { data: Movimento[] }) {
         </Typography>
       </CardContent>
     </Card>
-  )
+  );
 
   return (
     <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -293,16 +289,16 @@ function SummaryCards({ data }: { data: Movimento[] }) {
         <CardStat title="Saldo" value={BRL.format(saldo)} />
       </Grid>
     </Grid>
-  )
+  );
 }
 
 type Filtro = {
-  de: string
-  ate: string
-  tipo: '' | MovimentoTipo
-  metodo: '' | MetodoPagamento
-  q: string
-}
+  de: string;
+  ate: string;
+  tipo: '' | MovimentoTipo;
+  metodo: '' | MetodoPagamento;
+  q: string;
+};
 
 function FilterBar({
   filtro,
@@ -311,15 +307,14 @@ function FilterBar({
   onRefresh,
   disableActions,
 }: {
-  filtro: Filtro
-  setFiltro: (u: Partial<Filtro>) => void
-  onExport: () => void
-  onRefresh: () => void
-  disableActions?: boolean
+  filtro: Filtro;
+  setFiltro: (u: Partial<Filtro>) => void;
+  onExport: () => void;
+  onRefresh: () => void;
+  disableActions?: boolean;
 }) {
-  const handle =
-    (key: keyof Filtro) => (e: React.ChangeEvent<HTMLInputElement>) =>
-      setFiltro({ [key]: e.target.value })
+  const handle = (key: keyof Filtro) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFiltro({ [key]: e.target.value });
 
   return (
     <Card variant="outlined" sx={{ borderRadius: 3, mb: 2 }}>
@@ -393,11 +388,7 @@ function FilterBar({
             </Tooltip>
             <Tooltip title="Recarregar">
               <span>
-                <IconButton
-                  color="primary"
-                  onClick={onRefresh}
-                  disabled={disableActions}
-                >
+                <IconButton color="primary" onClick={onRefresh} disabled={disableActions}>
                   <RefreshIcon />
                 </IconButton>
               </span>
@@ -406,17 +397,10 @@ function FilterBar({
         </Stack>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-type ColKey =
-  | 'data'
-  | 'descricao'
-  | 'tipo'
-  | 'metodo'
-  | 'valor'
-  | 'operador'
-  | 'status'
+type ColKey = 'data' | 'descricao' | 'tipo' | 'metodo' | 'valor' | 'operador' | 'status';
 
 function MovimentacoesTable({
   rows,
@@ -428,47 +412,43 @@ function MovimentacoesTable({
   onChangePage,
   onChangeRpp,
 }: {
-  rows: Movimento[]
-  onSort: (key: ColKey) => void
-  orderBy: ColKey
-  order: Ordem
-  page: number
-  rowsPerPage: number
-  onChangePage: (p: number) => void
-  onChangeRpp: (r: number) => void
+  rows: Movimento[];
+  onSort: (key: ColKey) => void;
+  orderBy: ColKey;
+  order: Ordem;
+  page: number;
+  rowsPerPage: number;
+  onChangePage: (p: number) => void;
+  onChangeRpp: (r: number) => void;
 }) {
-  const start = page * rowsPerPage
-  const paginated = rows.slice(start, start + rowsPerPage)
+  const start = page * rowsPerPage;
+  const paginated = rows.slice(start, start + rowsPerPage);
 
   const totalRow = React.useMemo(() => {
     const entradas = rows
       .filter((m) => m.tipo === 'entrada' && m.status !== 'estornado')
-      .reduce((a, b) => a + b.valor, 0)
+      .reduce((a, b) => a + b.valor, 0);
     const saidas = rows
       .filter((m) => m.tipo === 'saida' && m.status !== 'estornado')
-      .reduce((a, b) => a + b.valor, 0)
-    return { entradas, saidas, saldo: entradas - saidas }
-  }, [rows])
+      .reduce((a, b) => a + b.valor, 0);
+    return { entradas, saidas, saldo: entradas - saidas };
+  }, [rows]);
 
   const HeadCell = ({
     id,
     label,
     align,
   }: {
-    id: ColKey
-    label: string
-    align?: 'left' | 'right' | 'center' | 'inherit' | 'justify'
+    id: ColKey;
+    label: string;
+    align?: 'left' | 'right' | 'center' | 'inherit' | 'justify';
   }) => (
     <TableCell align={align}>
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
           {label}
         </Typography>
-        <IconButton
-          size="small"
-          onClick={() => onSort(id)}
-          aria-label={`ordenar por ${label}`}
-        >
+        <IconButton size="small" onClick={() => onSort(id)} aria-label={`ordenar por ${label}`}>
           <SortIcon fontSize="inherit" />
         </IconButton>
       </Stack>
@@ -478,7 +458,7 @@ function MovimentacoesTable({
         </Typography>
       )}
     </TableCell>
-  )
+  );
 
   return (
     <Card variant="outlined" sx={{ borderRadius: 3 }}>
@@ -522,16 +502,10 @@ function MovimentacoesTable({
                 </TableCell>
                 <TableCell>{tipoChip(m.tipo)}</TableCell>
                 <TableCell>
-                  <Chip
-                    size="small"
-                    variant="outlined"
-                    label={metodoLabel(m.metodo)}
-                  />
+                  <Chip size="small" variant="outlined" label={metodoLabel(m.metodo)} />
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 600 }}>
-                  {m.tipo === 'saida'
-                    ? `- ${BRL.format(m.valor)}`
-                    : BRL.format(m.valor)}
+                  {m.tipo === 'saida' ? `- ${BRL.format(m.valor)}` : BRL.format(m.valor)}
                 </TableCell>
                 <TableCell>{m.operador}</TableCell>
                 <TableCell>{statusChip(m.status)}</TableCell>
@@ -571,33 +545,33 @@ function MovimentacoesTable({
         rowsPerPageOptions={[10, 25, 50]}
       />
     </Card>
-  )
+  );
 }
 
 // ==============================
 // Componente Principal
 // ==============================
 export function HistoricoCaixaClient() {
-  const [loading, setLoading] = React.useState(true)
-  const [raw, setRaw] = React.useState<Movimento[]>([])
-  const [error, setError] = React.useState<string | null>(null)
+  const [loading, setLoading] = React.useState(true);
+  const [raw, setRaw] = React.useState<Movimento[]>([]);
+  const [error, setError] = React.useState<string | null>(null);
 
   const todayISO = React.useMemo(() => {
-    const d = new Date()
-    const y = d.getFullYear()
-    const m = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    return `${y}-${m}-${day}`
-  }, [])
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }, []);
 
   const sevenDaysAgo = React.useMemo(() => {
-    const d = new Date()
-    d.setDate(d.getDate() - 7)
-    const y = d.getFullYear()
-    const m = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    return `${y}-${m}-${day}`
-  }, [])
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }, []);
 
   const [filtro, setFiltroState] = React.useState<Filtro>({
     de: sevenDaysAgo,
@@ -605,95 +579,89 @@ export function HistoricoCaixaClient() {
     tipo: '',
     metodo: '',
     q: '',
-  })
+  });
 
-  const setFiltro = (u: Partial<Filtro>) =>
-    setFiltroState((prev) => ({ ...prev, ...u }))
+  const setFiltro = (u: Partial<Filtro>) => setFiltroState((prev) => ({ ...prev, ...u }));
 
-  const [orderBy, setOrderBy] = React.useState<ColKey>('data')
-  const [order, setOrder] = React.useState<Ordem>('desc')
-  const [page, setPage] = React.useState(0)
-  const [rpp, setRpp] = React.useState(10)
+  const [orderBy, setOrderBy] = React.useState<ColKey>('data');
+  const [order, setOrder] = React.useState<Ordem>('desc');
+  const [page, setPage] = React.useState(0);
+  const [rpp, setRpp] = React.useState(10);
 
   const load = React.useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const data = await fetchMovimentos()
-      setRaw(data)
+      const data = await fetchMovimentos();
+      setRaw(data);
     } catch (e: any) {
-      setError(e?.message ?? 'Erro ao carregar dados')
+      setError(e?.message ?? 'Erro ao carregar dados');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   React.useEffect(() => {
-    load()
-  }, [load])
+    load();
+  }, [load]);
 
   const filtered = React.useMemo(() => {
-    const de = filtro.de ? new Date(filtro.de) : null
-    const ate = filtro.ate ? new Date(filtro.ate) : null
+    const de = filtro.de ? new Date(filtro.de) : null;
+    const ate = filtro.ate ? new Date(filtro.ate) : null;
 
     return raw
       .filter((m) => {
-        const d = new Date(m.data)
-        if (de && d < de) return false
-        if (ate && d > ate) return false
-        if (filtro.tipo && m.tipo !== filtro.tipo) return false
-        if (filtro.metodo && m.metodo !== filtro.metodo) return false
+        const d = new Date(m.data);
+        if (de && d < de) return false;
+        if (ate && d > ate) return false;
+        if (filtro.tipo && m.tipo !== filtro.tipo) return false;
+        if (filtro.metodo && m.metodo !== filtro.metodo) return false;
         if (filtro.q) {
-          const q = filtro.q.toLowerCase()
+          const q = filtro.q.toLowerCase();
           const hay =
-            `${m.descricao} ${m.operador} ${m.referencia ?? ''} ${m.status}`.toLowerCase()
-          if (!hay.includes(q)) return false
+            `${m.descricao} ${m.operador} ${m.referencia ?? ''} ${m.status}`.toLowerCase();
+          if (!hay.includes(q)) return false;
         }
-        return true
+        return true;
       })
       .sort((a, b) => {
-        const mul = order === 'asc' ? 1 : -1
+        const mul = order === 'asc' ? 1 : -1;
         switch (orderBy) {
           case 'data':
             return (
-              mul *
-              (a.data.localeCompare(b.data) ||
-                (a.hora ?? '').localeCompare(b.hora ?? ''))
-            )
+              mul * (a.data.localeCompare(b.data) || (a.hora ?? '').localeCompare(b.hora ?? ''))
+            );
           case 'descricao':
-            return mul * a.descricao.localeCompare(b.descricao)
+            return mul * a.descricao.localeCompare(b.descricao);
           case 'tipo':
-            return mul * a.tipo.localeCompare(b.tipo)
+            return mul * a.tipo.localeCompare(b.tipo);
           case 'metodo':
-            return mul * a.metodo.localeCompare(b.metodo)
+            return mul * a.metodo.localeCompare(b.metodo);
           case 'valor':
-            return mul * (a.valor - b.valor)
+            return mul * (a.valor - b.valor);
           case 'operador':
-            return mul * a.operador.localeCompare(b.operador)
+            return mul * a.operador.localeCompare(b.operador);
           case 'status':
-            return mul * a.status.localeCompare(b.status)
+            return mul * a.status.localeCompare(b.status);
           default:
-            return 0
+            return 0;
         }
-      })
-  }, [raw, filtro, order, orderBy])
+      });
+  }, [raw, filtro, order, orderBy]);
 
   const handleSort = (key: ColKey) => {
     if (orderBy === key) {
-      setOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+      setOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     } else {
-      setOrderBy(key)
-      setOrder('asc')
+      setOrderBy(key);
+      setOrder('asc');
     }
-    setPage(0)
-  }
+    setPage(0);
+  };
 
   const handleExport = () => {
-    download(
-      `historico-caixa_${filtro.de}_a_${filtro.ate}.csv`,
-      toCSV(filtered)
-    )
-  }
+    download(`historico-caixa_${filtro.de}_a_${filtro.ate}.csv`, toCSV(filtered));
+  };
 
   return (
     <Box sx={{ py: 3 }}>
@@ -717,10 +685,7 @@ export function HistoricoCaixaClient() {
       />
 
       {loading ? (
-        <Paper
-          variant="outlined"
-          sx={{ p: 6, borderRadius: 3, textAlign: 'center' }}
-        >
+        <Paper variant="outlined" sx={{ p: 6, borderRadius: 3, textAlign: 'center' }}>
           <CircularProgress />
           <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
             Carregando movimentações...
@@ -748,11 +713,11 @@ export function HistoricoCaixaClient() {
           rowsPerPage={rpp}
           onChangePage={setPage}
           onChangeRpp={(n) => {
-            setRpp(n)
-            setPage(0)
+            setRpp(n);
+            setPage(0);
           }}
         />
       )}
     </Box>
-  )
+  );
 }

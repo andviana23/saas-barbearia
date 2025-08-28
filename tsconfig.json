@@ -28,6 +28,13 @@
       "@/app/*": ["./src/app/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/types/test-globals.d.ts"
+  ],
+  "exclude": ["node_modules", "e2e", "playwright-report", "test-results"],
+  "ts-node": { "files": true }
 }

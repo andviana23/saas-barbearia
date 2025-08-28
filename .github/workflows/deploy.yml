@@ -1,0 +1,139 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type checking
+        run: npm run type-check
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run smoke tests
+        run: |
+          npm run e2e -- --grep "Smoke Tests" --project=chromium
+        env:
+          CI: true
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: Wait for deployment
+        run: sleep 60
+
+      - name: Run production health check
+        run: |
+          curl -f ${{ secrets.PRODUCTION_URL }}/api/health || exit 1
+
+  post-deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run production E2E tests
+        run: |
+          npm run e2e -- --grep "Smoke Tests|Performance" --project=chromium
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PRODUCTION_URL }}
+          TEST_USER_EMAIL: ${{ secrets.PROD_TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.PROD_TEST_USER_PASSWORD }}
+
+      - name: Notify deployment status
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const deployUrl = '${{ secrets.PRODUCTION_URL }}';
+
+            const title = status === 'success' ? '✅ Deployment Successful' : '❌ Deployment Failed';
+            const color = status === 'success' ? 'good' : 'danger';
+
+            // Aqui você pode integrar com Slack, Discord, etc.
+            console.log(`${title}: ${deployUrl}`);
+
+  rollback:
+    needs: [deploy, post-deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Rollback deployment
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--rollback'
+
+      - name: Notify rollback
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('🔄 Deployment rolled back due to failures');
+
+            // Criar issue para investigar falha
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Deployment Failed - ${context.sha.substring(0, 7)}`,
+              body: `Deployment failed and was rolled back.
+              
+              **Commit:** ${context.sha}
+              **Workflow:** ${context.workflow}
+              **Run:** ${context.runNumber}
+              
+              Please investigate the failure and fix before next deployment.`,
+              labels: ['bug', 'deployment', 'critical']
+            });

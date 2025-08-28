@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addToQueue,
   updateQueueItem,
@@ -12,13 +12,13 @@ import {
   getQueueStatus,
   calculateWaitTime,
   getQueueStats,
-} from '@/actions/fila'
-import type { FilaFilterData, FilaStatsData } from '@/schemas'
+} from '@/actions/fila';
+import type { FilaFilterData, FilaStatsData } from '@/schemas';
 
 // Query keys para o sistema de fila
-export const FILA_QUERY_KEY = 'fila'
-export const FILA_STATUS_QUERY_KEY = 'fila-status'
-export const FILA_STATS_QUERY_KEY = 'fila-stats'
+export const FILA_QUERY_KEY = 'fila';
+export const FILA_STATUS_QUERY_KEY = 'fila-status';
+export const FILA_STATS_QUERY_KEY = 'fila-stats';
 
 // =====================================================
 // REACT QUERY HOOKS PARA SISTEMA DE FILA (EP8)
@@ -33,7 +33,7 @@ export function useFila(filters: FilaFilterData) {
     queryFn: () => listQueueItems(filters),
     staleTime: 1000 * 30, // 30 segundos
     gcTime: 1000 * 60 * 5, // 5 minutos
-  })
+  });
 }
 
 /**
@@ -47,7 +47,7 @@ export function useFilaStatus(unidadeId: string) {
     gcTime: 1000 * 60 * 2, // 2 minutos
     refetchInterval: 1000 * 30, // Atualizar a cada 30 segundos
     enabled: !!unidadeId,
-  })
+  });
 }
 
 /**
@@ -59,151 +59,151 @@ export function useFilaStats(filters: FilaStatsData) {
     queryFn: () => getQueueStats(filters),
     staleTime: 1000 * 60 * 5, // 5 minutos
     gcTime: 1000 * 60 * 10, // 10 minutos
-  })
+  });
 }
 
 /**
  * Hook para adicionar cliente à fila
  */
 export function useAddToQueue() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await addToQueue(formData)
+      return await addToQueue(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao adicionar à fila:', error)
+      console.error('Erro ao adicionar à fila:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para atualizar item da fila
  */
 export function useUpdateQueueItem() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await updateQueueItem(formData)
+      return await updateQueueItem(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao atualizar item da fila:', error)
+      console.error('Erro ao atualizar item da fila:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para chamar próximo cliente da fila
  */
 export function useCallNextFromQueue() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await callNextFromQueue(formData)
+      return await callNextFromQueue(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao chamar próximo cliente:', error)
+      console.error('Erro ao chamar próximo cliente:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para iniciar atendimento
  */
 export function useStartService() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await startService(formData)
+      return await startService(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao iniciar atendimento:', error)
+      console.error('Erro ao iniciar atendimento:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para finalizar atendimento
  */
 export function useFinishService() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await finishService(formData)
+      return await finishService(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao finalizar atendimento:', error)
+      console.error('Erro ao finalizar atendimento:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para remover cliente da fila
  */
 export function useRemoveFromQueue() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await removeFromQueue(formData)
+      return await removeFromQueue(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache da fila
-        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [FILA_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATUS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FILA_STATS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao remover da fila:', error)
+      console.error('Erro ao remover da fila:', error);
     },
-  })
+  });
 }
 
 /**
@@ -212,12 +212,12 @@ export function useRemoveFromQueue() {
 export function useCalculateWaitTime() {
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await calculateWaitTime(formData)
+      return await calculateWaitTime(formData);
     },
     onError: (error) => {
-      console.error('Erro ao calcular tempo de espera:', error)
+      console.error('Erro ao calcular tempo de espera:', error);
     },
-  })
+  });
 }
 
 // =====================================================
@@ -242,7 +242,7 @@ export function useFilaAtiva(unidadeId: string) {
     gcTime: 1000 * 60 * 3, // 3 minutos
     refetchInterval: 1000 * 45, // Atualizar a cada 45 segundos
     enabled: !!unidadeId,
-  })
+  });
 }
 
 /**
@@ -252,17 +252,17 @@ export function useProximoCliente(unidadeId: string) {
   return useQuery({
     queryKey: [FILA_QUERY_KEY, 'proximo', unidadeId],
     queryFn: async () => {
-      const result = await getQueueStatus(unidadeId)
+      const result = await getQueueStatus(unidadeId);
       if (result.success && result.data) {
-        return (result.data as any).proximo || null
+        return (result.data as any).proximo || null;
       }
-      return null
+      return null;
     },
     staleTime: 1000 * 10, // 10 segundos
     gcTime: 1000 * 60 * 1, // 1 minuto
     refetchInterval: 1000 * 20, // Atualizar a cada 20 segundos
     enabled: !!unidadeId,
-  })
+  });
 }
 
 /**
@@ -280,7 +280,7 @@ export function useFilaStatsRealTime(unidadeId: string) {
     gcTime: 1000 * 60 * 5, // 5 minutos
     refetchInterval: 1000 * 60, // Atualizar a cada 1 minuto
     enabled: !!unidadeId,
-  })
+  });
 }
 
 /**
@@ -288,7 +288,7 @@ export function useFilaStatsRealTime(unidadeId: string) {
  */
 export function useFilaPorPrioridade(
   unidadeId: string,
-  prioridade: 'normal' | 'prioritaria' | 'urgente'
+  prioridade: 'normal' | 'prioritaria' | 'urgente',
 ) {
   return useQuery({
     queryKey: [FILA_QUERY_KEY, 'prioridade', unidadeId, prioridade],
@@ -304,7 +304,7 @@ export function useFilaPorPrioridade(
     staleTime: 1000 * 25, // 25 segundos
     gcTime: 1000 * 60 * 4, // 4 minutos
     enabled: !!unidadeId && !!prioridade,
-  })
+  });
 }
 
 /**
@@ -324,5 +324,5 @@ export function useBuscaFila(unidadeId: string, termo: string) {
     staleTime: 1000 * 60, // 1 minuto
     gcTime: 1000 * 60 * 5, // 5 minutos
     enabled: !!unidadeId && termo.length >= 2,
-  })
+  });
 }

@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Box, Typography, Button, Container } from '@mui/material'
-import { ErrorOutline } from '@mui/icons-material'
-import { logger } from '@/lib/logging/logger'
+import React from 'react';
+import { Box, Typography, Button, Container } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
+import { logger } from '@/lib/logging/logger';
 
 interface ErrorBoundaryState {
-  hasError: boolean
-  error?: Error
+  hasError: boolean;
+  error?: Error;
 }
 
 export class ErrorBoundary extends React.Component<
@@ -15,12 +15,12 @@ export class ErrorBoundary extends React.Component<
   ErrorBoundaryState
 > {
   constructor(props: { children: React.ReactNode }) {
-    super(props)
-    this.state = { hasError: false }
+    super(props);
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error }
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -32,11 +32,11 @@ export class ErrorBoundary extends React.Component<
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
       url: window.location.href,
-    })
+    });
 
     // Fallback para console em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo)
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
   }
 
@@ -60,8 +60,8 @@ export class ErrorBoundary extends React.Component<
             </Typography>
 
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              Ocorreu um erro inesperado. Nossa equipe foi notificada e estamos
-              trabalhando para resolver o problema.
+              Ocorreu um erro inesperado. Nossa equipe foi notificada e estamos trabalhando para
+              resolver o problema.
             </Typography>
 
             <Box
@@ -75,8 +75,8 @@ export class ErrorBoundary extends React.Component<
               <Button
                 variant="contained"
                 onClick={() => {
-                  this.setState({ hasError: false })
-                  window.location.reload()
+                  this.setState({ hasError: false });
+                  window.location.reload();
                 }}
               >
                 Tentar novamente
@@ -85,8 +85,8 @@ export class ErrorBoundary extends React.Component<
               <Button
                 variant="outlined"
                 onClick={() => {
-                  this.setState({ hasError: false })
-                  window.location.href = '/dashboard'
+                  this.setState({ hasError: false });
+                  window.location.href = '/dashboard';
                 }}
               >
                 Ir para Dashboard
@@ -104,11 +104,7 @@ export class ErrorBoundary extends React.Component<
                   overflow: 'auto',
                 }}
               >
-                <Typography
-                  variant="caption"
-                  component="pre"
-                  sx={{ whiteSpace: 'pre-wrap' }}
-                >
+                <Typography variant="caption" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
                   {this.state.error.message}
                   {'\n\n'}
                   {this.state.error.stack}
@@ -117,9 +113,9 @@ export class ErrorBoundary extends React.Component<
             )}
           </Box>
         </Container>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }

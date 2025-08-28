@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Container,
@@ -22,95 +22,95 @@ import {
   Tooltip,
   Divider,
   Alert,
-} from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EventIcon from '@mui/icons-material/Event'
-import PersonIcon from '@mui/icons-material/Person'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import { useState } from 'react'
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EventIcon from '@mui/icons-material/Event';
+import PersonIcon from '@mui/icons-material/Person';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useState } from 'react';
 
 // Types
 export type Appointment = {
-  id: string
-  customer_name: string
-  professional_id: string
-  professional_name?: string
-  service_id: string
-  service_name?: string
-  date: string
-  start_time: string
-  end_time: string
-  status: 'scheduled' | 'confirmed' | 'completed' | 'canceled' | 'no_show'
-  notes?: string | null
-  price?: number
-}
+  id: string;
+  customer_name: string;
+  professional_id: string;
+  professional_name?: string;
+  service_id: string;
+  service_name?: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: 'scheduled' | 'confirmed' | 'completed' | 'canceled' | 'no_show';
+  notes?: string | null;
+  price?: number;
+};
 
 export type Professional = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type Service = {
-  id: string
-  name: string
-  duration_minutes?: number
-}
+  id: string;
+  name: string;
+  duration_minutes?: number;
+};
 
 export type AppointmentsResponse = {
-  items: Appointment[]
-  total: number
-}
+  items: Appointment[];
+  total: number;
+};
 
 interface AgendaContentProps {
-  initialData: AppointmentsResponse
-  professionals: Professional[]
-  services: Service[]
-  searchParams: Record<string, string>
+  initialData: AppointmentsResponse;
+  professionals: Professional[];
+  services: Service[];
+  searchParams: Record<string, string>;
 }
 
 function formatTime(time: string) {
-  return time.substring(0, 5) // "14:30:00" -> "14:30"
+  return time.substring(0, 5); // "14:30:00" -> "14:30"
 }
 
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('pt-BR')
+  return new Date(date).toLocaleDateString('pt-BR');
 }
 
 function statusLabel(status: Appointment['status']) {
   switch (status) {
     case 'scheduled':
-      return 'Agendado'
+      return 'Agendado';
     case 'confirmed':
-      return 'Confirmado'
+      return 'Confirmado';
     case 'completed':
-      return 'Concluído'
+      return 'Concluído';
     case 'canceled':
-      return 'Cancelado'
+      return 'Cancelado';
     case 'no_show':
-      return 'No-show'
+      return 'No-show';
     default:
-      return status
+      return status;
   }
 }
 
 function statusColor(status: Appointment['status']) {
   switch (status) {
     case 'scheduled':
-      return 'default' as const
+      return 'default' as const;
     case 'confirmed':
-      return 'success' as const
+      return 'success' as const;
     case 'completed':
-      return 'primary' as const
+      return 'primary' as const;
     case 'canceled':
-      return 'warning' as const
+      return 'warning' as const;
     case 'no_show':
-      return 'error' as const
+      return 'error' as const;
     default:
-      return 'default' as const
+      return 'default' as const;
   }
 }
 
@@ -118,7 +118,7 @@ function formatCurrency(amount: number) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(amount)
+  }).format(amount);
 }
 
 export function AgendaContent({
@@ -127,63 +127,56 @@ export function AgendaContent({
   services,
   searchParams,
 }: AgendaContentProps) {
-  const [appointments, setAppointments] = useState(initialData)
+  const [appointments, setAppointments] = useState(initialData);
   const [view, setView] = useState<'day' | 'week' | 'month'>(
-    (searchParams.view as 'day' | 'week' | 'month') || 'week'
-  )
+    (searchParams.view as 'day' | 'week' | 'month') || 'week',
+  );
   const [currentDate, setCurrentDate] = useState(
-    searchParams.start || new Date().toISOString().split('T')[0]
-  )
+    searchParams.start || new Date().toISOString().split('T')[0],
+  );
 
   const handlePrevious = () => {
-    const date = new Date(currentDate)
+    const date = new Date(currentDate);
     if (view === 'day') {
-      date.setDate(date.getDate() - 1)
+      date.setDate(date.getDate() - 1);
     } else if (view === 'week') {
-      date.setDate(date.getDate() - 7)
+      date.setDate(date.getDate() - 7);
     } else {
-      date.setMonth(date.getMonth() - 1)
+      date.setMonth(date.getMonth() - 1);
     }
-    setCurrentDate(date.toISOString().split('T')[0])
-  }
+    setCurrentDate(date.toISOString().split('T')[0]);
+  };
 
   const handleNext = () => {
-    const date = new Date(currentDate)
+    const date = new Date(currentDate);
     if (view === 'day') {
-      date.setDate(date.getDate() + 1)
+      date.setDate(date.getDate() + 1);
     } else if (view === 'week') {
-      date.setDate(date.getDate() + 7)
+      date.setDate(date.getDate() + 7);
     } else {
-      date.setMonth(date.getMonth() + 1)
+      date.setMonth(date.getMonth() + 1);
     }
-    setCurrentDate(date.toISOString().split('T')[0])
-  }
+    setCurrentDate(date.toISOString().split('T')[0]);
+  };
 
   const handleToday = () => {
-    setCurrentDate(new Date().toISOString().split('T')[0])
-  }
+    setCurrentDate(new Date().toISOString().split('T')[0]);
+  };
 
   // Estatísticas do dia/período
   const stats = {
     total: appointments.items.length,
-    confirmed: appointments.items.filter((a) => a.status === 'confirmed')
-      .length,
-    completed: appointments.items.filter((a) => a.status === 'completed')
-      .length,
+    confirmed: appointments.items.filter((a) => a.status === 'confirmed').length,
+    completed: appointments.items.filter((a) => a.status === 'completed').length,
     revenue: appointments.items
       .filter((a) => a.status === 'completed')
       .reduce((sum, a) => sum + (a.price || 0), 0),
-  }
+  };
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ py: 3 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 3 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
           <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
             Agenda
           </Typography>
@@ -191,11 +184,7 @@ export function AgendaContent({
             <Button variant="outlined" onClick={handleToday}>
               Hoje
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              href="/agenda/novo"
-            >
+            <Button variant="contained" startIcon={<AddIcon />} href="/agenda/novo">
               Novo Agendamento
             </Button>
           </Stack>
@@ -214,10 +203,7 @@ export function AgendaContent({
                 <NavigateBeforeIcon />
               </IconButton>
 
-              <Typography
-                variant="h6"
-                sx={{ minWidth: 200, textAlign: 'center' }}
-              >
+              <Typography variant="h6" sx={{ minWidth: 200, textAlign: 'center' }}>
                 {view === 'day' && formatDate(currentDate)}
                 {view === 'week' && `Semana de ${formatDate(currentDate)}`}
                 {view === 'month' &&
@@ -237,9 +223,7 @@ export function AgendaContent({
               <InputLabel>Visualização</InputLabel>
               <Select
                 value={view}
-                onChange={(e) =>
-                  setView(e.target.value as 'day' | 'week' | 'month')
-                }
+                onChange={(e) => setView(e.target.value as 'day' | 'week' | 'month')}
                 label="Visualização"
               >
                 <MenuItem value="day">Dia</MenuItem>
@@ -251,10 +235,7 @@ export function AgendaContent({
             {/* Filtros */}
             <FormControl sx={{ minWidth: 200 }}>
               <InputLabel>Profissional</InputLabel>
-              <Select
-                defaultValue={searchParams.professionalId || ''}
-                label="Profissional"
-              >
+              <Select defaultValue={searchParams.professionalId || ''} label="Profissional">
                 <MenuItem value="">
                   <em>Todos</em>
                 </MenuItem>
@@ -285,10 +266,7 @@ export function AgendaContent({
         {/* Estatísticas do período */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Total de Agendamentos
               </Typography>
@@ -298,10 +276,7 @@ export function AgendaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Confirmados
               </Typography>
@@ -311,10 +286,7 @@ export function AgendaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Concluídos
               </Typography>
@@ -324,10 +296,7 @@ export function AgendaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Receita
               </Typography>
@@ -357,16 +326,8 @@ export function AgendaContent({
                       <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
                         <Stack spacing={1}>
                           {/* Header com horário e status */}
-                          <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                          >
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={1}
-                            >
+                          <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Stack direction="row" alignItems="center" spacing={1}>
                               <ScheduleIcon fontSize="small" color="action" />
                               <Typography variant="body2" fontWeight={600}>
                                 {formatTime(appointment.start_time)} -{' '}
@@ -381,11 +342,7 @@ export function AgendaContent({
                           </Stack>
 
                           {/* Cliente */}
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            spacing={1}
-                          >
+                          <Stack direction="row" alignItems="center" spacing={1}>
                             <PersonIcon fontSize="small" color="action" />
                             <Typography variant="body1" fontWeight={600}>
                               {appointment.customer_name}
@@ -404,11 +361,7 @@ export function AgendaContent({
 
                           {/* Preço */}
                           {appointment.price && (
-                            <Typography
-                              variant="body2"
-                              fontWeight={600}
-                              color="success.main"
-                            >
+                            <Typography variant="body2" fontWeight={600} color="success.main">
                               {formatCurrency(appointment.price)}
                             </Typography>
                           )}
@@ -427,16 +380,9 @@ export function AgendaContent({
                           <Divider />
 
                           {/* Ações */}
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            justifyContent="flex-end"
-                          >
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
                             <Tooltip title="Editar">
-                              <IconButton
-                                size="small"
-                                href={`/agenda/${appointment.id}`}
-                              >
+                              <IconButton size="small" href={`/agenda/${appointment.id}`}>
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
@@ -459,12 +405,11 @@ export function AgendaContent({
         {/* Legenda */}
         <Alert severity="info" sx={{ mt: 3 }}>
           <Typography variant="body2">
-            <strong>Dica:</strong> Confirme agendamentos na véspera e use
-            reagendamento quando necessário. Clique em um agendamento para
-            editar ou visualizar detalhes.
+            <strong>Dica:</strong> Confirme agendamentos na véspera e use reagendamento quando
+            necessário. Clique em um agendamento para editar ou visualizar detalhes.
           </Typography>
         </Alert>
       </Box>
     </Container>
-  )
+  );
 }

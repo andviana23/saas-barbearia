@@ -1,61 +1,50 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Chip,
-  Button,
-  Alert,
-} from '@mui/material'
+import { useState } from 'react';
+import { Box, Grid, CardContent, Typography, Chip, Alert } from '@mui/material';
 import {
   Inventory as InventoryIcon,
   Warning as WarningIcon,
   Error as ErrorIcon,
   TrendingUp as TrendingUpIcon,
   AttachMoney as MoneyIcon,
-} from '@mui/icons-material'
-import { Button as DSButton, Card as DSCard, PageHeader } from '@/components/ui'
-import { useProdutos } from '@/hooks/use-produtos'
+} from '@mui/icons-material';
+import { DSButton, Card, PageHeader } from '@/components/ui';
+import { useProdutos } from '@/hooks/use-produtos';
 
 export default function EstoqueContent() {
-  const [selectedFilter, setSelectedFilter] = useState('all')
+  const [selectedFilter, setSelectedFilter] = useState('all');
 
-  const { data: produtos, isLoading, error } = useProdutos()
+  const { data: produtos, isLoading, error } = useProdutos();
 
   if (error) {
     return (
       <Alert severity="error" sx={{ mb: 3 }}>
         Erro ao carregar dados de estoque: {error.message}
       </Alert>
-    )
+    );
   }
 
   if (!produtos?.data) {
-    return null
+    return null;
   }
 
   // Cálculos de métricas
-  const produtosData = produtos.data as any[]
-  const totalProdutos = produtosData.length
-  const produtosAtivos = produtosData.filter((p) => p.ativo).length
-  const produtosSemEstoque = produtosData.filter((p) => p.estoque === 0).length
-  const produtosEstoqueBaixo = produtosData.filter(
-    (p) => p.estoque > 0 && p.estoque <= 5
-  ).length
+  const produtosData = produtos.data as any[];
+  const totalProdutos = produtosData.length;
+  const produtosAtivos = produtosData.filter((p) => p.ativo).length;
+  const produtosSemEstoque = produtosData.filter((p) => p.estoque === 0).length;
+  const produtosEstoqueBaixo = produtosData.filter((p) => p.estoque > 0 && p.estoque <= 5).length;
   const valorTotalEstoque = produtosData
     .filter((p) => p.ativo)
-    .reduce((sum, p) => sum + p.preco * p.estoque, 0)
+    .reduce((sum, p) => sum + p.preco * p.estoque, 0);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value)
-  }
+    }).format(value);
+  };
 
   const getEstoqueStatus = (estoque: number) => {
     if (estoque === 0)
@@ -63,28 +52,27 @@ export default function EstoqueContent() {
         label: 'Sem estoque',
         color: 'error' as const,
         icon: <ErrorIcon />,
-      }
+      };
     if (estoque <= 5)
       return {
         label: 'Estoque baixo',
         color: 'warning' as const,
         icon: <WarningIcon />,
-      }
+      };
     return {
       label: 'Em estoque',
       color: 'success' as const,
       icon: <InventoryIcon />,
-    }
-  }
+    };
+  };
 
   const produtosFiltrados = produtosData.filter((produto) => {
-    if (selectedFilter === 'all') return true
-    if (selectedFilter === 'sem-estoque') return produto.estoque === 0
-    if (selectedFilter === 'estoque-baixo')
-      return produto.estoque > 0 && produto.estoque <= 5
-    if (selectedFilter === 'ativos') return produto.ativo
-    return true
-  })
+    if (selectedFilter === 'all') return true;
+    if (selectedFilter === 'sem-estoque') return produto.estoque === 0;
+    if (selectedFilter === 'estoque-baixo') return produto.estoque > 0 && produto.estoque <= 5;
+    if (selectedFilter === 'ativos') return produto.ativo;
+    return true;
+  });
 
   const alertasEstoque = [
     ...produtosData
@@ -101,46 +89,43 @@ export default function EstoqueContent() {
         produto: p.nome,
         mensagem: `Estoque baixo: ${p.estoque} unidades`,
       })),
-  ]
+  ];
 
   return (
     <Box>
       {/* Header */}
-      <PageHeader
-        title="Controle de Estoque"
-        subtitle={`${totalProdutos} produtos cadastrados`}
-      />
+      <PageHeader title="Controle de Estoque" subtitle={`${totalProdutos} produtos cadastrados`} />
 
       {/* Filtros */}
       <Box display="flex" gap={1} mb={3}>
-        <Button
+        <DSButton
           variant="outlined"
           onClick={() => setSelectedFilter('all')}
           color={selectedFilter === 'all' ? 'primary' : 'inherit'}
         >
           Todos
-        </Button>
-        <Button
+        </DSButton>
+        <DSButton
           variant="outlined"
           onClick={() => setSelectedFilter('sem-estoque')}
           color={selectedFilter === 'sem-estoque' ? 'error' : 'inherit'}
         >
           Sem Estoque
-        </Button>
-        <Button
+        </DSButton>
+        <DSButton
           variant="outlined"
           onClick={() => setSelectedFilter('estoque-baixo')}
           color={selectedFilter === 'estoque-baixo' ? 'warning' : 'inherit'}
         >
           Estoque Baixo
-        </Button>
-        <Button
+        </DSButton>
+        <DSButton
           variant="outlined"
           onClick={() => setSelectedFilter('ativos')}
           color={selectedFilter === 'ativos' ? 'success' : 'inherit'}
         >
           Ativos
-        </Button>
+        </DSButton>
       </Box>
 
       {/* Métricas principais */}
@@ -248,35 +233,25 @@ export default function EstoqueContent() {
       <Card>
         <Box sx={{ p: 2 }}>
           <Typography variant="h6" gutterBottom>
-            Produtos{' '}
-            {selectedFilter !== 'all' && `(${produtosFiltrados.length})`}
+            Produtos {selectedFilter !== 'all' && `(${produtosFiltrados.length})`}
           </Typography>
 
           {produtosFiltrados.length > 0 ? (
             <Grid container spacing={2}>
               {produtosFiltrados.map((produto) => {
-                const status = getEstoqueStatus(produto.estoque)
+                const status = getEstoqueStatus(produto.estoque);
 
                 return (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={produto.id}>
                     <Card variant="outlined" sx={{ p: 2 }}>
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        gap={1}
-                        sx={{ mb: 1 }}
-                      >
+                      <Box display="flex" alignItems="center" gap={1} sx={{ mb: 1 }}>
                         {status.icon}
                         <Typography variant="body1" fontWeight={500}>
                           {produto.nome}
                         </Typography>
                       </Box>
 
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mb: 1 }}
-                      >
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                         {produto.categoria || 'Sem categoria'}
                       </Typography>
 
@@ -289,11 +264,7 @@ export default function EstoqueContent() {
                         <Typography variant="h6" color="primary.main">
                           {formatCurrency(produto.preco)}
                         </Typography>
-                        <Chip
-                          label={`${produto.estoque} un.`}
-                          color={status.color}
-                          size="small"
-                        />
+                        <Chip label={`${produto.estoque} un.`} color={status.color} size="small" />
                       </Box>
 
                       <Chip
@@ -304,7 +275,7 @@ export default function EstoqueContent() {
                       />
                     </Card>
                   </Grid>
-                )
+                );
               })}
             </Grid>
           ) : (
@@ -317,5 +288,5 @@ export default function EstoqueContent() {
         </Box>
       </Card>
     </Box>
-  )
+  );
 }

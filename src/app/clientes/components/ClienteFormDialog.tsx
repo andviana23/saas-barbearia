@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -12,19 +12,19 @@ import {
   CircularProgress,
   IconButton,
   Typography,
-} from '@mui/material'
-import { Close as CloseIcon } from '@mui/icons-material'
-import { DSTextField, FormRow } from '@/components/ui'
-import { useCreateCliente, useUpdateCliente } from '@/hooks/use-clientes'
-import { safeValidate } from '@/lib/validation'
-import { CreateClienteSchema, UpdateClienteSchema } from '@/schemas'
+} from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
+import { DSTextField, FormRow } from '@/components/ui';
+import { useCreateCliente, useUpdateCliente } from '@/hooks/use-clientes';
+import { safeValidate } from '@/lib/validation';
+import { CreateClienteSchema, UpdateClienteSchema } from '@/schemas';
 
 interface ClienteFormDialogProps {
-  open: boolean
-  mode: 'create' | 'edit'
-  cliente?: any
-  onClose: () => void
-  onSuccess: (message: string) => void
+  open: boolean;
+  mode: 'create' | 'edit';
+  cliente?: any;
+  onClose: () => void;
+  onSuccess: (message: string) => void;
 }
 
 export default function ClienteFormDialog({
@@ -41,16 +41,16 @@ export default function ClienteFormDialog({
     data_nascimento: '',
     observacoes: '',
     ativo: true,
-  })
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [generalError, setGeneralError] = useState('')
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState('');
 
-  const createMutation = useCreateCliente()
-  const updateMutation = useUpdateCliente()
+  const createMutation = useCreateCliente();
+  const updateMutation = useUpdateCliente();
 
-  const isLoading = createMutation.isPending || updateMutation.isPending
-  const isEdit = mode === 'edit'
+  const isLoading = createMutation.isPending || updateMutation.isPending;
+  const isEdit = mode === 'edit';
 
   // Reset form quando dialog abre/fecha
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function ClienteFormDialog({
           data_nascimento: cliente.data_nascimento || '',
           observacoes: cliente.observacoes || '',
           ativo: cliente.ativo ?? true,
-        })
+        });
       } else {
         setFormData({
           nome: '',
@@ -72,50 +72,49 @@ export default function ClienteFormDialog({
           data_nascimento: '',
           observacoes: '',
           ativo: true,
-        })
+        });
       }
-      setErrors({})
-      setGeneralError('')
+      setErrors({});
+      setGeneralError('');
     }
-  }, [open, isEdit, cliente])
+  }, [open, isEdit, cliente]);
 
-  const handleChange =
-    (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value
-      setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setFormData((prev) => ({ ...prev, [field]: value }));
 
-      // Limpar erro do campo quando usuário digita
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: '' }))
-      }
+    // Limpar erro do campo quando usuário digita
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setGeneralError('')
+    event.preventDefault();
+    setGeneralError('');
 
     try {
       // Validação
-      const schema = isEdit ? UpdateClienteSchema : CreateClienteSchema
+      const schema = isEdit ? UpdateClienteSchema : CreateClienteSchema;
       const validation = safeValidate(
         schema as any,
-        isEdit ? { id: cliente.id, ...formData } : formData
-      )
+        isEdit ? { id: cliente.id, ...formData } : formData,
+      );
 
       if (!validation.success) {
-        const fieldErrors: Record<string, string> = {}
+        const fieldErrors: Record<string, string> = {};
         validation.errors?.forEach((error) => {
-          fieldErrors[error.field] = error.message
-        })
-        setErrors(fieldErrors)
-        return
+          fieldErrors[error.field] = error.message;
+        });
+        setErrors(fieldErrors);
+        return;
       }
 
       // Converter objeto para FormData
-      const formDataObj = new FormData()
+      const formDataObj = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        formDataObj.append(key, value.toString())
-      })
+        formDataObj.append(key, value.toString());
+      });
 
       // Submissão
       const result = isEdit
@@ -123,39 +122,33 @@ export default function ClienteFormDialog({
             id: cliente.id,
             formData: formDataObj,
           })
-        : await createMutation.mutateAsync(formDataObj)
+        : await createMutation.mutateAsync(formDataObj);
 
       if (result.success) {
-        onSuccess(
-          isEdit
-            ? 'Cliente atualizado com sucesso!'
-            : 'Cliente criado com sucesso!'
-        )
+        onSuccess(isEdit ? 'Cliente atualizado com sucesso!' : 'Cliente criado com sucesso!');
       } else {
         if (result.errors) {
-          const fieldErrors: Record<string, string> = {}
+          const fieldErrors: Record<string, string> = {};
           result.errors.forEach((error) => {
-            fieldErrors[error.field] = error.message
-          })
-          setErrors(fieldErrors)
+            fieldErrors[error.field] = error.message;
+          });
+          setErrors(fieldErrors);
         } else {
-          setGeneralError(result.message || 'Erro ao salvar cliente')
+          setGeneralError(result.message || 'Erro ao salvar cliente');
         }
       }
     } catch (error) {
       setGeneralError(
-        error instanceof Error
-          ? error.message
-          : 'Erro desconhecido ao salvar cliente'
-      )
+        error instanceof Error ? error.message : 'Erro desconhecido ao salvar cliente',
+      );
     }
-  }
+  };
 
   const handleClose = () => {
     if (!isLoading) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <Dialog
@@ -169,14 +162,8 @@ export default function ClienteFormDialog({
       }}
     >
       <DialogTitle>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography variant="h6">
-            {isEdit ? 'Editar Cliente' : 'Novo Cliente'}
-          </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">{isEdit ? 'Editar Cliente' : 'Novo Cliente'}</Typography>
           <IconButton onClick={handleClose} disabled={isLoading} size="small">
             <CloseIcon />
           </IconButton>
@@ -270,5 +257,5 @@ export default function ClienteFormDialog({
         </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

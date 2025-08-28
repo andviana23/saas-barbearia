@@ -1,7 +1,7 @@
-'use server'
+'use server';
 
-import { createClient } from '@/lib/supabase'
-import { withValidation } from '@/lib/server-actions'
+import { createServerSupabase } from '@/lib/supabase/server';
+import { withValidation } from '@/lib/server-actions';
 import {
   CreateFilaSchema,
   UpdateFilaSchema,
@@ -10,9 +10,9 @@ import {
   EstimativaEsperaSchema,
   type FilaFilterData,
   type FilaStatsData,
-} from '@/schemas'
-import { revalidatePath } from 'next/cache'
-import type { ActionResult } from '@/types'
+} from '@/schemas';
+import { revalidatePath } from 'next/cache';
+import type { ActionResult } from '@/types';
 
 // =====================================================
 // SERVER ACTIONS PARA SISTEMA DE FILA (EP8)
@@ -23,42 +23,41 @@ import type { ActionResult } from '@/types'
  */
 export async function addToQueue(formData: FormData): Promise<ActionResult> {
   return withValidation(CreateFilaSchema, formData, async (data) => {
-    const supabase = createClient()
+    const supabase = createServerSupabase();
 
     try {
       // 1. Verificar se o cliente já está na fila ativa
       const { data: existingQueue, error: checkError } = await supabase
         .from('fila')
         .select('id, status')
-        .eq('unidade_id', data.unidade_id)
+        .eq('unit_id', data.unidade_id)
         .eq('cliente_id', data.cliente_id)
         .in('status', ['aguardando', 'chamado', 'em_atendimento'])
-        .single()
+        .single();
 
       if (checkError && checkError.code !== 'PGRST116') {
-        throw new Error(`Erro ao verificar fila: ${checkError.message}`)
+        throw new Error(`Erro ao verificar fila: ${checkError.message}`);
       }
 
       if (existingQueue) {
         return {
           success: false,
           error: 'Cliente já está na fila ativa',
-        }
+        };
       }
 
       // 2. Obter próxima posição disponível
       const { data: nextPosition, error: positionError } = await supabase.rpc(
         'get_next_queue_position',
-        { p_unidade_id: data.unidade_id }
-      )
+        { p_unidade_id: data.unidade_id },
+      );
 
       if (positionError) {
-        throw new Error(`Erro ao obter posição: ${positionError.message}`)
+        throw new Error(`Erro ao obter posição: ${positionError.message}`);
       }
 
       // 3. Calcular estimativa de espera baseada na posição
-      const estimativaMin =
-        data.estimativa_min || Math.max(15, nextPosition * 20)
+      const estimativaMin = data.estimativa_min || Math.max(15, nextPosition * 20);
 
       // 4. Inserir na fila
       const { data: newQueueItem, error: insertError } = await supabase
@@ -82,37 +81,35 @@ export async function addToQueue(formData: FormData): Promise<ActionResult> {
           estimativa_min,
           created_at,
           clientes!inner(nome, telefone)
-        `
+        `,
         )
-        .single()
+        .single();
 
       if (insertError) {
-        throw new Error(`Erro ao adicionar à fila: ${insertError.message}`)
+        throw new Error(`Erro ao adicionar à fila: ${insertError.message}`);
       }
 
-      revalidatePath('/fila')
+      revalidatePath('/fila');
       return {
         success: true,
         data: newQueueItem,
         message: 'Cliente adicionado à fila com sucesso',
-      }
+      };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erro desconhecido',
-      }
+      };
     }
-  })
+  });
 }
 
 /**
  * Atualizar item da fila
  */
-export async function updateQueueItem(
-  formData: FormData
-): Promise<ActionResult> {
+export async function updateQueueItem(formData: FormData): Promise<ActionResult> {
   return withValidation(UpdateFilaSchema, formData, async (data) => {
-    const supabase = createClient()
+    const supabase = createServerSupabase();
 
     try {
       const { data: updatedItem, error } = await supabase
@@ -137,37 +134,35 @@ export async function updateQueueItem(
           estimativa_min,
           updated_at,
           clientes!inner(nome, telefone)
-        `
+        `,
         )
-        .single()
+        .single();
 
       if (error) {
-        throw new Error(`Erro ao atualizar fila: ${error.message}`)
+        throw new Error(`Erro ao atualizar fila: ${error.message}`);
       }
 
-      revalidatePath('/fila')
+      revalidatePath('/fila');
       return {
         success: true,
         data: updatedItem,
         message: 'Item da fila atualizado com sucesso',
-      }
+      };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erro desconhecido',
-      }
+      };
     }
-  })
+  });
 }
 
 /**
  * Chamar próximo cliente da fila
  */
-export async function callNextFromQueue(
-  formData: FormData
-): Promise<ActionResult> {
+export async function callNextFromQueue(formData: FormData): Promise<ActionResult> {
   return withValidation(ChamarProximoFilaSchema, formData, async (data) => {
-    const supabase = createClient()
+    const supabase = createServerSupabase();
 
     try {
       // 1. Buscar próximo cliente na fila (maior prioridade, menor posição)
@@ -183,25 +178,23 @@ export async function callNextFromQueue(
           posicao,
           estimativa_min,
           clientes!inner(nome, telefone)
-        `
+        `,
         )
-        .eq('unidade_id', data.unidade_id)
+        .eq('unit_id', data.unidade_id)
         .eq('status', 'aguardando')
         .order('prioridade', { ascending: false })
         .order('posicao', { ascending: true })
         .limit(1)
-        .single()
+        .single();
 
       if (selectError) {
         if (selectError.code === 'PGRST116') {
           return {
             success: false,
             error: 'Não há clientes aguardando na fila',
-          }
+          };
         }
-        throw new Error(
-          `Erro ao buscar próximo cliente: ${selectError.message}`
-        )
+        throw new Error(`Erro ao buscar próximo cliente: ${selectError.message}`);
       }
 
       // 2. Atualizar status para 'chamado'
@@ -223,27 +216,27 @@ export async function callNextFromQueue(
           estimativa_min,
           updated_at,
           clientes!inner(nome, telefone)
-        `
+        `,
         )
-        .single()
+        .single();
 
       if (updateError) {
-        throw new Error(`Erro ao chamar cliente: ${updateError.message}`)
+        throw new Error(`Erro ao chamar cliente: ${updateError.message}`);
       }
 
-      revalidatePath('/fila')
+      revalidatePath('/fila');
       return {
         success: true,
         data: updatedItem,
         message: `Cliente ${(updatedItem.clientes as { nome: string; telefone: string }[])[0]?.nome} chamado para atendimento`,
-      }
+      };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erro desconhecido',
-      }
+      };
     }
-  })
+  });
 }
 
 /**
@@ -252,16 +245,16 @@ export async function callNextFromQueue(
 export async function startService(formData: FormData): Promise<ActionResult> {
   const data = {
     id: formData.get('id') as string,
-  }
+  };
 
   if (!data.id) {
     return {
       success: false,
       error: 'ID da fila é obrigatório',
-    }
+    };
   }
 
-  const supabase = createClient()
+  const supabase = createServerSupabase();
 
   try {
     const { data: updatedItem, error } = await supabase
@@ -283,31 +276,31 @@ export async function startService(formData: FormData): Promise<ActionResult> {
         estimativa_min,
         updated_at,
         clientes!inner(nome, telefone)
-      `
+      `,
       )
-      .single()
+      .single();
 
     if (error) {
       if (error.code === 'PGRST116') {
         return {
           success: false,
           error: 'Cliente não está mais na fila ou não foi chamado',
-        }
+        };
       }
-      throw new Error(`Erro ao iniciar atendimento: ${error.message}`)
+      throw new Error(`Erro ao iniciar atendimento: ${error.message}`);
     }
 
-    revalidatePath('/fila')
+    revalidatePath('/fila');
     return {
       success: true,
       data: updatedItem,
       message: `Atendimento iniciado para ${(updatedItem.clientes as { nome: string; telefone: string }[])[0]?.nome}`,
-    }
+    };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido',
-    }
+    };
   }
 }
 
@@ -317,16 +310,16 @@ export async function startService(formData: FormData): Promise<ActionResult> {
 export async function finishService(formData: FormData): Promise<ActionResult> {
   const data = {
     id: formData.get('id') as string,
-  }
+  };
 
   if (!data.id) {
     return {
       success: false,
       error: 'ID da fila é obrigatório',
-    }
+    };
   }
 
-  const supabase = createClient()
+  const supabase = createServerSupabase();
 
   try {
     const { data: updatedItem, error } = await supabase
@@ -348,42 +341,40 @@ export async function finishService(formData: FormData): Promise<ActionResult> {
         estimativa_min,
         updated_at,
         clientes!inner(nome, telefone)
-      `
+      `,
       )
-      .single()
+      .single();
 
     if (error) {
       if (error.code === 'PGRST116') {
         return {
           success: false,
           error: 'Cliente não está mais em atendimento',
-        }
+        };
       }
-      throw new Error(`Erro ao finalizar atendimento: ${error.message}`)
+      throw new Error(`Erro ao finalizar atendimento: ${error.message}`);
     }
 
-    revalidatePath('/fila')
+    revalidatePath('/fila');
     return {
       success: true,
       data: updatedItem,
       message: `Atendimento finalizado para ${(updatedItem.clientes as { nome: string; telefone: string }[])[0]?.nome}`,
-    }
+    };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido',
-    }
+    };
   }
 }
 
 /**
  * Remover cliente da fila
  */
-export async function removeFromQueue(
-  formData: FormData
-): Promise<ActionResult> {
+export async function removeFromQueue(formData: FormData): Promise<ActionResult> {
   return withValidation(RemoverFilaSchema, formData, async (data) => {
-    const supabase = createClient()
+    const supabase = createServerSupabase();
 
     try {
       // 1. Verificar se o item existe e pode ser removido
@@ -396,50 +387,45 @@ export async function removeFromQueue(
           cliente_id,
           status,
           clientes!inner(nome, telefone)
-        `
+        `,
         )
         .eq('id', data.id)
-        .single()
+        .single();
 
       if (selectError) {
-        throw new Error(`Item da fila não encontrado: ${selectError.message}`)
+        throw new Error(`Item da fila não encontrado: ${selectError.message}`);
       }
 
       // 2. Remover da fila (soft delete ou hard delete dependendo da regra de negócio)
-      const { error: deleteError } = await supabase
-        .from('fila')
-        .delete()
-        .eq('id', data.id)
+      const { error: deleteError } = await supabase.from('fila').delete().eq('id', data.id);
 
       if (deleteError) {
-        throw new Error(`Erro ao remover da fila: ${deleteError.message}`)
+        throw new Error(`Erro ao remover da fila: ${deleteError.message}`);
       }
 
       // 3. Reorganizar posições se necessário (opcional - pode ser feito via trigger)
       // Por enquanto, vamos apenas remover o item
 
-      revalidatePath('/fila')
+      revalidatePath('/fila');
       return {
         success: true,
         data: queueItem,
         message: `Cliente ${queueItem.clientes[0]?.nome || 'Desconhecido'} removido da fila`,
-      }
+      };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erro desconhecido',
-      }
+      };
     }
-  })
+  });
 }
 
 /**
  * Listar itens da fila com filtros
  */
-export async function listQueueItems(
-  filters: FilaFilterData
-): Promise<ActionResult> {
-  const supabase = createClient()
+export async function listQueueItems(filters: FilaFilterData): Promise<ActionResult> {
+  const supabase = createServerSupabase();
 
   try {
     let query = supabase.from('fila').select(`
@@ -453,70 +439,70 @@ export async function listQueueItems(
         created_at,
         updated_at,
         clientes!inner(nome, telefone, email)
-      `)
+      `);
 
     // Aplicar filtros
     if (filters.unidade_id) {
-      query = query.eq('unidade_id', filters.unidade_id)
+      query = query.eq('unit_id', filters.unidade_id);
     }
 
     if (filters.cliente_id) {
-      query = query.eq('cliente_id', filters.cliente_id)
+      query = query.eq('cliente_id', filters.cliente_id);
     }
 
     if (filters.status && filters.status.length > 0) {
-      query = query.in('status', filters.status)
+      query = query.in('status', filters.status);
     }
 
     if (filters.prioridade && filters.prioridade.length > 0) {
-      query = query.in('prioridade', filters.prioridade)
+      query = query.in('prioridade', filters.prioridade);
     }
 
     if (filters.busca) {
       query = query.or(
-        `clientes.nome.ilike.%${filters.busca}%,clientes.telefone.ilike.%${filters.busca}%`
-      )
+        `clientes.nome.ilike.%${filters.busca}%,clientes.telefone.ilike.%${filters.busca}%`,
+      );
     }
 
     // Aplicar ordenação
     switch (filters.ordenacao) {
       case 'posicao_asc':
-        query = query.order('posicao', { ascending: true })
-        break
+        query = query.order('posicao', { ascending: true });
+        break;
       case 'posicao_desc':
-        query = query.order('posicao', { ascending: false })
-        break
+        query = query.order('posicao', { ascending: false });
+        break;
       case 'prioridade_desc':
         query = query
           .order('prioridade', { ascending: false })
-          .order('posicao', { ascending: true })
-        break
+          .order('posicao', { ascending: true });
+        break;
       case 'criado_desc':
-        query = query.order('created_at', { ascending: false })
-        break
+        query = query.order('created_at', { ascending: false });
+        break;
       default:
-        query = query.order('posicao', { ascending: true })
+        query = query.order('posicao', { ascending: true });
     }
 
     // Aplicar paginação
-    const offset = (filters.page - 1) * filters.limit
-    query = query.range(offset, offset + filters.limit - 1)
+    const offset = (filters.page - 1) * filters.limit;
+    query = query.range(offset, offset + filters.limit - 1);
 
-    const { data: items, error } = await query
+    const { data: items, error } = await query;
 
     if (error) {
-      throw new Error(`Erro ao listar fila: ${error.message}`)
+      throw new Error(`Erro ao listar fila: ${error.message}`);
     }
 
     return {
       success: true,
       data: items,
-    }
+    };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido',
-    }
+    };
   }
 }
 
@@ -524,7 +510,7 @@ export async function listQueueItems(
  * Obter status atual da fila
  */
 export async function getQueueStatus(unidadeId: string): Promise<ActionResult> {
-  const supabase = createClient()
+  const supabase = createServerSupabase();
 
   try {
     const { data: status, error } = await supabase
@@ -537,33 +523,26 @@ export async function getQueueStatus(unidadeId: string): Promise<ActionResult> {
         posicao,
         estimativa_min,
         clientes!inner(nome, telefone)
-      `
+      `,
       )
-      .eq('unidade_id', unidadeId)
+      .eq('unit_id', unidadeId)
       .in('status', ['aguardando', 'chamado', 'em_atendimento'])
       .order('prioridade', { ascending: false })
-      .order('posicao', { ascending: true })
+      .order('posicao', { ascending: true });
 
     if (error) {
-      throw new Error(`Erro ao obter status da fila: ${error.message}`)
+      throw new Error(`Erro ao obter status da fila: ${error.message}`);
     }
 
     // Calcular estatísticas
     const stats = {
-      aguardando: status.filter(
-        (item: { status: string }) => item.status === 'aguardando'
-      ).length,
-      chamado: status.filter(
-        (item: { status: string }) => item.status === 'chamado'
-      ).length,
-      em_atendimento: status.filter(
-        (item: { status: string }) => item.status === 'em_atendimento'
-      ).length,
+      aguardando: status.filter((item: { status: string }) => item.status === 'aguardando').length,
+      chamado: status.filter((item: { status: string }) => item.status === 'chamado').length,
+      em_atendimento: status.filter((item: { status: string }) => item.status === 'em_atendimento')
+        .length,
       total_ativo: status.length,
-      proximo: status.find(
-        (item: { status: string }) => item.status === 'aguardando'
-      ),
-    }
+      proximo: status.find((item: { status: string }) => item.status === 'aguardando'),
+    };
 
     return {
       success: true,
@@ -571,56 +550,54 @@ export async function getQueueStatus(unidadeId: string): Promise<ActionResult> {
         items: status,
         stats,
       },
-    }
+    };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido',
-    }
+    };
   }
 }
 
 /**
  * Calcular estimativa de espera para um cliente
  */
-export async function calculateWaitTime(
-  formData: FormData
-): Promise<ActionResult> {
+export async function calculateWaitTime(formData: FormData): Promise<ActionResult> {
   return withValidation(EstimativaEsperaSchema, formData, async (data) => {
-    const supabase = createClient()
+    const supabase = createServerSupabase();
 
     try {
       // 1. Buscar posição atual do cliente na fila
       const { data: queueItem, error: selectError } = await supabase
         .from('fila')
         .select('posicao, prioridade, estimativa_min')
-        .eq('unidade_id', data.unidade_id)
+        .eq('unit_id', data.unidade_id)
         .eq('cliente_id', data.cliente_id)
         .eq('status', 'aguardando')
-        .single()
+        .single();
 
       if (selectError) {
         if (selectError.code === 'PGRST116') {
           return {
             success: false,
             error: 'Cliente não está na fila',
-          }
+          };
         }
-        throw new Error(`Erro ao buscar posição: ${selectError.message}`)
+        throw new Error(`Erro ao buscar posição: ${selectError.message}`);
       }
 
       // 2. Calcular estimativa baseada na posição e prioridade
-      let estimativaMin = queueItem.estimativa_min || 20 // 20 min por cliente como padrão
+      let estimativaMin = queueItem.estimativa_min || 20; // 20 min por cliente como padrão
 
       // Ajustar por prioridade
       if (queueItem.prioridade === 'urgente') {
-        estimativaMin = Math.max(10, estimativaMin * 0.5)
+        estimativaMin = Math.max(10, estimativaMin * 0.5);
       } else if (queueItem.prioridade === 'prioritaria') {
-        estimativaMin = Math.max(15, estimativaMin * 0.7)
+        estimativaMin = Math.max(15, estimativaMin * 0.7);
       }
 
       // 3. Calcular tempo total de espera
-      const tempoEspera = (queueItem.posicao - 1) * estimativaMin
+      const tempoEspera = (queueItem.posicao - 1) * estimativaMin;
 
       return {
         success: true,
@@ -631,23 +608,21 @@ export async function calculateWaitTime(
           tempo_espera_minutos: tempoEspera,
           tempo_espera_horas: Math.ceil(tempoEspera / 60),
         },
-      }
+      };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erro desconhecido',
-      }
+      };
     }
-  })
+  });
 }
 
 /**
  * Obter estatísticas da fila
  */
-export async function getQueueStats(
-  filters: FilaStatsData
-): Promise<ActionResult> {
-  const supabase = createClient()
+export async function getQueueStats(filters: FilaStatsData): Promise<ActionResult> {
+  const supabase = createServerSupabase();
 
   try {
     let query = supabase.from('fila').select(`
@@ -656,80 +631,68 @@ export async function getQueueStats(
         prioridade,
         created_at,
         clientes!inner(nome)
-      `)
+      `);
 
     if (filters.unidade_id) {
-      query = query.eq('unidade_id', filters.unidade_id)
+      query = query.eq('unit_id', filters.unidade_id);
     }
 
     // Aplicar filtro de período
-    const now = new Date()
-    let startDate: Date
+    const now = new Date();
+    let startDate: Date;
 
     switch (filters.periodo) {
       case 'hoje':
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        break
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        break;
       case 'semana':
-        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-        break
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
       case 'mes':
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1)
-        break
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        break;
       default:
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
 
-    query = query.gte('created_at', startDate.toISOString())
+    query = query.gte('created_at', startDate.toISOString());
 
-    const { data: items, error } = await query
+    const { data: items, error } = await query;
 
     if (error) {
-      throw new Error(`Erro ao obter estatísticas: ${error.message}`)
+      throw new Error(`Erro ao obter estatísticas: ${error.message}`);
     }
 
     // Calcular estatísticas
     const stats = {
       total: items.length,
       por_status: {
-        aguardando: items.filter(
-          (item: { status: string }) => item.status === 'aguardando'
-        ).length,
-        chamado: items.filter(
-          (item: { status: string }) => item.status === 'chamado'
-        ).length,
-        em_atendimento: items.filter(
-          (item: { status: string }) => item.status === 'em_atendimento'
-        ).length,
-        concluido: items.filter(
-          (item: { status: string }) => item.status === 'concluido'
-        ).length,
-        desistiu: items.filter(
-          (item: { status: string }) => item.status === 'desistiu'
-        ).length,
+        aguardando: items.filter((item: { status: string }) => item.status === 'aguardando').length,
+        chamado: items.filter((item: { status: string }) => item.status === 'chamado').length,
+        em_atendimento: items.filter((item: { status: string }) => item.status === 'em_atendimento')
+          .length,
+        concluido: items.filter((item: { status: string }) => item.status === 'concluido').length,
+        desistiu: items.filter((item: { status: string }) => item.status === 'desistiu').length,
       },
       por_prioridade: {
-        normal: items.filter(
-          (item: { prioridade: string }) => item.prioridade === 'normal'
-        ).length,
+        normal: items.filter((item: { prioridade: string }) => item.prioridade === 'normal').length,
         prioritaria: items.filter(
-          (item: { prioridade: string }) => item.prioridade === 'prioritaria'
+          (item: { prioridade: string }) => item.prioridade === 'prioritaria',
         ).length,
-        urgente: items.filter(
-          (item: { prioridade: string }) => item.prioridade === 'urgente'
-        ).length,
+        urgente: items.filter((item: { prioridade: string }) => item.prioridade === 'urgente')
+          .length,
       },
       periodo: filters.periodo,
-    }
+    };
 
     return {
       success: true,
       data: stats,
-    }
+    };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido',
-    }
+    };
   }
 }

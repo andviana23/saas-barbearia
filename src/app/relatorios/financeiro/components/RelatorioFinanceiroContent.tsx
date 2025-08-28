@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Typography,
@@ -19,19 +19,19 @@ import {
   Divider,
   Avatar,
   LinearProgress,
-} from '@mui/material'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { ptBR } from 'date-fns/locale'
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import TrendingDownIcon from '@mui/icons-material/TrendingDown'
-import DownloadIcon from '@mui/icons-material/Download'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import CreditCardIcon from '@mui/icons-material/CreditCard'
-import PaidIcon from '@mui/icons-material/Paid'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
-import ReceiptIcon from '@mui/icons-material/Receipt'
+} from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ptBR } from 'date-fns/locale';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import DownloadIcon from '@mui/icons-material/Download';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import PaidIcon from '@mui/icons-material/Paid';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 const MOCK_DATA = {
   resumo: {
@@ -109,54 +109,49 @@ const MOCK_DATA = {
       valor_comissao: 813.64,
     },
   ],
-}
+};
 
 export function RelatorioFinanceiroContent() {
-  const [periodo, setPeriodo] = React.useState('mes_atual')
-  const [dataInicio, setDataInicio] = React.useState<Date | null>(new Date())
-  const [dataFim, setDataFim] = React.useState<Date | null>(new Date())
+  const [periodo, setPeriodo] = React.useState('mes_atual');
+  const [dataInicio, setDataInicio] = React.useState<Date | null>(new Date());
+  const [dataFim, setDataFim] = React.useState<Date | null>(new Date());
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value)
-  }
+    }).format(value);
+  };
 
   const handleExport = () => {
-    console.log('Exportando relatório financeiro...')
-  }
+    console.log('Exportando relatório financeiro...');
+  };
 
   const getVariationColor = (variation: number) => {
-    return variation >= 0 ? 'success.main' : 'error.main'
-  }
+    return variation >= 0 ? 'success.main' : 'error.main';
+  };
 
   const getVariationIcon = (variation: number) => {
     return variation >= 0 ? (
       <TrendingUpIcon fontSize="small" />
     ) : (
       <TrendingDownIcon fontSize="small" />
-    )
-  }
+    );
+  };
 
   // Handlers compatíveis com AdapterDateFns (Date | null)
   const handleChangeDataInicio = (value: Date | null) => {
-    setDataInicio(value)
-  }
+    setDataInicio(value);
+  };
   const handleChangeDataFim = (value: Date | null) => {
-    setDataFim(value)
-  }
+    setDataFim(value);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
       <Box sx={{ py: 3 }}>
         {/* Header */}
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 3 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
           <Box>
             <Typography variant="h4" gutterBottom sx={{ mb: 0.5 }}>
               Relatórios Financeiros
@@ -165,11 +160,7 @@ export function RelatorioFinanceiroContent() {
               Análise detalhada de faturamento, custos e lucratividade
             </Typography>
           </Box>
-          <Button
-            variant="contained"
-            startIcon={<DownloadIcon />}
-            onClick={handleExport}
-          >
+          <Button variant="contained" startIcon={<DownloadIcon />} onClick={handleExport}>
             Exportar Relatório
           </Button>
         </Stack>
@@ -177,12 +168,7 @@ export function RelatorioFinanceiroContent() {
         {/* Filtros */}
         <Card sx={{ borderRadius: 3, mb: 3 }}>
           <CardContent>
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1}
-              sx={{ mb: 2 }}
-            >
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
               <FilterListIcon color="primary" />
               <Typography variant="h6">Filtros</Typography>
             </Stack>
@@ -212,9 +198,7 @@ export function RelatorioFinanceiroContent() {
                     <DatePicker
                       label="Data Início"
                       value={dataInicio}
-                      onChange={(value) =>
-                        handleChangeDataInicio(value as Date | null)
-                      }
+                      onChange={(value) => handleChangeDataInicio(value as Date | null)}
                       slotProps={{ textField: { fullWidth: true } }}
                     />
                   </Grid>
@@ -222,9 +206,7 @@ export function RelatorioFinanceiroContent() {
                     <DatePicker
                       label="Data Fim"
                       value={dataFim}
-                      onChange={(value) =>
-                        handleChangeDataFim(value as Date | null)
-                      }
+                      onChange={(value) => handleChangeDataFim(value as Date | null)}
                       slotProps={{ textField: { fullWidth: true } }}
                     />
                   </Grid>
@@ -240,9 +222,7 @@ export function RelatorioFinanceiroContent() {
             <Card sx={{ borderRadius: 3 }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <Avatar
-                    sx={{ bgcolor: 'primary.main', width: 56, height: 56 }}
-                  >
+                  <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56 }}>
                     <AttachMoneyIcon />
                   </Avatar>
                   <Box sx={{ flex: 1 }}>
@@ -252,21 +232,13 @@ export function RelatorioFinanceiroContent() {
                     <Typography variant="body2" color="text.secondary">
                       Faturamento Total
                     </Typography>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={0.5}
-                      sx={{ mt: 1 }}
-                    >
+                    <Stack direction="row" alignItems="center" spacing={0.5} sx={{ mt: 1 }}>
                       {getVariationIcon(MOCK_DATA.resumo.variacao_mes_anterior)}
                       <Typography
                         variant="caption"
-                        color={getVariationColor(
-                          MOCK_DATA.resumo.variacao_mes_anterior
-                        )}
+                        color={getVariationColor(MOCK_DATA.resumo.variacao_mes_anterior)}
                       >
-                        +{MOCK_DATA.resumo.variacao_mes_anterior}% vs mês
-                        anterior
+                        +{MOCK_DATA.resumo.variacao_mes_anterior}% vs mês anterior
                       </Typography>
                     </Stack>
                   </Box>
@@ -291,8 +263,7 @@ export function RelatorioFinanceiroContent() {
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {(
-                        (MOCK_DATA.resumo.custos_totais /
-                          MOCK_DATA.resumo.faturamento_total) *
+                        (MOCK_DATA.resumo.custos_totais / MOCK_DATA.resumo.faturamento_total) *
                         100
                       ).toFixed(1)}
                       % do faturamento
@@ -307,9 +278,7 @@ export function RelatorioFinanceiroContent() {
             <Card sx={{ borderRadius: 3 }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <Avatar
-                    sx={{ bgcolor: 'success.main', width: 56, height: 56 }}
-                  >
+                  <Avatar sx={{ bgcolor: 'success.main', width: 56, height: 56 }}>
                     <TrendingUpIcon />
                   </Avatar>
                   <Box sx={{ flex: 1 }}>
@@ -385,9 +354,7 @@ export function RelatorioFinanceiroContent() {
                           >
                             {metodo.icone}
                           </Avatar>
-                          <Typography variant="subtitle2">
-                            {metodo.metodo}
-                          </Typography>
+                          <Typography variant="subtitle2">{metodo.metodo}</Typography>
                         </Stack>
                         <Box sx={{ textAlign: 'right' }}>
                           <Typography variant="body1" sx={{ fontWeight: 600 }}>
@@ -427,9 +394,7 @@ export function RelatorioFinanceiroContent() {
                         alignItems="center"
                         sx={{ mb: 1 }}
                       >
-                        <Typography variant="subtitle2">
-                          {custo.categoria}
-                        </Typography>
+                        <Typography variant="subtitle2">{custo.categoria}</Typography>
                         <Box sx={{ textAlign: 'right' }}>
                           <Typography variant="body1" sx={{ fontWeight: 600 }}>
                             {formatCurrency(custo.valor)}
@@ -462,16 +427,10 @@ export function RelatorioFinanceiroContent() {
 
                 <Stack spacing={2}>
                   {MOCK_DATA.comissoes.map((comissao, index) => (
-                    <Paper
-                      key={comissao.profissional}
-                      sx={{ p: 2, borderRadius: 2 }}
-                    >
+                    <Paper key={comissao.profissional} sx={{ p: 2, borderRadius: 2 }}>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={3}>
-                          <Typography
-                            variant="subtitle1"
-                            sx={{ fontWeight: 600 }}
-                          >
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                             {comissao.profissional}
                           </Typography>
                         </Grid>
@@ -488,10 +447,7 @@ export function RelatorioFinanceiroContent() {
                           />
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                          <Typography
-                            variant="h6"
-                            sx={{ fontWeight: 600, textAlign: 'right' }}
-                          >
+                          <Typography variant="h6" sx={{ fontWeight: 600, textAlign: 'right' }}>
                             {formatCurrency(comissao.valor_comissao)}
                           </Typography>
                         </Grid>
@@ -505,5 +461,5 @@ export function RelatorioFinanceiroContent() {
         </Grid>
       </Box>
     </LocalizationProvider>
-  )
+  );
 }

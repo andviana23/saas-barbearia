@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material';
 
 export default function RelatoriosFinanceirosPage() {
   return (
@@ -14,10 +14,10 @@ export default function RelatoriosFinanceirosPage() {
         </Typography>
       </Box>
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Relatórios Financeiros | Trato',
   description: 'Relatórios financeiros e análises',
-}
+};

@@ -15,14 +15,12 @@
  */
 
 // Tipos para filtros
-export type FilterParams = Record<string, string | number | boolean | undefined>
+export type FilterParams = Record<string, string | number | boolean | undefined>;
 
 // Tipo para QueryClient
 export type QueryClientType = {
-  invalidateQueries: (options: {
-    queryKey: readonly unknown[]
-  }) => Promise<void>
-}
+  invalidateQueries: (options: { queryKey: readonly unknown[] }) => Promise<void>;
+};
 
 export const queryKeys = {
   // Clientes
@@ -41,8 +39,7 @@ export const queryKeys = {
   profissionais: {
     all: ['profissionais'] as const,
     lists: () => ['profissionais', 'list'] as const,
-    list: (filters?: FilterParams) =>
-      ['profissionais', 'list', filters] as const,
+    list: (filters?: FilterParams) => ['profissionais', 'list', filters] as const,
     details: () => ['profissionais', 'detail'] as const,
     detail: (id: string) => ['profissionais', 'detail', id] as const,
     horarios: (id: string) => ['profissionais', 'horarios', id] as const,
@@ -58,16 +55,14 @@ export const queryKeys = {
     detail: (id: string) => ['servicos', 'detail', id] as const,
     categorias: () => ['servicos', 'categorias'] as const,
     popular: () => ['servicos', 'popular'] as const,
-    precos: (profissionalId: string) =>
-      ['servicos', 'precos', profissionalId] as const,
+    precos: (profissionalId: string) => ['servicos', 'precos', profissionalId] as const,
   },
 
   // Agendamentos
   agendamentos: {
     all: ['agendamentos'] as const,
     lists: () => ['agendamentos', 'list'] as const,
-    list: (filters?: FilterParams) =>
-      ['agendamentos', 'list', filters] as const,
+    list: (filters?: FilterParams) => ['agendamentos', 'list', filters] as const,
     details: () => ['agendamentos', 'detail'] as const,
     detail: (id: string) => ['agendamentos', 'detail', id] as const,
     disponibilidade: (profissionalId: string, data: string) =>
@@ -88,13 +83,11 @@ export const queryKeys = {
   financeiro: {
     all: ['financeiro'] as const,
     movimentacoes: () => ['financeiro', 'movimentacoes'] as const,
-    movimentacao: (filters?: FilterParams) =>
-      ['financeiro', 'movimentacoes', filters] as const,
+    movimentacao: (filters?: FilterParams) => ['financeiro', 'movimentacoes', filters] as const,
     estatisticas: () => ['financeiro', 'estatisticas'] as const,
     relatorios: (tipo: string, periodo?: string) =>
       ['financeiro', 'relatorios', tipo, periodo] as const,
-    comissoes: (profissionalId?: string) =>
-      ['financeiro', 'comissoes', profissionalId] as const,
+    comissoes: (profissionalId?: string) => ['financeiro', 'comissoes', profissionalId] as const,
   },
 
   // Produtos e Vendas
@@ -127,7 +120,7 @@ export const queryKeys = {
     current: () => ['unidades', 'current'] as const,
     detail: (id: string) => ['unidades', 'detail', id] as const,
   },
-} as const
+} as const;
 
 /**
  * Utilities para invalidação de cache
@@ -135,48 +128,48 @@ export const queryKeys = {
 export const invalidatePatterns = {
   // Invalida tudo de uma entidade
   entity: (queryClient: QueryClientType, entity: keyof typeof queryKeys) => {
-    return queryClient.invalidateQueries({
-      queryKey: queryKeys[entity].all,
-    })
+    const entityKeys = queryKeys[entity] as any;
+    if (entityKeys && entityKeys.all) {
+      return queryClient.invalidateQueries({
+        queryKey: entityKeys.all,
+      });
+    }
+    return Promise.resolve();
   },
 
   // Invalida listas de uma entidade
   lists: (queryClient: QueryClientType, entity: keyof typeof queryKeys) => {
-    const entityKeys = queryKeys[entity] as { lists: () => readonly unknown[] }
+    const entityKeys = queryKeys[entity] as { lists: () => readonly unknown[] };
     return queryClient.invalidateQueries({
       queryKey: entityKeys.lists(),
-    })
+    });
   },
 
   // Invalida detalhe específico
-  detail: (
-    queryClient: QueryClientType,
-    entity: keyof typeof queryKeys,
-    id: string
-  ) => {
+  detail: (queryClient: QueryClientType, entity: keyof typeof queryKeys, id: string) => {
     const entityKeys = queryKeys[entity] as {
-      detail: (id: string) => readonly unknown[]
-    }
+      detail: (id: string) => readonly unknown[];
+    };
     return queryClient.invalidateQueries({
       queryKey: entityKeys.detail(id),
-    })
+    });
   },
 
   // Invalida múltiplas entidades (para relacionamentos)
-  multiple: (
-    queryClient: QueryClientType,
-    entities: Array<keyof typeof queryKeys>
-  ) => {
+  multiple: (queryClient: QueryClientType, entities: Array<keyof typeof queryKeys>) => {
     entities.forEach((entity) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys[entity].all,
-      })
-    })
+      const entityKeys = queryKeys[entity] as any;
+      if (entityKeys && entityKeys.all) {
+        queryClient.invalidateQueries({
+          queryKey: entityKeys.all,
+        });
+      }
+    });
   },
-}
+};
 
 /**
  * Tipos para TypeScript
  */
-export type QueryKey = typeof queryKeys
-export type QueryKeyEntity = keyof typeof queryKeys
+export type QueryKey = typeof queryKeys;
+export type QueryKeyEntity = keyof typeof queryKeys;

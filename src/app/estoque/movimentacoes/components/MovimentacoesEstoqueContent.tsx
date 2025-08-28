@@ -1,17 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import {
-  Box,
-  Grid,
-  Typography,
-  Chip,
-  IconButton,
-  Tooltip,
-  Alert,
-  Button,
-  TextField,
-} from '@mui/material'
+import { useState } from 'react';
+import { Box, Grid, Typography, Chip, IconButton, Tooltip, Alert, TextField } from '@mui/material';
 import {
   Add as AddIcon,
   Remove as RemoveIcon,
@@ -19,14 +9,14 @@ import {
   History as HistoryIcon,
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
-} from '@mui/icons-material'
-import { Table, Modal, EmptyState, PageHeader, Card } from '@/components/ui'
-import type { Column } from '@/components/ui/Table'
+} from '@mui/icons-material';
+import { DSTable, DSDialog, DSButton, EmptyState, PageHeader, Card } from '@/components/ui';
+import type { Column } from '@/components/ui/DSTable';
 
 // Mock data - substituir por dados reais quando implementar backend
 const MOCK_MOVIMENTACOES = [
   {
-    id: '1',
+    key: '1',
     produto: 'Shampoo Anti-Caspa',
     tipo: 'entrada',
     quantidade: 50,
@@ -38,7 +28,7 @@ const MOCK_MOVIMENTACOES = [
     observacoes: 'Pedido de reposição',
   },
   {
-    id: '2',
+    key: '2',
     produto: 'Pomada Modeladora',
     tipo: 'saida',
     quantidade: 3,
@@ -50,7 +40,7 @@ const MOCK_MOVIMENTACOES = [
     observacoes: 'Venda para cliente',
   },
   {
-    id: '3',
+    key: '3',
     produto: 'Condicionador Hidratante',
     tipo: 'entrada',
     quantidade: 30,
@@ -62,7 +52,7 @@ const MOCK_MOVIMENTACOES = [
     observacoes: 'Reposição de estoque',
   },
   {
-    id: '4',
+    key: '4',
     produto: 'Óleo para Barba',
     tipo: 'ajuste',
     quantidade: -2,
@@ -73,89 +63,84 @@ const MOCK_MOVIMENTACOES = [
     responsavel: 'Carlos Lima',
     observacoes: 'Produto com validade vencida',
   },
-]
+];
 
-type Movimentacao = (typeof MOCK_MOVIMENTACOES)[0]
+type Movimentacao = (typeof MOCK_MOVIMENTACOES)[0];
 
-type MovimentacaoColumn = Column<Movimentacao> & {
-  render: (mov: Movimentacao) => JSX.Element
-}
+type MovimentacaoColumn = Column<Movimentacao>;
 
 export default function MovimentacoesEstoqueContent() {
-  const [movimentacoes, setMovimentacoes] =
-    useState<Movimentacao[]>(MOCK_MOVIMENTACOES)
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [selectedTipo, setSelectedTipo] = useState<
-    'entrada' | 'saida' | 'ajuste'
-  >('entrada')
+  const [movimentacoes, setMovimentacoes] = useState<Movimentacao[]>(MOCK_MOVIMENTACOES);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedTipo, setSelectedTipo] = useState<'entrada' | 'saida' | 'ajuste'>('entrada');
 
   const handleNovaMovimentacao = (tipo: 'entrada' | 'saida' | 'ajuste') => {
-    setSelectedTipo(tipo)
-    setIsFormOpen(true)
-  }
+    setSelectedTipo(tipo);
+    setIsFormOpen(true);
+  };
 
   const handleFormClose = () => {
-    setIsFormOpen(false)
-  }
+    setIsFormOpen(false);
+  };
 
   const handleSave = (data: {
-    produto: string
-    quantidade: number
-    motivo: string
-    observacoes: string
+    produto: string;
+    quantidade: number;
+    motivo: string;
+    observacoes: string;
   }) => {
     const novaMovimentacao: Movimentacao = {
-      id: Date.now().toString(),
+      key: Date.now().toString(),
       ...data,
       tipo: selectedTipo,
       estoqueAnterior: 0, // Mock - implementar cálculo real
       estoqueNovo: 0, // Mock - implementar cálculo real
       data: new Date().toISOString(),
       responsavel: 'Usuário Atual', // Mock - implementar usuário real
-    }
+    };
 
-    setMovimentacoes((prev) => [novaMovimentacao, ...prev])
-    handleFormClose()
-  }
+    setMovimentacoes((prev) => [novaMovimentacao, ...prev]);
+    handleFormClose();
+  };
 
   const getTipoIcon = (tipo: string) => {
     switch (tipo) {
       case 'entrada':
-        return <TrendingUpIcon color="success" />
+        return <TrendingUpIcon color="success" />;
       case 'saida':
-        return <TrendingDownIcon color="error" />
+        return <TrendingDownIcon color="error" />;
       case 'ajuste':
-        return <SwapIcon color="warning" />
+        return <SwapIcon color="warning" />;
       default:
-        return <HistoryIcon />
+        return <HistoryIcon />;
     }
-  }
+  };
 
   const getTipoColor = (tipo: string) => {
     switch (tipo) {
       case 'entrada':
-        return 'success'
+        return 'success';
       case 'saida':
-        return 'error'
+        return 'error';
       case 'ajuste':
-        return 'warning'
+        return 'warning';
       default:
-        return 'default'
+        return 'default';
     }
-  }
+  };
 
   const getTipoLabel = (tipo: string) => {
     switch (tipo) {
       case 'entrada':
-        return 'Entrada'
+        return 'Entrada';
       case 'saida':
-        return 'Saída'
+        return 'Saída';
       case 'ajuste':
-        return 'Ajuste'
+        return 'Ajuste';
       default:
-        return tipo
+        return tipo;
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
@@ -164,14 +149,14 @@ export default function MovimentacoesEstoqueContent() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    })
-  }
+    });
+  };
 
   const columns: MovimentacaoColumn[] = [
     {
-      id: 'produto',
+      key: 'produto',
       label: 'Produto',
-      minWidth: 200,
+      width: 200,
       render: (mov: Movimentacao) => (
         <Typography variant="body1" fontWeight={500}>
           {mov.produto}
@@ -179,24 +164,20 @@ export default function MovimentacoesEstoqueContent() {
       ),
     },
     {
-      id: 'tipo',
+      key: 'tipo',
       label: 'Tipo',
-      minWidth: 120,
+      width: 120,
       render: (mov: Movimentacao) => (
         <Box display="flex" alignItems="center" gap={1}>
           {getTipoIcon(mov.tipo)}
-          <Chip
-            label={getTipoLabel(mov.tipo)}
-            color={getTipoColor(mov.tipo)}
-            size="small"
-          />
+          <Chip label={getTipoLabel(mov.tipo)} color={getTipoColor(mov.tipo)} size="small" />
         </Box>
       ),
     },
     {
-      id: 'quantidade',
+      key: 'quantidade',
       label: 'Quantidade',
-      minWidth: 120,
+      width: 120,
       render: (mov: Movimentacao) => (
         <Typography
           variant="body1"
@@ -209,9 +190,9 @@ export default function MovimentacoesEstoqueContent() {
       ),
     },
     {
-      id: 'estoqueAnterior',
+      key: 'estoqueAnterior',
       label: 'Estoque',
-      minWidth: 150,
+      width: 150,
       render: (mov: Movimentacao) => (
         <Box>
           <Typography variant="body2" color="text.secondary">
@@ -221,35 +202,31 @@ export default function MovimentacoesEstoqueContent() {
       ),
     },
     {
-      id: 'motivo',
+      key: 'motivo',
       label: 'Motivo',
-      minWidth: 150,
-      render: (mov: Movimentacao) => (
-        <Typography variant="body2">{mov.motivo}</Typography>
-      ),
+      width: 150,
+      render: (mov: Movimentacao) => <Typography variant="body2">{mov.motivo}</Typography>,
     },
     {
-      id: 'data',
+      key: 'data',
       label: 'Data/Hora',
-      minWidth: 150,
+      width: 150,
       render: (mov: Movimentacao) => (
         <Typography variant="body2">{formatDate(mov.data)}</Typography>
       ),
     },
     {
-      id: 'responsavel',
+      key: 'responsavel',
       label: 'Responsável',
-      minWidth: 150,
-      render: (mov: Movimentacao) => (
-        <Typography variant="body2">{mov.responsavel}</Typography>
-      ),
+      width: 150,
+      render: (mov: Movimentacao) => <Typography variant="body2">{mov.responsavel}</Typography>,
     },
-  ]
+  ];
 
   // Estatísticas
-  const totalEntradas = movimentacoes.filter((m) => m.tipo === 'entrada').length
-  const totalSaidas = movimentacoes.filter((m) => m.tipo === 'saida').length
-  const totalAjustes = movimentacoes.filter((m) => m.tipo === 'ajuste').length
+  const totalEntradas = movimentacoes.filter((m) => m.tipo === 'entrada').length;
+  const totalSaidas = movimentacoes.filter((m) => m.tipo === 'saida').length;
+  const totalAjustes = movimentacoes.filter((m) => m.tipo === 'ajuste').length;
 
   return (
     <Box>
@@ -261,29 +238,29 @@ export default function MovimentacoesEstoqueContent() {
 
       {/* Ações */}
       <Box display="flex" gap={1} sx={{ mb: 3 }}>
-        <Button
+        <DSButton
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => handleNovaMovimentacao('entrada')}
           color="success"
         >
           Nova Entrada
-        </Button>
-        <Button
+        </DSButton>
+        <DSButton
           variant="contained"
           startIcon={<RemoveIcon />}
           onClick={() => handleNovaMovimentacao('saida')}
           color="error"
         >
           Nova Saída
-        </Button>
-        <Button
+        </DSButton>
+        <DSButton
           variant="outlined"
           startIcon={<SwapIcon />}
           onClick={() => handleNovaMovimentacao('ajuste')}
         >
           Ajuste
-        </Button>
+        </DSButton>
       </Box>
 
       {/* Estatísticas */}
@@ -334,7 +311,7 @@ export default function MovimentacoesEstoqueContent() {
       {/* Lista de movimentações */}
       <Card>
         {movimentacoes.length > 0 ? (
-          <Table
+          <DSTable
             columns={columns}
             data={movimentacoes}
             onRowClick={() => {}} // Não implementar clique na linha por enquanto
@@ -359,66 +336,57 @@ export default function MovimentacoesEstoqueContent() {
         onSave={handleSave}
       />
     </Box>
-  )
+  );
 }
 
 // Componente de formulário para movimentação
 interface MovimentacaoFormDialogProps {
-  open: boolean
-  onClose: () => void
-  tipo: 'entrada' | 'saida' | 'ajuste'
+  open: boolean;
+  onClose: () => void;
+  tipo: 'entrada' | 'saida' | 'ajuste';
   onSave: (data: {
-    produto: string
-    quantidade: number
-    motivo: string
-    observacoes: string
-  }) => void
+    produto: string;
+    quantidade: number;
+    motivo: string;
+    observacoes: string;
+  }) => void;
 }
 
-function MovimentacaoFormDialog({
-  open,
-  onClose,
-  tipo,
-  onSave,
-}: MovimentacaoFormDialogProps) {
+function MovimentacaoFormDialog({ open, onClose, tipo, onSave }: MovimentacaoFormDialogProps) {
   const [formData, setFormData] = useState({
     produto: '',
     quantidade: '',
     motivo: '',
     observacoes: '',
-  })
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (
-      formData.produto.trim() &&
-      formData.quantidade &&
-      formData.motivo.trim()
-    ) {
+    e.preventDefault();
+    if (formData.produto.trim() && formData.quantidade && formData.motivo.trim()) {
       onSave({
         ...formData,
         quantidade: Number(formData.quantidade),
-      })
+      });
     }
-  }
+  };
 
   const handleClose = () => {
-    setFormData({ produto: '', quantidade: '', motivo: '', observacoes: '' })
-    onClose()
-  }
+    setFormData({ produto: '', quantidade: '', motivo: '', observacoes: '' });
+    onClose();
+  };
 
   const getTipoLabel = (tipo: string) => {
     switch (tipo) {
       case 'entrada':
-        return 'Entrada de Estoque'
+        return 'Entrada de Estoque';
       case 'saida':
-        return 'Saída de Estoque'
+        return 'Saída de Estoque';
       case 'ajuste':
-        return 'Ajuste de Estoque'
+        return 'Ajuste de Estoque';
       default:
-        return 'Movimentação'
+        return 'Movimentação';
     }
-  }
+  };
 
   const getMotivoOptions = () => {
     switch (tipo) {
@@ -428,55 +396,45 @@ function MovimentacaoFormDialog({
           { value: 'devolucao', label: 'Devolução' },
           { value: 'transferencia', label: 'Transferência' },
           { value: 'ajuste', label: 'Ajuste de inventário' },
-        ]
+        ];
       case 'saida':
         return [
           { value: 'venda', label: 'Venda' },
           { value: 'uso_interno', label: 'Uso interno' },
           { value: 'perda', label: 'Perda/Avaria' },
           { value: 'transferencia', label: 'Transferência' },
-        ]
+        ];
       case 'ajuste':
         return [
           { value: 'inventario', label: 'Ajuste de inventário' },
           { value: 'validade', label: 'Validade vencida' },
           { value: 'dano', label: 'Produto danificado' },
           { value: 'outro', label: 'Outro motivo' },
-        ]
+        ];
       default:
-        return []
+        return [];
     }
-  }
+  };
 
   return (
-    <Modal
+    <DSDialog
       open={open}
       onClose={handleClose}
       title={getTipoLabel(tipo)}
       maxWidth="sm"
       actions={
         <>
-          <Button variant="outlined" onClick={handleClose}>
+          <DSButton variant="outlined" onClick={handleClose}>
             Cancelar
-          </Button>
-          <Button
+          </DSButton>
+          <DSButton
             variant="contained"
             onClick={handleSubmit}
-            disabled={
-              !formData.produto.trim() ||
-              !formData.quantidade ||
-              !formData.motivo.trim()
-            }
-            color={
-              tipo === 'entrada'
-                ? 'success'
-                : tipo === 'saida'
-                  ? 'error'
-                  : 'warning'
-            }
+            disabled={!formData.produto.trim() || !formData.quantidade || !formData.motivo.trim()}
+            color={tipo === 'entrada' ? 'success' : tipo === 'saida' ? 'error' : 'warning'}
           >
             Confirmar {getTipoLabel(tipo)}
-          </Button>
+          </DSButton>
         </>
       }
     >
@@ -486,9 +444,7 @@ function MovimentacaoFormDialog({
             <TextField
               label="Produto"
               value={formData.produto}
-              onChange={(e) =>
-                setFormData({ ...formData, produto: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, produto: e.target.value })}
               fullWidth
               required
               placeholder="Nome do produto..."
@@ -500,20 +456,14 @@ function MovimentacaoFormDialog({
               label="Quantidade"
               type="number"
               value={formData.quantidade}
-              onChange={(e) =>
-                setFormData({ ...formData, quantidade: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, quantidade: e.target.value })}
               fullWidth
               required
               inputProps={{
                 min: tipo === 'ajuste' ? undefined : 1,
                 step: 1,
               }}
-              placeholder={
-                tipo === 'ajuste'
-                  ? 'Quantidade (negativa para redução)'
-                  : 'Quantidade'
-              }
+              placeholder={tipo === 'ajuste' ? 'Quantidade (negativa para redução)' : 'Quantidade'}
             />
           </Grid>
 
@@ -522,9 +472,7 @@ function MovimentacaoFormDialog({
               select
               label="Motivo"
               value={formData.motivo}
-              onChange={(e) =>
-                setFormData({ ...formData, motivo: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, motivo: e.target.value })}
               fullWidth
               required
             >
@@ -540,9 +488,7 @@ function MovimentacaoFormDialog({
             <TextField
               label="Observações"
               value={formData.observacoes}
-              onChange={(e) =>
-                setFormData({ ...formData, observacoes: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
               fullWidth
               multiline
               rows={3}
@@ -551,6 +497,6 @@ function MovimentacaoFormDialog({
           </Grid>
         </Grid>
       </Box>
-    </Modal>
-  )
+    </DSDialog>
+  );
 }

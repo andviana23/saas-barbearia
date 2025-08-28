@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
   Box,
   Grid,
@@ -12,22 +12,22 @@ import {
   Switch,
   Alert,
   CircularProgress,
-} from '@mui/material'
-import { Button, Modal, Form, FormRow } from '@/components/ui'
-import { useCreateProduto, useUpdateProduto } from '@/hooks/use-produtos'
+} from '@mui/material';
+import { DSButton, DSDialog, FormRow } from '@/components/ui';
+import { useCreateProduto, useUpdateProduto } from '@/hooks/use-produtos';
 
 // Tipo local para Produto
 interface Produto {
-  id: string
-  nome: string
-  descricao?: string
-  categoria?: string
-  preco: number
-  estoque: number
-  ativo: boolean
-  unidade_id?: string
-  created_at?: string
-  updated_at?: string
+  id: string;
+  nome: string;
+  descricao?: string;
+  categoria?: string;
+  preco: number;
+  estoque: number;
+  ativo: boolean;
+  unidade_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 const ProdutoSchema = z.object({
@@ -35,10 +35,7 @@ const ProdutoSchema = z.object({
     .string()
     .min(2, 'Nome deve ter pelo menos 2 caracteres')
     .max(100, 'Nome deve ter no máximo 100 caracteres'),
-  descricao: z
-    .string()
-    .max(500, 'Descrição deve ter no máximo 500 caracteres')
-    .optional(),
+  descricao: z.string().max(500, 'Descrição deve ter no máximo 500 caracteres').optional(),
   preco: z.coerce
     .number()
     .min(0.01, 'Preço deve ser maior que zero')
@@ -49,14 +46,14 @@ const ProdutoSchema = z.object({
     .max(99999, 'Estoque deve ser menor que 100.000'),
   categoria: z.string().min(1, 'Categoria é obrigatória'),
   ativo: z.boolean(),
-})
+});
 
-type ProdutoFormData = z.infer<typeof ProdutoSchema>
+type ProdutoFormData = z.infer<typeof ProdutoSchema>;
 
 interface ProdutoFormDialogProps {
-  open: boolean
-  onClose: () => void
-  produto?: Produto | null
+  open: boolean;
+  onClose: () => void;
+  produto?: Produto | null;
 }
 
 const CATEGORIA_OPTIONS = [
@@ -66,17 +63,13 @@ const CATEGORIA_OPTIONS = [
   { value: 'barba', label: 'Barba' },
   { value: 'hidratantes', label: 'Hidratantes' },
   { value: 'acessorios', label: 'Acessórios' },
-]
+];
 
-export default function ProdutoFormDialog({
-  open,
-  onClose,
-  produto,
-}: ProdutoFormDialogProps) {
-  const isEditing = !!produto
+export default function ProdutoFormDialog({ open, onClose, produto }: ProdutoFormDialogProps) {
+  const isEditing = !!produto;
 
-  const createProduto = useCreateProduto()
-  const updateProduto = useUpdateProduto()
+  const createProduto = useCreateProduto();
+  const updateProduto = useUpdateProduto();
 
   const {
     control,
@@ -93,7 +86,7 @@ export default function ProdutoFormDialog({
       categoria: '',
       ativo: true,
     },
-  })
+  });
 
   useEffect(() => {
     if (produto) {
@@ -104,7 +97,7 @@ export default function ProdutoFormDialog({
         estoque: produto.estoque,
         categoria: produto.categoria || '',
         ativo: produto.ativo,
-      })
+      });
     } else {
       reset({
         nome: '',
@@ -113,64 +106,64 @@ export default function ProdutoFormDialog({
         estoque: 0,
         categoria: '',
         ativo: true,
-      })
+      });
     }
-  }, [produto, reset])
+  }, [produto, reset]);
 
   const onSubmit = async (data: ProdutoFormData) => {
     try {
       // Converter dados para FormData
-      const formData = new FormData()
+      const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value.toString())
-      })
+        formData.append(key, value.toString());
+      });
 
       if (isEditing && produto) {
         await updateProduto.mutateAsync({
           id: produto.id,
           formData,
-        })
+        });
       } else {
-        await createProduto.mutateAsync(formData)
+        await createProduto.mutateAsync(formData);
       }
-      onClose()
+      onClose();
     } catch (error) {
-      console.error('Erro ao salvar produto:', error)
+      console.error('Erro ao salvar produto:', error);
     }
-  }
+  };
 
   const handleClose = () => {
     if (!isSubmitting) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
-  const isLoading = createProduto.isPending || updateProduto.isPending
-  const error = createProduto.error || updateProduto.error
+  const isLoading = createProduto.isPending || updateProduto.isPending;
+  const error = createProduto.error || updateProduto.error;
 
   return (
-    <Modal
+    <DSDialog
       open={open}
       onClose={handleClose}
       title={isEditing ? 'Editar Produto' : 'Novo Produto'}
       maxWidth="md"
       actions={
         <>
-          <Button variant="outlined" onClick={handleClose} disabled={isLoading}>
+          <DSButton variant="outlined" onClick={handleClose} disabled={isLoading}>
             Cancelar
-          </Button>
-          <Button
+          </DSButton>
+          <DSButton
             variant="contained"
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
             startIcon={isLoading ? <CircularProgress size={16} /> : undefined}
           >
             {isLoading ? 'Salvando...' : isEditing ? 'Salvar' : 'Criar'}
-          </Button>
+          </DSButton>
         </>
       }
     >
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error.message}
@@ -290,11 +283,7 @@ export default function ProdutoFormDialog({
               render={({ field }) => (
                 <FormControlLabel
                   control={
-                    <Switch
-                      checked={field.value}
-                      onChange={field.onChange}
-                      disabled={isLoading}
-                    />
+                    <Switch checked={field.value} onChange={field.onChange} disabled={isLoading} />
                   }
                   label="Produto ativo"
                 />
@@ -302,7 +291,7 @@ export default function ProdutoFormDialog({
             />
           </Grid>
         </Grid>
-      </Form>
-    </Modal>
-  )
+      </Box>
+    </DSDialog>
+  );
 }

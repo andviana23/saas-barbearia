@@ -6,41 +6,41 @@ export type QueueStatus =
   | 'in_service'
   | 'completed'
   | 'canceled'
-  | 'no_show'
+  | 'no_show';
 
 export type QueueItem = {
-  id: string
-  ticket: string
-  customer_name?: string | null
-  service_name?: string | null
-  unit_id: string
-  unit_name?: string
-  professional_id?: string | null
-  professional_name?: string | null
-  status: QueueStatus
-  arrival_time: string
-  called_at?: string | null
-  started_at?: string | null
-  finished_at?: string | null
-  notes?: string | null
-  estimated_duration?: number | null
-}
+  id: string;
+  ticket: string;
+  customer_name?: string | null;
+  service_name?: string | null;
+  unit_id: string;
+  unit_name?: string;
+  professional_id?: string | null;
+  professional_name?: string | null;
+  status: QueueStatus;
+  arrival_time: string;
+  called_at?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  notes?: string | null;
+  estimated_duration?: number | null;
+};
 
 export type QueueResponse = {
-  items: QueueItem[]
-  total: number
-}
+  items: QueueItem[];
+  total: number;
+};
 
 export async function listQueue(_params: {
-  q?: string
-  unitId?: string
-  professionalId?: string
-  status?: string
-  sortBy?: string
-  sortDir?: string
+  q?: string;
+  unitId?: string;
+  professionalId?: string;
+  status?: string;
+  sortBy?: string;
+  sortDir?: string;
 }): Promise<QueueResponse> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   const items: QueueItem[] = [
     {
@@ -77,73 +77,73 @@ export async function listQueue(_params: {
       notes: null,
       estimated_duration: 60,
     },
-  ]
+  ];
 
   return {
     items,
     total: items.length,
-  }
+  };
 }
 
 export async function addToQueue(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Add to queue:', Object.fromEntries(formData))
+  console.log('Add to queue:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString(), ticket: 'A-003' }
+  return { success: true, id: Date.now().toString(), ticket: 'A-003' };
 }
 
 export async function callNext(unitId?: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Call next in queue for unit:', unitId)
+  console.log('Call next in queue for unit:', unitId);
 
-  return { success: true, calledId: '1' }
+  return { success: true, calledId: '1' };
 }
 
 export async function callItem(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Call specific item:', id)
+  console.log('Call specific item:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function startService(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Start service for item:', id)
+  console.log('Start service for item:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function finishService(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Finish service for item:', id)
+  console.log('Finish service for item:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function cancelQueueItem(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Cancel queue item:', id)
+  console.log('Cancel queue item:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function markNoShow(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Mark as no-show:', id)
+  console.log('Mark as no-show:', id);
 
-  return { success: true }
+  return { success: true };
 }

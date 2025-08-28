@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material';
 
 export default function ConfiguracoesSistemaPage() {
   return (
@@ -14,10 +14,10 @@ export default function ConfiguracoesSistemaPage() {
         </Typography>
       </Box>
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Configurações do Sistema | Trato',
   description: 'Preferências e configurações do sistema',
-}
+};

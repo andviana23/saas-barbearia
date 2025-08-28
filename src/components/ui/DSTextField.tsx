@@ -1,14 +1,24 @@
-'use client'
-import { TextField, TextFieldProps } from '@mui/material'
+'use client';
 
-export default function DSTextField(props: TextFieldProps) {
+import { TextField, TextFieldProps } from '@mui/material';
+
+export default function DSTextField({ sx, ...props }: TextFieldProps) {
   return (
     <TextField
+      variant="outlined"
+      size="small"
       fullWidth
-      inputProps={{
-        'aria-label': typeof props.label === 'string' ? props.label : undefined,
+      // Deixe o tema controlar: bg do input, placeholder, bordas, radius
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          borderRadius: (t) => t.shape.borderRadius, // usa radius do tema
+        },
+        '& .MuiInputLabel-root': {
+          fontWeight: 500,
+        },
+        ...sx,
       }}
       {...props}
     />
-  )
+  );
 }

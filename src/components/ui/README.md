@@ -33,7 +33,7 @@ import {
   Input,
   SelectInput,
   CheckboxInput,
-} from '@/components/ui'
+} from '@/components/ui';
 ```
 
 ### 🔴 Button
@@ -299,10 +299,10 @@ import { Grid, Box } from '@mui/material'
 
 ```typescript
 // ✅ CORRETO - Componentes do sistema
-import { Button, Card } from '@/components/ui'
+import { Button, Card } from '@/components/ui';
 
 // ❌ INCORRETO - Componentes MUI diretos
-import { Button, Card } from '@mui/material'
+import { Button, Card } from '@mui/material';
 ```
 
 ### 5. **Mantenha consistência visual**

@@ -1,72 +1,69 @@
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
-import { ServicosContent } from './components/ServicosContent'
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
+import { ServicosContent } from './components/ServicosContent';
 
 // 🔌 Server Actions
-import { listServices, listServiceCategories } from '@/actions/services'
+import { listServices, listServiceCategories } from '@/actions/services';
 
 /** Tipos **/
 export type Service = {
-  id: string
-  name: string
-  description?: string | null
-  category_id: string
-  category_name?: string
-  duration_minutes: number
-  price: number
-  is_active: boolean
-  created_at?: string | null
-}
+  id: string;
+  name: string;
+  description?: string | null;
+  category_id: string;
+  category_name?: string;
+  duration_minutes: number;
+  price: number;
+  is_active: boolean;
+  created_at?: string | null;
+};
 
 export type ServiceCategory = {
-  id: string
-  name: string
-  is_active: boolean
-  created_at?: string | null
-}
+  id: string;
+  name: string;
+  is_active: boolean;
+  created_at?: string | null;
+};
 
 export type ServicesResponse = {
-  items: Service[]
-  total: number
-}
+  items: Service[];
+  total: number;
+};
 
 export const metadata: Metadata = {
   title: 'Serviços | Trato',
   description: 'Gestão de serviços e preços',
-}
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 function coerceNumber(x: unknown): number | undefined {
-  const s = coerceString(x)
-  if (!s) return undefined
-  const n = Number(s)
-  return Number.isFinite(n) ? n : undefined
+  const s = coerceString(x);
+  if (!s) return undefined;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : undefined;
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // 🔎 Filtros
-  const q = coerceString(searchParams.q) ?? ''
-  const category = coerceString(searchParams.category) || ''
-  const status = coerceString(searchParams.status) || ''
-  const priceRange = coerceString(searchParams.priceRange) || ''
-  const sortBy = coerceString(searchParams.sortBy) || 'name'
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'
-  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0)
-  const pageSize = Math.min(
-    100,
-    Math.max(5, coerceNumber(searchParams.pageSize) ?? 20)
-  )
+  const q = coerceString(searchParams.q) ?? '';
+  const category = coerceString(searchParams.category) || '';
+  const status = coerceString(searchParams.status) || '';
+  const priceRange = coerceString(searchParams.priceRange) || '';
+  const sortBy = coerceString(searchParams.sortBy) || 'name';
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
+  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0);
+  const pageSize = Math.min(100, Math.max(5, coerceNumber(searchParams.pageSize) ?? 20));
 
   // 📥 Dados (mock para agora, integrar com backend depois)
   const [servicesData, categoriesData] = await Promise.all([
@@ -142,7 +139,7 @@ export default async function Page({
         created_at: '2025-01-21T10:00:00Z',
       },
     ] as ServiceCategory[]),
-  ])
+  ]);
 
   const searchParamsObj = {
     q,
@@ -153,7 +150,7 @@ export default async function Page({
     sortDir,
     page: page.toString(),
     pageSize: pageSize.toString(),
-  }
+  };
 
   return (
     <ServicosContent
@@ -161,5 +158,5 @@ export default async function Page({
       categories={categoriesData}
       searchParams={searchParamsObj}
     />
-  )
+  );
 }

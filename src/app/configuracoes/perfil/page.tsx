@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material';
 
 export default function ConfiguracoesPerfilPage() {
   return (
@@ -14,10 +14,10 @@ export default function ConfiguracoesPerfilPage() {
         </Typography>
       </Box>
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Minha Conta | Trato',
   description: 'Configurações de perfil do usuário',
-}
+};

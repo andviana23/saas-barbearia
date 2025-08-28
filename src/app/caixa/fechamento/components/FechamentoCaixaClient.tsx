@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Paper,
@@ -11,9 +11,9 @@ import {
   Alert,
   InputAdornment,
   Typography,
-} from '@mui/material'
-import Link from 'next/link'
-import { z } from 'zod'
+} from '@mui/material';
+import Link from 'next/link';
+import { z } from 'zod';
 
 // Schema de validação
 const fechamentoSchema = z.object({
@@ -30,19 +30,19 @@ const fechamentoSchema = z.object({
   sangria: z.coerce.number().min(0).default(0),
   contagemEmCaixa: z.coerce.number().min(0, 'Informe a contagem.'),
   observacoes: z.string().max(1000).optional(),
-})
+});
 
-type FechamentoFormValues = z.infer<typeof fechamentoSchema>
+type FechamentoFormValues = z.infer<typeof fechamentoSchema>;
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(amount)
+  }).format(amount);
 }
 
 function sum(...vals: number[]) {
-  return vals.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0)
+  return vals.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0);
 }
 
 // MoneyField component removed as it was unused
@@ -62,83 +62,70 @@ export function FechamentoCaixaClient() {
     sangria: 0,
     contagemEmCaixa: 0,
     observacoes: '',
-  })
+  });
 
-  const [errors, setErrors] = React.useState<
-    Partial<Record<keyof FechamentoFormValues, string>>
-  >({})
-  const [submitting, setSubmitting] = React.useState(false)
+  const [errors, setErrors] = React.useState<Partial<Record<keyof FechamentoFormValues, string>>>(
+    {},
+  );
+  const [submitting, setSubmitting] = React.useState(false);
 
   const totalVendas = sum(
     values.vendasDinheiro,
     values.vendasPix,
     values.vendasDebito,
-    values.vendasCredito
-  )
+    values.vendasCredito,
+  );
   const totalEntradas = sum(
     values.saldoInicial,
     values.suprimento,
     totalVendas,
-    values.recebimentosOutros
-  )
-  const totalSaidas = sum(values.despesas, values.sangria)
-  const esperadoEmCaixa = totalEntradas - totalSaidas
-  const divergencia = values.contagemEmCaixa - esperadoEmCaixa
+    values.recebimentosOutros,
+  );
+  const totalSaidas = sum(values.despesas, values.sangria);
+  const esperadoEmCaixa = totalEntradas - totalSaidas;
+  const divergencia = values.contagemEmCaixa - esperadoEmCaixa;
 
-  const setField = (
-    name: keyof FechamentoFormValues,
-    value: string | number
-  ) => {
-    setValues((prev) => ({ ...prev, [name]: value }))
-  }
+  const setField = (name: keyof FechamentoFormValues, value: string | number) => {
+    setValues((prev) => ({ ...prev, [name]: value }));
+  };
 
   function validate(): boolean {
-    const result = fechamentoSchema.safeParse(values)
+    const result = fechamentoSchema.safeParse(values);
     if (result.success) {
-      setErrors({})
-      return true
+      setErrors({});
+      return true;
     } else {
-      const fieldErrors: Partial<Record<keyof FechamentoFormValues, string>> =
-        {}
+      const fieldErrors: Partial<Record<keyof FechamentoFormValues, string>> = {};
       for (const issue of result.error.issues) {
-        const path = issue.path[0] as keyof FechamentoFormValues
-        if (!fieldErrors[path]) fieldErrors[path] = issue.message
+        const path = issue.path[0] as keyof FechamentoFormValues;
+        if (!fieldErrors[path]) fieldErrors[path] = issue.message;
       }
-      setErrors(fieldErrors)
-      return false
+      setErrors(fieldErrors);
+      return false;
     }
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!validate()) return
+    e.preventDefault();
+    if (!validate()) return;
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
-      await new Promise((r) => setTimeout(r, 700))
+      await new Promise((r) => setTimeout(r, 700));
       if (Math.abs(divergencia) > 100 && !values.observacoes) {
-        throw new Error(
-          'Divergência acima de R$ 100,00 exige justificativa nas observações.'
-        )
+        throw new Error('Divergência acima de R$ 100,00 exige justificativa nas observações.');
       }
-      alert('Fechamento registrado com sucesso!')
+      alert('Fechamento registrado com sucesso!');
     } catch (err: unknown) {
-      alert(
-        err instanceof Error ? err.message : 'Falha ao registrar fechamento.'
-      )
+      alert(err instanceof Error ? err.message : 'Falha ao registrar fechamento.');
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
   return (
     <Box sx={{ py: 3 }}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 3 }}
-      >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
           Fechamento de Caixa
         </Typography>
@@ -201,14 +188,9 @@ export function FechamentoCaixaClient() {
                 <Typography variant="body2" color="text.secondary">
                   Esperado em Caixa
                 </Typography>
-                <Typography variant="h6">
-                  {formatCurrency(esperadoEmCaixa)}
-                </Typography>
+                <Typography variant="h6">{formatCurrency(esperadoEmCaixa)}</Typography>
               </Stack>
-              <Alert
-                sx={{ mt: 2 }}
-                severity={Math.abs(divergencia) < 0.01 ? 'success' : 'warning'}
-              >
+              <Alert sx={{ mt: 2 }} severity={Math.abs(divergencia) < 0.01 ? 'success' : 'warning'}>
                 {Math.abs(divergencia) < 0.01
                   ? 'Sem divergências. Fechamento consistente.'
                   : `Atenção: divergência de ${formatCurrency(divergencia)}. Justifique nas observações se necessário.`}
@@ -219,12 +201,7 @@ export function FechamentoCaixaClient() {
           {/* Botões */}
           <Grid item xs={12}>
             <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <Button
-                component={Link}
-                href="/caixa"
-                variant="outlined"
-                disabled={submitting}
-              >
+              <Button component={Link} href="/caixa" variant="outlined" disabled={submitting}>
                 Cancelar
               </Button>
               <Button type="submit" variant="contained" disabled={submitting}>
@@ -235,5 +212,5 @@ export function FechamentoCaixaClient() {
         </Grid>
       </Box>
     </Box>
-  )
+  );
 }

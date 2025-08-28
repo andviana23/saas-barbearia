@@ -14,10 +14,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from '@mui/material'
-import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
+} from '@mui/material';
+import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
 
 // 🔌 Server Actions (alinhar com backend)
 // - getCurrentProfessional()  // opcional, pega profissional logado
@@ -26,8 +26,8 @@ import type { Metadata } from 'next'
 // - queueStartService({ id })
 // - queueFinishService({ id })
 // - queueNoShow({ id })
-import { listQueue } from '@/actions/queue'
-import { listProfessionals } from '@/actions/professionals'
+import { listQueue } from '@/actions/queue';
+import { listProfessionals } from '@/actions/professionals';
 // import { getCurrentProfessional, queueCallNextForProfessional, queueStartService, queueFinishService, queueNoShow } from "@/actions/queue";
 
 /** Tipos **/
@@ -37,57 +37,56 @@ export type QueueStatus =
   | 'in_service'
   | 'completed'
   | 'canceled'
-  | 'no_show'
-export type Professional = { id: string; name: string }
+  | 'no_show';
+export type Professional = { id: string; name: string };
 export type QueueItem = {
-  id: string
-  ticket: string
-  customer_name?: string | null
-  service_name?: string | null
-  professional_id?: string | null
-  professional_name?: string | null
-  status: QueueStatus
-  arrival_time: string // ISO datetime
-  called_at?: string | null
-  started_at?: string | null
-  notes?: string | null
-}
-export type QueueResponse = { items: QueueItem[]; total: number }
+  id: string;
+  ticket: string;
+  customer_name?: string | null;
+  service_name?: string | null;
+  professional_id?: string | null;
+  professional_name?: string | null;
+  status: QueueStatus;
+  arrival_time: string; // ISO datetime
+  called_at?: string | null;
+  started_at?: string | null;
+  notes?: string | null;
+};
+export type QueueResponse = { items: QueueItem[]; total: number };
 
 export const metadata: Metadata = {
   title: 'Profissional - Fila | Trato',
   description: 'Painel do profissional para controle da fila',
-}
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 function minutesBetween(aISO?: string | null, bISO?: string | null) {
-  if (!aISO || !bISO) return 0
-  const a = new Date(aISO).getTime()
-  const b = new Date(bISO).getTime()
-  if (!Number.isFinite(a) || !Number.isFinite(b)) return 0
-  return Math.max(0, Math.round((b - a) / 60000))
+  if (!aISO || !bISO) return 0;
+  const a = new Date(aISO).getTime();
+  const b = new Date(bISO).getTime();
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return 0;
+  return Math.max(0, Math.round((b - a) / 60000));
 }
 function nowISO() {
-  return new Date().toISOString()
+  return new Date().toISOString();
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [k: string]: string | string[] | undefined }
+  searchParams: { [k: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // Profissional em contexto (use getCurrentProfessional no mundo real)
-  const professionalId = coerceString(searchParams.professionalId) || ''
-  const status =
-    (coerceString(searchParams.status) as QueueStatus | '' | undefined) || '' // todos por padrão
-  const q = coerceString(searchParams.q) ?? ''
+  const professionalId = coerceString(searchParams.professionalId) || '';
+  const status = (coerceString(searchParams.status) as QueueStatus | '' | undefined) || ''; // todos por padrão
+  const q = coerceString(searchParams.q) ?? '';
 
   const [professionals, queue] = await Promise.all([
     listProfessionals() as Promise<Professional[]>,
@@ -96,17 +95,13 @@ export default async function Page({
       status: status || undefined,
       q: q || undefined,
     }) as Promise<QueueResponse>,
-  ])
+  ]);
 
   // Próximo cliente: prioriza "called" > "waiting" para o profissional atual
-  const mine = queue.items.filter(
-    (i) => !professionalId || i.professional_id === professionalId
-  )
-  const next =
-    mine.find((i) => i.status === 'called') ||
-    mine.find((i) => i.status === 'waiting')
+  const mine = queue.items.filter((i) => !professionalId || i.professional_id === professionalId);
+  const next = mine.find((i) => i.status === 'called') || mine.find((i) => i.status === 'waiting');
 
-  const now = nowISO()
+  const now = nowISO();
 
   return (
     <Container maxWidth="xl">
@@ -125,12 +120,7 @@ export default async function Page({
             <Button component={Link} href="/agenda" variant="outlined">
               Ver agenda
             </Button>
-            <Button
-              component={Link}
-              href="/fila"
-              variant="text"
-              color="inherit"
-            >
+            <Button component={Link} href="/fila" variant="text" color="inherit">
               Painel da fila
             </Button>
           </Stack>
@@ -144,10 +134,7 @@ export default async function Page({
           method="get"
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
-          <Toolbar
-            disableGutters
-            sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center' }}
-          >
+          <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
             <FormControl sx={{ minWidth: 260 }}>
               <InputLabel id="professionalId-label">Profissional</InputLabel>
               <Select
@@ -169,12 +156,7 @@ export default async function Page({
 
             <FormControl sx={{ minWidth: 200 }}>
               <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                name="status"
-                labelId="status-label"
-                label="Status"
-                defaultValue={status}
-              >
+              <Select name="status" labelId="status-label" label="Status" defaultValue={status}>
                 <MenuItem value="">
                   <em>Todos</em>
                 </MenuItem>
@@ -196,12 +178,7 @@ export default async function Page({
               <Button type="submit" variant="contained">
                 Aplicar
               </Button>
-              <Button
-                component={Link}
-                href="/fila/profissional"
-                variant="text"
-                color="inherit"
-              >
+              <Button component={Link} href="/fila/profissional" variant="text" color="inherit">
                 Limpar
               </Button>
             </Stack>
@@ -216,16 +193,9 @@ export default async function Page({
           {next ? (
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={8}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  flexWrap="wrap"
-                >
+                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
                   <Chip label={`Ticket ${next.ticket}`} color="primary" />
-                  <Typography variant="h6">
-                    {next.customer_name || 'Cliente'}
-                  </Typography>
+                  <Typography variant="h6">{next.customer_name || 'Cliente'}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     • {next.service_name || 'Serviço'}
                   </Typography>
@@ -299,24 +269,17 @@ export default async function Page({
           <Grid container spacing={1}>
             {mine.length === 0 ? (
               <Grid item xs={12}>
-                <Box
-                  sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}
-                >
+                <Box sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}>
                   Sem clientes na sua fila.
                 </Box>
               </Grid>
             ) : (
               mine.map((i) => {
-                const wait = minutesBetween(i.arrival_time, now)
+                const wait = minutesBetween(i.arrival_time, now);
                 return (
                   <Grid item xs={12} md={6} lg={4} key={i.id}>
                     <Paper variant="outlined" sx={{ p: 1.5, borderRadius: 2 }}>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={1}
-                        flexWrap="wrap"
-                      >
+                      <Stack direction="row" alignItems="center" spacing={1} flexWrap="wrap">
                         <Chip size="small" label={i.ticket} />
                         <Typography variant="subtitle1" fontWeight={600}>
                           {i.customer_name || 'Cliente'}
@@ -369,7 +332,7 @@ export default async function Page({
                       </Stack>
                     </Paper>
                   </Grid>
-                )
+                );
               })
             )}
           </Grid>
@@ -377,11 +340,11 @@ export default async function Page({
 
         <Box sx={{ mt: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            Dica: mantenha este painel aberto no seu posto de trabalho. Podemos
-            ativar atualização automática e notificações de chamada.
+            Dica: mantenha este painel aberto no seu posto de trabalho. Podemos ativar atualização
+            automática e notificações de chamada.
           </Typography>
         </Box>
       </Box>
     </Container>
-  )
+  );
 }

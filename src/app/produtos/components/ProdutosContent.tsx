@@ -1,51 +1,42 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import {
-  Box,
-  Card,
-  Grid,
-  Typography,
-  Chip,
-  IconButton,
-  Tooltip,
-  Alert,
-} from '@mui/material'
+import { useState } from 'react';
+import { Box, Card, Grid, Typography, Chip, IconButton, Tooltip, Alert } from '@mui/material';
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Inventory as InventoryIcon,
   Warning as WarningIcon,
-} from '@mui/icons-material'
-import { Button, Table, Modal, EmptyState, PageHeader } from '@/components/ui'
-import { useProdutos, useDeleteProduto } from '@/hooks/use-produtos'
-import ProdutoFormDialog from './ProdutoFormDialog'
-import ProdutoDetailDialog from './ProdutoDetailDialog'
-import ProdutosFilters from './ProdutosFilters'
+} from '@mui/icons-material';
+import { DSButton, DSTable, DSDialog, EmptyState, PageHeader } from '@/components/ui';
+import { useProdutos, useDeleteProduto } from '@/hooks/use-produtos';
+import ProdutoFormDialog from './ProdutoFormDialog';
+import ProdutoDetailDialog from './ProdutoDetailDialog';
+import ProdutosFilters from './ProdutosFilters';
 
 // Tipo local para Produto
 interface Produto {
-  id: string
-  nome: string
-  descricao?: string
-  categoria?: string
-  preco: number
-  estoque: number
-  ativo: boolean
-  unidade_id?: string
-  created_at?: string
-  updated_at?: string
+  id: string;
+  nome: string;
+  descricao?: string;
+  categoria?: string;
+  preco: number;
+  estoque: number;
+  ativo: boolean;
+  unidade_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export default function ProdutosContent() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [categoriaFilter, setCategoriaFilter] = useState('all')
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [isDetailOpen, setIsDetailOpen] = useState(false)
-  const [selectedProduto, setSelectedProduto] = useState<Produto | null>(null)
-  const [editingProduto, setEditingProduto] = useState<Produto | null>(null)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [categoriaFilter, setCategoriaFilter] = useState('all');
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedProduto, setSelectedProduto] = useState<Produto | null>(null);
+  const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
 
   const {
     data: produtos,
@@ -57,44 +48,44 @@ export default function ProdutosContent() {
     order: 'asc',
     q: searchTerm,
     ativo: statusFilter === 'all' ? undefined : statusFilter === 'active',
-  })
+  });
 
-  const deleteProduto = useDeleteProduto()
+  const deleteProduto = useDeleteProduto();
 
   const handleCreate = () => {
-    setEditingProduto(null)
-    setIsFormOpen(true)
-  }
+    setEditingProduto(null);
+    setIsFormOpen(true);
+  };
 
   const handleEdit = (produto: Produto) => {
-    setEditingProduto(produto)
-    setIsFormOpen(true)
-  }
+    setEditingProduto(produto);
+    setIsFormOpen(true);
+  };
 
   const handleView = (produto: Produto) => {
-    setSelectedProduto(produto)
-    setIsDetailOpen(true)
-  }
+    setSelectedProduto(produto);
+    setIsDetailOpen(true);
+  };
 
   const handleDelete = async (produto: Produto) => {
     if (confirm(`Tem certeza que deseja excluir "${produto.nome}"?`)) {
-      await deleteProduto.mutateAsync(produto.id)
+      await deleteProduto.mutateAsync(produto.id);
     }
-  }
+  };
 
   const handleFormClose = () => {
-    setIsFormOpen(false)
-    setEditingProduto(null)
-  }
+    setIsFormOpen(false);
+    setEditingProduto(null);
+  };
 
   const handleDetailClose = () => {
-    setIsDetailOpen(false)
-    setSelectedProduto(null)
-  }
+    setIsDetailOpen(false);
+    setSelectedProduto(null);
+  };
 
   const columns = [
     {
-      id: 'nome',
+      key: 'nome',
       label: 'Nome',
       minWidth: 200,
       render: (produto: Produto) => (
@@ -109,7 +100,7 @@ export default function ProdutosContent() {
       ),
     },
     {
-      id: 'preco',
+      key: 'preco',
       label: 'Preço',
       minWidth: 120,
       render: (produto: Produto) => (
@@ -119,25 +110,20 @@ export default function ProdutosContent() {
       ),
     },
     {
-      id: 'estoque',
+      key: 'estoque',
       label: 'Estoque',
       minWidth: 120,
       render: (produto: Produto) => (
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant="body1">{produto.estoque}</Typography>
           {produto.estoque <= 5 && (
-            <Chip
-              icon={<WarningIcon />}
-              label="Baixo"
-              color="warning"
-              size="small"
-            />
+            <Chip icon={<WarningIcon />} label="Baixo" color="warning" size="small" />
           )}
         </Box>
       ),
     },
     {
-      id: 'status',
+      key: 'status',
       label: 'Status',
       minWidth: 100,
       render: (produto: Produto) => (
@@ -149,49 +135,37 @@ export default function ProdutosContent() {
       ),
     },
     {
-      id: 'actions',
+      key: 'actions',
       label: 'Ações',
       minWidth: 150,
       render: (produto: Produto) => (
         <Box display="flex" gap={1}>
           <Tooltip title="Ver detalhes">
-            <IconButton
-              size="small"
-              onClick={() => handleView(produto)}
-              color="primary"
-            >
+            <IconButton size="small" onClick={() => handleView(produto)} color="primary">
               <InventoryIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Editar">
-            <IconButton
-              size="small"
-              onClick={() => handleEdit(produto)}
-              color="primary"
-            >
+            <IconButton size="small" onClick={() => handleEdit(produto)} color="primary">
               <EditIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir">
-            <IconButton
-              size="small"
-              onClick={() => handleDelete(produto)}
-              color="error"
-            >
+            <IconButton size="small" onClick={() => handleDelete(produto)} color="error">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
         </Box>
       ),
     },
-  ]
+  ];
 
   if (error) {
     return (
       <Alert severity="error" sx={{ mb: 3 }}>
         Erro ao carregar produtos: {error.message}
       </Alert>
-    )
+    );
   }
 
   return (
@@ -203,13 +177,9 @@ export default function ProdutosContent() {
       />
 
       <Box display="flex" gap={1} sx={{ mb: 3 }}>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleCreate}
-        >
+        <DSButton variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
           Novo Produto
-        </Button>
+        </DSButton>
       </Box>
 
       {/* Filtros */}
@@ -229,7 +199,7 @@ export default function ProdutosContent() {
       {/* Lista de produtos */}
       <Card>
         {produtos && (produtos.data as any[])?.length > 0 ? (
-          <Table
+          <DSTable
             columns={columns}
             data={produtos.data as any[]}
             loading={isLoading}
@@ -256,11 +226,7 @@ export default function ProdutosContent() {
       </Card>
 
       {/* Modais */}
-      <ProdutoFormDialog
-        open={isFormOpen}
-        onClose={handleFormClose}
-        produto={editingProduto}
-      />
+      <ProdutoFormDialog open={isFormOpen} onClose={handleFormClose} produto={editingProduto} />
 
       <ProdutoDetailDialog
         open={isDetailOpen}
@@ -268,5 +234,5 @@ export default function ProdutosContent() {
         produto={selectedProduto}
       />
     </Box>
-  )
+  );
 }

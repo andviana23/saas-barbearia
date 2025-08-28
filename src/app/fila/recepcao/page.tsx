@@ -21,10 +21,10 @@ import {
   TableSortLabel,
   Grid,
   Alert,
-} from '@mui/material'
-import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
+} from '@mui/material';
+import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
 
 // 🔌 Server Actions previstas (alinhar caminhos/contratos com backend)
 // - listQueue({ unitId?, status?, q? })
@@ -36,74 +36,72 @@ import type { Metadata } from 'next'
 // - queueAssign({ id, professionalId })
 // - queueSkip({ id })
 // - queueCancel({ id })
-import { listQueue } from '@/actions/queue'
-import { listUnits } from '@/actions/units'
-import { listProfessionals } from '@/actions/professionals'
+import { listQueue } from '@/actions/queue';
+import { listUnits } from '@/actions/units';
+import { listProfessionals } from '@/actions/professionals';
 
 /** Tipos **/
-export type Unit = { id: string; name: string }
-export type Professional = { id: string; name: string }
+export type Unit = { id: string; name: string };
+export type Professional = { id: string; name: string };
 export type QueueStatus =
   | 'waiting'
   | 'called'
   | 'in_service'
   | 'completed'
   | 'canceled'
-  | 'no_show'
+  | 'no_show';
 export type QueueItem = {
-  id: string
-  ticket: string // A-001
-  priority?: number // menor = maior prioridade (ex.: 0,1,2...)
-  customer_name?: string | null
-  service_name?: string | null
-  unit_id: string
-  unit_name?: string
-  professional_id?: string | null
-  professional_name?: string | null
-  status: QueueStatus
-  arrival_time: string // ISO datetime
-  notes?: string | null
-}
+  id: string;
+  ticket: string; // A-001
+  priority?: number; // menor = maior prioridade (ex.: 0,1,2...)
+  customer_name?: string | null;
+  service_name?: string | null;
+  unit_id: string;
+  unit_name?: string;
+  professional_id?: string | null;
+  professional_name?: string | null;
+  status: QueueStatus;
+  arrival_time: string; // ISO datetime
+  notes?: string | null;
+};
 
-export type QueueResponse = { items: QueueItem[]; total: number }
+export type QueueResponse = { items: QueueItem[]; total: number };
 
 export const metadata: Metadata = {
   title: 'Recepção - Fila | Trato',
   description: 'Painel da recepção para controle da fila',
-}
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 function minutesBetween(aISO?: string | null, bISO?: string | null) {
-  if (!aISO || !bISO) return 0
-  const a = new Date(aISO).getTime()
-  const b = new Date(bISO).getTime()
-  if (!Number.isFinite(a) || !Number.isFinite(b)) return 0
-  return Math.max(0, Math.round((b - a) / 60000))
+  if (!aISO || !bISO) return 0;
+  const a = new Date(aISO).getTime();
+  const b = new Date(bISO).getTime();
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return 0;
+  return Math.max(0, Math.round((b - a) / 60000));
 }
 function nowISO() {
-  return new Date().toISOString()
+  return new Date().toISOString();
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [k: string]: string | string[] | undefined }
+  searchParams: { [k: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // Filtros principais da recepção
-  const q = coerceString(searchParams.q) ?? ''
-  const unitId = coerceString(searchParams.unitId) || ''
-  const status =
-    (coerceString(searchParams.status) as QueueStatus | '' | undefined) ||
-    'waiting' // default: aguardando
-  const sortBy = coerceString(searchParams.sortBy) || 'priority' // priority|arrival|ticket
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'
+  const q = coerceString(searchParams.q) ?? '';
+  const unitId = coerceString(searchParams.unitId) || '';
+  const status = (coerceString(searchParams.status) as QueueStatus | '' | undefined) || 'waiting'; // default: aguardando
+  const sortBy = coerceString(searchParams.sortBy) || 'priority'; // priority|arrival|ticket
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
 
   const [units, professionals, queue] = await Promise.all([
     listUnits() as Promise<Unit[]>,
@@ -115,18 +113,17 @@ export default async function Page({
       sortBy,
       sortDir,
     }) as Promise<QueueResponse>,
-  ])
+  ]);
 
   // KPIs rápidos
-  const now = nowISO()
-  const waiting = queue.items.filter((i) => i.status === 'waiting')
-  const called = queue.items.filter((i) => i.status === 'called')
+  const now = nowISO();
+  const waiting = queue.items.filter((i) => i.status === 'waiting');
+  const called = queue.items.filter((i) => i.status === 'called');
   const avgWait = waiting.length
     ? Math.round(
-        waiting.reduce((a, i) => a + minutesBetween(i.arrival_time, now), 0) /
-          waiting.length
+        waiting.reduce((a, i) => a + minutesBetween(i.arrival_time, now), 0) / waiting.length,
       )
-    : 0
+    : 0;
 
   return (
     <Container maxWidth="xl">
@@ -145,12 +142,7 @@ export default async function Page({
             <Button component={Link} href="/agenda/novo" variant="outlined">
               Novo agendamento
             </Button>
-            <Button
-              component={Link}
-              href="/fila"
-              variant="text"
-              color="inherit"
-            >
+            <Button component={Link} href="/fila" variant="text" color="inherit">
               Abrir painel gerencial
             </Button>
           </Stack>
@@ -192,10 +184,7 @@ export default async function Page({
           method="get"
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
-          <Toolbar
-            disableGutters
-            sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center' }}
-          >
+          <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
             <TextField
               name="q"
               label="Pesquisar"
@@ -206,12 +195,7 @@ export default async function Page({
 
             <FormControl sx={{ minWidth: 200 }}>
               <InputLabel id="unitId-label">Unidade</InputLabel>
-              <Select
-                name="unitId"
-                labelId="unitId-label"
-                label="Unidade"
-                defaultValue={unitId}
-              >
+              <Select name="unitId" labelId="unitId-label" label="Unidade" defaultValue={unitId}>
                 <MenuItem value="">
                   <em>Todas</em>
                 </MenuItem>
@@ -225,12 +209,7 @@ export default async function Page({
 
             <FormControl sx={{ minWidth: 180 }}>
               <InputLabel id="status-label">Status</InputLabel>
-              <Select
-                name="status"
-                labelId="status-label"
-                label="Status"
-                defaultValue={status}
-              >
+              <Select name="status" labelId="status-label" label="Status" defaultValue={status}>
                 <MenuItem value="waiting">Aguardando</MenuItem>
                 <MenuItem value="called">Chamado</MenuItem>
                 <MenuItem value="in_service">Em atendimento</MenuItem>
@@ -239,12 +218,7 @@ export default async function Page({
 
             <FormControl sx={{ minWidth: 160 }}>
               <InputLabel id="sortBy-label">Ordenar</InputLabel>
-              <Select
-                name="sortBy"
-                labelId="sortBy-label"
-                label="Ordenar"
-                defaultValue={sortBy}
-              >
+              <Select name="sortBy" labelId="sortBy-label" label="Ordenar" defaultValue={sortBy}>
                 <MenuItem value="priority">Prioridade</MenuItem>
                 <MenuItem value="arrival">Chegada</MenuItem>
                 <MenuItem value="ticket">Ticket</MenuItem>
@@ -255,12 +229,7 @@ export default async function Page({
               <Button type="submit" variant="contained">
                 Aplicar
               </Button>
-              <Button
-                component={Link}
-                href="/fila/recepcao"
-                variant="text"
-                color="inherit"
-              >
+              <Button component={Link} href="/fila/recepcao" variant="text" color="inherit">
                 Limpar
               </Button>
               {/* <form action={queueCallNext}><Button type="submit" variant="outlined">Chamar próximo</Button></form> */}
@@ -287,13 +256,13 @@ export default async function Page({
         </Paper>
 
         <Alert severity="info" sx={{ mt: 2 }}>
-          Dica: use <b>Priorizar</b> para atender clientes sensíveis ao tempo e{' '}
-          <b>Atribuir</b> para direcionar ao profissional correto. O botão{' '}
-          <b>Chamar</b> anunciará o ticket no painel público (se configurado).
+          Dica: use <b>Priorizar</b> para atender clientes sensíveis ao tempo e <b>Atribuir</b> para
+          direcionar ao profissional correto. O botão <b>Chamar</b> anunciará o ticket no painel
+          público (se configurado).
         </Alert>
       </Box>
     </Container>
-  )
+  );
 }
 
 function ReceptionTable({
@@ -303,41 +272,38 @@ function ReceptionTable({
   sortDir,
   currentParams,
 }: {
-  items: QueueItem[]
-  professionals: Professional[]
-  sortBy: string
-  sortDir: 'asc' | 'desc'
-  currentParams: { [k: string]: string | string[] | undefined }
+  items: QueueItem[];
+  professionals: Professional[];
+  sortBy: string;
+  sortDir: 'asc' | 'desc';
+  currentParams: { [k: string]: string | string[] | undefined };
 }) {
-  const params = new URLSearchParams()
+  const params = new URLSearchParams();
   Object.entries(currentParams).forEach(([k, v]) => {
-    if (Array.isArray(v)) params.set(k, v[0] as string)
-    else if (typeof v === 'string') params.set(k, v)
-  })
+    if (Array.isArray(v)) params.set(k, v[0] as string);
+    else if (typeof v === 'string') params.set(k, v);
+  });
   function buildQuery(patch: Record<string, string | undefined>) {
-    const next = new URLSearchParams(params)
+    const next = new URLSearchParams(params);
     Object.entries(patch).forEach(([k, v]) => {
-      if (v === undefined || v === '') next.delete(k)
-      else next.set(k, v)
-    })
-    const qs = next.toString()
-    return qs ? `?${qs}` : ''
+      if (v === undefined || v === '') next.delete(k);
+      else next.set(k, v);
+    });
+    const qs = next.toString();
+    return qs ? `?${qs}` : '';
   }
   const handleSort = (column: string) => {
-    const isAsc = sortBy === column && sortDir === 'asc'
-    return buildQuery({ sortBy: column, sortDir: isAsc ? 'desc' : 'asc' })
-  }
+    const isAsc = sortBy === column && sortDir === 'asc';
+    return buildQuery({ sortBy: column, sortDir: isAsc ? 'desc' : 'asc' });
+  };
 
-  const now = nowISO()
+  const now = nowISO();
 
   return (
     <Table size="small" aria-label="Fila da recepção">
       <TableHead>
         <TableRow>
-          <TableCell
-            sortDirection={sortBy === 'priority' ? sortDir : false}
-            sx={{ width: 100 }}
-          >
+          <TableCell sortDirection={sortBy === 'priority' ? sortDir : false} sx={{ width: 100 }}>
             <Link href={handleSort('priority')}>
               <TableSortLabel
                 active={sortBy === 'priority'}
@@ -380,11 +346,11 @@ function ReceptionTable({
           </TableRow>
         ) : (
           items.map((i) => {
-            const waitMin = minutesBetween(i.arrival_time, now)
-            const arrivalTime = new Date(i.arrival_time).toLocaleTimeString(
-              'pt-BR',
-              { hour: '2-digit', minute: '2-digit' }
-            )
+            const waitMin = minutesBetween(i.arrival_time, now);
+            const arrivalTime = new Date(i.arrival_time).toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
             return (
               <TableRow key={i.id} hover>
                 <TableCell>
@@ -401,12 +367,7 @@ function ReceptionTable({
                 <TableCell>{arrivalTime}</TableCell>
                 <TableCell align="right">{waitMin} min</TableCell>
                 <TableCell align="right">
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    justifyContent="flex-end"
-                    alignItems="center"
-                  >
+                  <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center">
                     {/* Placeholders; troque por <form action=...> quando tiver Server Actions */}
                     <Button
                       component={Link}
@@ -445,21 +406,15 @@ function ReceptionTable({
                   </Stack>
                 </TableCell>
               </TableRow>
-            )
+            );
           })
         )}
       </TableBody>
     </Table>
-  )
+  );
 }
 
-function AssignMenu({
-  professionals,
-  id,
-}: {
-  professionals: Professional[]
-  id: string
-}) {
+function AssignMenu({ professionals, id }: { professionals: Professional[]; id: string }) {
   // Simples: um select inline que navega com querystring (até ligar Server Actions)
   return (
     <FormControl size="small" sx={{ minWidth: 180 }}>
@@ -469,9 +424,9 @@ function AssignMenu({
         label="Atribuir"
         defaultValue=""
         onChange={(e) => {
-          const val = (e.target as HTMLSelectElement).value
-          if (!val) return
-          window.location.href = `/fila/recepcao?assign=${id}&professionalId=${val}`
+          const val = (e.target as HTMLSelectElement).value;
+          if (!val) return;
+          window.location.href = `/fila/recepcao?assign=${id}&professionalId=${val}`;
         }}
       >
         <MenuItem value="">
@@ -484,5 +439,5 @@ function AssignMenu({
         ))}
       </Select>
     </FormControl>
-  )
+  );
 }

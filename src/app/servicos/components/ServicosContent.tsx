@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Container,
@@ -25,91 +25,82 @@ import {
   Grid,
   IconButton,
   Tooltip,
-} from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AddIcon from '@mui/icons-material/Add'
-import { useState } from 'react'
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
 
 // Types
 export type Service = {
-  id: string
-  name: string
-  description?: string | null
-  category_id: string
-  category_name?: string
-  duration_minutes: number
-  price: number
-  is_active: boolean
-  created_at?: string | null
-}
+  id: string;
+  name: string;
+  description?: string | null;
+  category_id: string;
+  category_name?: string;
+  duration_minutes: number;
+  price: number;
+  is_active: boolean;
+  created_at?: string | null;
+};
 
 export type ServiceCategory = {
-  id: string
-  name: string
-  is_active: boolean
-}
+  id: string;
+  name: string;
+  is_active: boolean;
+};
 
 export type ServicesResponse = {
-  items: Service[]
-  total: number
-}
+  items: Service[];
+  total: number;
+};
 
 interface ServicosContentProps {
-  initialData: ServicesResponse
-  categories: ServiceCategory[]
-  searchParams: Record<string, string>
+  initialData: ServicesResponse;
+  categories: ServiceCategory[];
+  searchParams: Record<string, string>;
 }
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(amount)
+  }).format(amount);
 }
 
 function formatDuration(minutes: number) {
-  const hours = Math.floor(minutes / 60)
-  const mins = minutes % 60
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
 
   if (hours > 0 && mins > 0) {
-    return `${hours}h ${mins}min`
+    return `${hours}h ${mins}min`;
   } else if (hours > 0) {
-    return `${hours}h`
+    return `${hours}h`;
   } else {
-    return `${mins}min`
+    return `${mins}min`;
   }
 }
 
-export function ServicosContent({
-  initialData,
-  categories,
-  searchParams,
-}: ServicosContentProps) {
-  const [services, setServices] = useState(initialData)
-  const [openCreateDialog, setOpenCreateDialog] = useState(false)
-  const [openEditDialog, setOpenEditDialog] = useState(false)
-  const [selectedService, setSelectedService] = useState<Service | null>(null)
+export function ServicosContent({ initialData, categories, searchParams }: ServicosContentProps) {
+  const [services, setServices] = useState(initialData);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const handleEdit = (service: Service) => {
-    setSelectedService(service)
-    setOpenEditDialog(true)
-  }
+    setSelectedService(service);
+    setOpenEditDialog(true);
+  };
 
   const handleDelete = async (serviceId: string) => {
     // TODO: Implementar exclusão via server action
-    console.log('Delete service:', serviceId)
-  }
+    console.log('Delete service:', serviceId);
+  };
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ py: 3 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 3 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
           <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
             Serviços
           </Typography>
@@ -136,11 +127,7 @@ export function ServicosContent({
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
           <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap' }}>
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ flex: 1 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ flex: 1 }}>
               <TextField
                 name="q"
                 label="Pesquisar"
@@ -217,10 +204,7 @@ export function ServicosContent({
         {/* Resumo */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Total de Serviços
               </Typography>
@@ -230,10 +214,7 @@ export function ServicosContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Serviços Ativos
               </Typography>
@@ -243,28 +224,21 @@ export function ServicosContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Preço Médio
               </Typography>
               <Typography variant="h4" color="info.main">
                 {formatCurrency(
                   services.items.length > 0
-                    ? services.items.reduce((sum, s) => sum + s.price, 0) /
-                        services.items.length
-                    : 0
+                    ? services.items.reduce((sum, s) => sum + s.price, 0) / services.items.length
+                    : 0,
                 )}
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Duração Média
               </Typography>
@@ -272,11 +246,9 @@ export function ServicosContent({
                 {services.items.length > 0
                   ? formatDuration(
                       Math.round(
-                        services.items.reduce(
-                          (sum, s) => sum + s.duration_minutes,
-                          0
-                        ) / services.items.length
-                      )
+                        services.items.reduce((sum, s) => sum + s.duration_minutes, 0) /
+                          services.items.length,
+                      ),
                     )
                   : '0min'}
               </Typography>
@@ -352,16 +324,9 @@ export function ServicosContent({
                       )}
                     </TableCell>
                     <TableCell align="right">
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        justifyContent="flex-end"
-                      >
+                      <Stack direction="row" spacing={1} justifyContent="flex-end">
                         <Tooltip title="Editar">
-                          <IconButton
-                            size="small"
-                            onClick={() => handleEdit(service)}
-                          >
+                          <IconButton size="small" onClick={() => handleEdit(service)}>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
@@ -398,5 +363,5 @@ export function ServicosContent({
         /> */}
       </Box>
     </Container>
-  )
+  );
 }

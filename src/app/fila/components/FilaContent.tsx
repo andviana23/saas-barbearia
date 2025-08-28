@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Container,
@@ -25,15 +25,15 @@ import {
   IconButton,
   Tooltip,
   Alert,
-} from '@mui/material'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CancelIcon from '@mui/icons-material/Cancel'
-import PersonOffIcon from '@mui/icons-material/PersonOff'
-import CallIcon from '@mui/icons-material/Call'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import PeopleIcon from '@mui/icons-material/People'
-import { useState } from 'react'
+} from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import CallIcon from '@mui/icons-material/Call';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PeopleIcon from '@mui/icons-material/People';
+import { useState } from 'react';
 
 // Types
 export type QueueStatus =
@@ -42,70 +42,70 @@ export type QueueStatus =
   | 'in_service'
   | 'completed'
   | 'canceled'
-  | 'no_show'
+  | 'no_show';
 
 export type QueueItem = {
-  id: string
-  ticket: string
-  customer_name?: string | null
-  service_name?: string | null
-  unit_id: string
-  unit_name?: string
-  professional_id?: string | null
-  professional_name?: string | null
-  status: QueueStatus
-  arrival_time: string
-  called_at?: string | null
-  started_at?: string | null
-  finished_at?: string | null
-  notes?: string | null
-  estimated_duration?: number | null
-}
+  id: string;
+  ticket: string;
+  customer_name?: string | null;
+  service_name?: string | null;
+  unit_id: string;
+  unit_name?: string;
+  professional_id?: string | null;
+  professional_name?: string | null;
+  status: QueueStatus;
+  arrival_time: string;
+  called_at?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  notes?: string | null;
+  estimated_duration?: number | null;
+};
 
 export type Unit = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type Professional = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type QueueResponse = {
-  items: QueueItem[]
-  total: number
-}
+  items: QueueItem[];
+  total: number;
+};
 
 interface FilaContentProps {
-  initialData: QueueResponse
-  units: Unit[]
-  professionals: Professional[]
-  searchParams: Record<string, string>
+  initialData: QueueResponse;
+  units: Unit[];
+  professionals: Professional[];
+  searchParams: Record<string, string>;
 }
 
 function minutesBetween(startISO: string, endISO?: string) {
-  const start = new Date(startISO).getTime()
-  const end = endISO ? new Date(endISO).getTime() : Date.now()
-  return Math.max(0, Math.round((end - start) / 60000))
+  const start = new Date(startISO).getTime();
+  const end = endISO ? new Date(endISO).getTime() : Date.now();
+  return Math.max(0, Math.round((end - start) / 60000));
 }
 
 function statusChip(status: QueueStatus) {
   switch (status) {
     case 'waiting':
-      return <Chip label="Aguardando" size="small" />
+      return <Chip label="Aguardando" size="small" />;
     case 'called':
-      return <Chip label="Chamado" color="info" size="small" />
+      return <Chip label="Chamado" color="info" size="small" />;
     case 'in_service':
-      return <Chip label="Em atendimento" color="primary" size="small" />
+      return <Chip label="Em atendimento" color="primary" size="small" />;
     case 'completed':
-      return <Chip label="Concluído" color="success" size="small" />
+      return <Chip label="Concluído" color="success" size="small" />;
     case 'canceled':
-      return <Chip label="Cancelado" color="warning" size="small" />
+      return <Chip label="Cancelado" color="warning" size="small" />;
     case 'no_show':
-      return <Chip label="No-show" color="error" size="small" />
+      return <Chip label="No-show" color="error" size="small" />;
     default:
-      return <Chip label={status} size="small" />
+      return <Chip label={status} size="small" />;
   }
 }
 
@@ -113,71 +113,63 @@ function formatTime(isoString: string) {
   return new Date(isoString).toLocaleTimeString('pt-BR', {
     hour: '2-digit',
     minute: '2-digit',
-  })
+  });
 }
 
-export function FilaContent({
-  initialData,
-  units,
-  professionals,
-  searchParams,
-}: FilaContentProps) {
-  const [queue, setQueue] = useState(initialData)
-  const [autoRefresh, setAutoRefresh] = useState(true)
+export function FilaContent({ initialData, units, professionals, searchParams }: FilaContentProps) {
+  const [queue, setQueue] = useState(initialData);
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Estatísticas da fila
   const stats = {
     waiting: queue.items.filter((item) => item.status === 'waiting').length,
-    inService: queue.items.filter((item) => item.status === 'in_service')
-      .length,
+    inService: queue.items.filter((item) => item.status === 'in_service').length,
     avgWaitTime:
       queue.items.filter((item) => item.status === 'waiting').length > 0
         ? Math.round(
             queue.items
               .filter((item) => item.status === 'waiting')
-              .reduce(
-                (sum, item) => sum + minutesBetween(item.arrival_time),
-                0
-              ) / queue.items.filter((item) => item.status === 'waiting').length
+              .reduce((sum, item) => sum + minutesBetween(item.arrival_time), 0) /
+              queue.items.filter((item) => item.status === 'waiting').length,
           )
         : 0,
     total: queue.total,
-  }
+  };
 
   const handleCallNext = async () => {
     // TODO: Implementar chamar próximo via server action
-    console.log('Call next in queue')
-  }
+    console.log('Call next in queue');
+  };
 
   const handleCallItem = async (itemId: string) => {
     // TODO: Implementar chamar item específico via server action
-    console.log('Call item:', itemId)
-  }
+    console.log('Call item:', itemId);
+  };
 
   const handleStartService = async (itemId: string) => {
     // TODO: Implementar iniciar atendimento via server action
-    console.log('Start service:', itemId)
-  }
+    console.log('Start service:', itemId);
+  };
 
   const handleFinishService = async (itemId: string) => {
     // TODO: Implementar finalizar atendimento via server action
-    console.log('Finish service:', itemId)
-  }
+    console.log('Finish service:', itemId);
+  };
 
   const handleCancelItem = async (itemId: string) => {
     // TODO: Implementar cancelar item via server action
-    console.log('Cancel item:', itemId)
-  }
+    console.log('Cancel item:', itemId);
+  };
 
   const handleNoShow = async (itemId: string) => {
     // TODO: Implementar marcar como no-show via server action
-    console.log('Mark as no-show:', itemId)
-  }
+    console.log('Mark as no-show:', itemId);
+  };
 
   const handleRefresh = () => {
     // TODO: Atualizar dados da fila
-    console.log('Refresh queue')
-  }
+    console.log('Refresh queue');
+  };
 
   return (
     <Container maxWidth="xl">
@@ -196,11 +188,7 @@ export function FilaContent({
             <Button variant="outlined" href="/agenda/novo">
               Novo Agendamento
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleCallNext}
-              disabled={stats.waiting === 0}
-            >
+            <Button variant="contained" onClick={handleCallNext} disabled={stats.waiting === 0}>
               Chamar Próximo
             </Button>
             <Button variant="text" onClick={handleRefresh}>
@@ -218,11 +206,7 @@ export function FilaContent({
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
           <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap' }}>
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ flex: 1 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ flex: 1 }}>
               <TextField
                 name="q"
                 label="Pesquisar"
@@ -305,10 +289,7 @@ export function FilaContent({
         {/* Estatísticas */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Stack
                 direction="row"
                 alignItems="center"
@@ -327,10 +308,7 @@ export function FilaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Stack
                 direction="row"
                 alignItems="center"
@@ -349,10 +327,7 @@ export function FilaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Stack
                 direction="row"
                 alignItems="center"
@@ -371,10 +346,7 @@ export function FilaContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Stack
                 direction="row"
                 alignItems="center"
@@ -430,8 +402,8 @@ export function FilaContent({
                 </TableRow>
               ) : (
                 queue.items.map((item) => {
-                  const waitTime = minutesBetween(item.arrival_time)
-                  const arrivalTime = formatTime(item.arrival_time)
+                  const waitTime = minutesBetween(item.arrival_time);
+                  const arrivalTime = formatTime(item.arrival_time);
 
                   return (
                     <TableRow key={item.id} hover>
@@ -441,14 +413,10 @@ export function FilaContent({
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body1">
-                          {item.customer_name || '—'}
-                        </Typography>
+                        <Typography variant="body1">{item.customer_name || '—'}</Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2">
-                          {item.service_name || '—'}
-                        </Typography>
+                        <Typography variant="body2">{item.service_name || '—'}</Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2">
@@ -462,22 +430,14 @@ export function FilaContent({
                         <Typography
                           variant="body2"
                           fontWeight={waitTime > 30 ? 600 : 400}
-                          color={
-                            waitTime > 30 ? 'warning.main' : 'text.primary'
-                          }
+                          color={waitTime > 30 ? 'warning.main' : 'text.primary'}
                         >
                           {waitTime} min
                         </Typography>
                       </TableCell>
-                      <TableCell align="center">
-                        {statusChip(item.status)}
-                      </TableCell>
+                      <TableCell align="center">{statusChip(item.status)}</TableCell>
                       <TableCell align="right">
-                        <Stack
-                          direction="row"
-                          spacing={0.5}
-                          justifyContent="flex-end"
-                        >
+                        <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                           {item.status === 'waiting' && (
                             <Tooltip title="Chamar">
                               <IconButton
@@ -490,8 +450,7 @@ export function FilaContent({
                             </Tooltip>
                           )}
 
-                          {(item.status === 'called' ||
-                            item.status === 'waiting') && (
+                          {(item.status === 'called' || item.status === 'waiting') && (
                             <Tooltip title="Iniciar Atendimento">
                               <IconButton
                                 size="small"
@@ -543,7 +502,7 @@ export function FilaContent({
                         </Stack>
                       </TableCell>
                     </TableRow>
-                  )
+                  );
                 })
               )}
             </TableBody>
@@ -553,12 +512,12 @@ export function FilaContent({
         {/* Dicas */}
         <Alert severity="info" sx={{ mt: 3 }}>
           <Typography variant="body2">
-            <strong>Dica:</strong> Mantenha este painel aberto na recepção para
-            acompanhar a fila em tempo real. Os tempos de espera são calculados
-            automaticamente desde a chegada do cliente.
+            <strong>Dica:</strong> Mantenha este painel aberto na recepção para acompanhar a fila em
+            tempo real. Os tempos de espera são calculados automaticamente desde a chegada do
+            cliente.
           </Typography>
         </Alert>
       </Box>
     </Container>
-  )
+  );
 }

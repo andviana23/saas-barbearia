@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -19,7 +19,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Close as CloseIcon,
   CloudUpload as UploadIcon,
@@ -27,14 +27,14 @@ import {
   Error as ErrorIcon,
   Warning as WarningIcon,
   GetApp as DownloadIcon,
-} from '@mui/icons-material'
-import { useDropzone } from 'react-dropzone'
-import { useImportarClientes } from '@/hooks/use-clientes'
+} from '@mui/icons-material';
+import { useDropzone } from 'react-dropzone';
+import { useImportarClientes } from '@/hooks/use-clientes';
 
 interface ImportClientesDialogProps {
-  open: boolean
-  onClose: () => void
-  onSuccess: (message: string) => void
+  open: boolean;
+  onClose: () => void;
+  onSuccess: (message: string) => void;
 }
 
 export default function ImportClientesDialog({
@@ -42,19 +42,19 @@ export default function ImportClientesDialog({
   onClose,
   onSuccess,
 }: ImportClientesDialogProps) {
-  const [file, setFile] = useState<File | null>(null)
-  const [importResult, setImportResult] = useState<any>(null)
-  const [step, setStep] = useState<'upload' | 'preview' | 'result'>('upload')
+  const [file, setFile] = useState<File | null>(null);
+  const [importResult, setImportResult] = useState<any>(null);
+  const [step, setStep] = useState<'upload' | 'preview' | 'result'>('upload');
 
-  const importMutation = useImportarClientes()
+  const importMutation = useImportarClientes();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const csvFile = acceptedFiles[0]
+    const csvFile = acceptedFiles[0];
     if (csvFile) {
-      setFile(csvFile)
-      setStep('preview')
+      setFile(csvFile);
+      setStep('preview');
     }
-  }, [])
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -64,57 +64,57 @@ export default function ImportClientesDialog({
     },
     multiple: false,
     maxSize: 5 * 1024 * 1024, // 5MB
-  })
+  });
 
   const handleImport = async () => {
-    if (!file) return
+    if (!file) return;
 
     try {
-      const formData = new FormData()
-      formData.append('file', file)
+      const formData = new FormData();
+      formData.append('file', file);
 
-      const result = await importMutation.mutateAsync(formData)
+      const result = await importMutation.mutateAsync(formData);
 
       if (result.success) {
-        setImportResult(result.data)
-        setStep('result')
+        setImportResult(result.data);
+        setStep('result');
       } else {
         setImportResult({
           success: false,
           message: result.message,
           errors: result.errors || [],
-        })
-        setStep('result')
+        });
+        setStep('result');
       }
     } catch (error) {
       setImportResult({
         success: false,
         message: error instanceof Error ? error.message : 'Erro desconhecido',
         errors: [],
-      })
-      setStep('result')
+      });
+      setStep('result');
     }
-  }
+  };
 
   const handleClose = () => {
     if (!importMutation.isPending) {
-      setFile(null)
-      setImportResult(null)
-      setStep('upload')
-      onClose()
+      setFile(null);
+      setImportResult(null);
+      setStep('upload');
+      onClose();
     }
-  }
+  };
 
   const handleFinish = () => {
-    const success = importResult?.success
-    const imported = importResult?.imported || 0
+    const success = importResult?.success;
+    const imported = importResult?.imported || 0;
 
     if (success && imported > 0) {
-      onSuccess(`${imported} clientes importados com sucesso!`)
+      onSuccess(`${imported} clientes importados com sucesso!`);
     }
 
-    handleClose()
-  }
+    handleClose();
+  };
 
   const downloadTemplate = () => {
     // Template CSV
@@ -122,18 +122,18 @@ export default function ImportClientesDialog({
       'nome,email,telefone,data_nascimento,observacoes',
       'João Silva,joao@exemplo.com,(11) 99999-9999,1990-01-15,Cliente preferencial',
       'Maria Santos,maria@exemplo.com,(11) 88888-8888,1985-05-20,Alérgica a produtos com fragrância',
-    ].join('\n')
+    ].join('\n');
 
-    const blob = new Blob([template], { type: 'text/csv;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'template-clientes.csv'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
-  }
+    const blob = new Blob([template], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'template-clientes.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   const renderUploadStep = () => (
     <Stack spacing={3}>
@@ -182,13 +182,12 @@ export default function ImportClientesDialog({
         </Typography>
       </Paper>
     </Stack>
-  )
+  );
 
   const renderPreviewStep = () => (
     <Stack spacing={3}>
       <Alert severity="info">
-        Arquivo selecionado. Clique em &quot;Importar&quot; para processar os
-        dados.
+        Arquivo selecionado. Clique em &quot;Importar&quot; para processar os dados.
       </Alert>
 
       <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
@@ -205,21 +204,21 @@ export default function ImportClientesDialog({
         <Button
           variant="outlined"
           onClick={() => {
-            setFile(null)
-            setStep('upload')
+            setFile(null);
+            setStep('upload');
           }}
         >
           Escolher Outro
         </Button>
       </Stack>
     </Stack>
-  )
+  );
 
   const renderResultStep = () => {
-    const success = importResult?.success
-    const imported = importResult?.imported || 0
-    const errors = importResult?.errors || []
-    const skipped = importResult?.skipped || 0
+    const success = importResult?.success;
+    const imported = importResult?.imported || 0;
+    const errors = importResult?.errors || [];
+    const skipped = importResult?.skipped || 0;
 
     return (
       <Stack spacing={3}>
@@ -282,32 +281,22 @@ export default function ImportClientesDialog({
 
               {errors.length > 10 && (
                 <ListItem>
-                  <ListItemText
-                    secondary={`... e mais ${errors.length - 10} erros`}
-                  />
+                  <ListItemText secondary={`... e mais ${errors.length - 10} erros`} />
                 </ListItem>
               )}
             </List>
           </Box>
         )}
       </Stack>
-    )
-  }
+    );
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h6">Importar Clientes</Typography>
-          <IconButton
-            onClick={handleClose}
-            disabled={importMutation.isPending}
-            size="small"
-          >
+          <IconButton onClick={handleClose} disabled={importMutation.isPending} size="small">
             <CloseIcon />
           </IconButton>
         </Stack>
@@ -351,5 +340,5 @@ export default function ImportClientesDialog({
         )}
       </DialogActions>
     </Dialog>
-  )
+  );
 }

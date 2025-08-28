@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Box,
   Card,
@@ -11,41 +11,41 @@ import {
   Typography,
   Alert,
   CircularProgress,
-} from '@mui/material'
-import { useAuth } from '@/hooks/use-auth'
+} from '@mui/material';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { resetPassword } = useAuth()
-  const router = useRouter()
+  const { resetPassword } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
 
     try {
-      const result = await resetPassword(email)
+      const result = await resetPassword(email);
 
       if (result.success) {
-        setSuccess(true)
+        setSuccess(true);
       } else {
-        setError('Erro ao enviar email de recuperação. Tente novamente.')
+        setError('Erro ao enviar email de recuperação. Tente novamente.');
       }
     } catch (err) {
-      setError('Erro inesperado. Tente novamente.')
+      setError('Erro inesperado. Tente novamente.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleBackToLogin = () => {
-    router.push('/login')
-  }
+    router.push('/login');
+  };
 
   if (success) {
     return (
@@ -73,22 +73,16 @@ export default function ForgotPasswordPage() {
             </Typography>
 
             <Alert severity="success" sx={{ mt: 2, mb: 3 }}>
-              Enviamos um link de recuperação para {email}. Verifique sua caixa
-              de entrada e spam.
+              Enviamos um link de recuperação para {email}. Verifique sua caixa de entrada e spam.
             </Alert>
 
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleBackToLogin}
-              sx={{ mt: 2 }}
-            >
+            <Button fullWidth variant="contained" onClick={handleBackToLogin} sx={{ mt: 2 }}>
               Voltar para o Login
             </Button>
           </CardContent>
         </Card>
       </Box>
-    )
+    );
   }
 
   return (
@@ -165,5 +159,5 @@ export default function ForgotPasswordPage() {
         </CardContent>
       </Card>
     </Box>
-  )
+  );
 }

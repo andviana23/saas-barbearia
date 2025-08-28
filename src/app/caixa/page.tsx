@@ -20,89 +20,83 @@ import {
   TableSortLabel,
   Divider,
   Grid,
-} from '@mui/material'
-import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
+} from '@mui/material';
+import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
 
 // 🔌 Server Actions (commented out - using mock data for now)
 // import { listCashMovements } from '@/actions/cash'
 
 /** Tipos **/
 export type CashMovement = {
-  id: string
-  description: string
-  amount: number
-  type: 'income' | 'expense'
-  category: string
-  professional_name?: string | null
-  payment_method: string
-  date: string
-  created_at?: string | null
-}
+  id: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  category: string;
+  professional_name?: string | null;
+  payment_method: string;
+  date: string;
+  created_at?: string | null;
+};
 
 export type CashResponse = {
-  items: CashMovement[]
-  total: number
+  items: CashMovement[];
+  total: number;
   summary: {
-    total_income: number
-    total_expense: number
-    balance: number
-  }
-}
+    total_income: number;
+    total_expense: number;
+    balance: number;
+  };
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 function coerceNumber(x: unknown): number | undefined {
-  const s = coerceString(x)
-  if (!s) return undefined
-  const n = Number(s)
-  return Number.isFinite(n) ? n : undefined
+  const s = coerceString(x);
+  if (!s) return undefined;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : undefined;
 }
-function buildQuery(
-  params: URLSearchParams,
-  patch: Record<string, string | undefined>
-) {
-  const next = new URLSearchParams(params)
+function buildQuery(params: URLSearchParams, patch: Record<string, string | undefined>) {
+  const next = new URLSearchParams(params);
   Object.entries(patch).forEach(([k, v]) => {
-    if (v === undefined || v === '') next.delete(k)
-    else next.set(k, v)
-  })
-  const qs = next.toString()
-  return qs ? `?${qs}` : ''
+    if (v === undefined || v === '') next.delete(k);
+    else next.set(k, v);
+  });
+  const qs = next.toString();
+  return qs ? `?${qs}` : '';
 }
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(amount)
+  }).format(amount);
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // 🔎 Filtros
-  const q = coerceString(searchParams.q) ?? ''
-  const type = coerceString(searchParams.type) || ''
-  const category = coerceString(searchParams.category) || ''
+  const q = coerceString(searchParams.q) ?? '';
+  const type = coerceString(searchParams.type) || '';
+  const category = coerceString(searchParams.category) || '';
   // const professional = coerceString(searchParams.professional) || ''
-  const paymentMethod = coerceString(searchParams.paymentMethod) || ''
-  const period = coerceString(searchParams.period) || '30d'
-  const sortBy = coerceString(searchParams.sortBy) || 'date'
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'
-  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0)
-  const pageSize = Math.min(
-    100,
-    Math.max(5, coerceNumber(searchParams.pageSize) ?? 20)
-  )
+  const paymentMethod = coerceString(searchParams.paymentMethod) || '';
+  const period = coerceString(searchParams.period) || '30d';
+  const sortBy = coerceString(searchParams.sortBy) || 'date';
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
+  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0);
+  const pageSize = Math.min(100, Math.max(5, coerceNumber(searchParams.pageSize) ?? 20));
 
   // 📥 Dados (mock para agora, integrar com backend depois)
   const cashData = {
@@ -136,26 +130,17 @@ export default async function Page({
       total_expense: 1500,
       balance: 3500,
     },
-  } as CashResponse
+  } as CashResponse;
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ py: 3 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 3 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
           <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
             Caixa
           </Typography>
           <Stack direction="row" spacing={1}>
-            <Button
-              component={Link}
-              href="/caixa/fechamento"
-              variant="outlined"
-            >
+            <Button component={Link} href="/caixa/fechamento" variant="outlined">
               Fechamento
             </Button>
             <Button component={Link} href="/caixa/historico" variant="outlined">
@@ -208,11 +193,7 @@ export default async function Page({
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
           <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap' }}>
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ flex: 1 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ flex: 1 }}>
               <TextField
                 name="q"
                 label="Pesquisar"
@@ -223,12 +204,7 @@ export default async function Page({
 
               <FormControl sx={{ minWidth: 150 }}>
                 <InputLabel id="period-label">Período</InputLabel>
-                <Select
-                  labelId="period-label"
-                  name="period"
-                  label="Período"
-                  defaultValue={period}
-                >
+                <Select labelId="period-label" name="period" label="Período" defaultValue={period}>
                   <MenuItem value="7d">Últimos 7 dias</MenuItem>
                   <MenuItem value="30d">Últimos 30 dias</MenuItem>
                   <MenuItem value="90d">Últimos 3 meses</MenuItem>
@@ -238,12 +214,7 @@ export default async function Page({
 
               <FormControl sx={{ minWidth: 120 }}>
                 <InputLabel id="type-label">Tipo</InputLabel>
-                <Select
-                  labelId="type-label"
-                  name="type"
-                  label="Tipo"
-                  defaultValue={type}
-                >
+                <Select labelId="type-label" name="type" label="Tipo" defaultValue={type}>
                   <MenuItem value="">
                     <em>Todos</em>
                   </MenuItem>
@@ -283,12 +254,7 @@ export default async function Page({
               <Button type="submit" variant="contained">
                 Aplicar
               </Button>
-              <Button
-                component={Link}
-                href="/caixa"
-                variant="text"
-                color="inherit"
-              >
+              <Button component={Link} href="/caixa" variant="text" color="inherit">
                 Limpar
               </Button>
             </Stack>
@@ -309,7 +275,7 @@ export default async function Page({
         </Paper>
       </Box>
     </Container>
-  )
+  );
 }
 
 function CashTable({
@@ -321,31 +287,30 @@ function CashTable({
   sortDir,
   currentParams,
 }: {
-  data: CashMovement[]
-  total: number
-  page: number
-  pageSize: number
-  sortBy: string
-  sortDir: 'asc' | 'desc'
-  currentParams: { [key: string]: string | string[] | undefined }
+  data: CashMovement[];
+  total: number;
+  page: number;
+  pageSize: number;
+  sortBy: string;
+  sortDir: 'asc' | 'desc';
+  currentParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = new URLSearchParams()
+  const params = new URLSearchParams();
   Object.entries(currentParams).forEach(([k, v]) => {
-    if (Array.isArray(v)) params.set(k, v[0] as string)
-    else if (typeof v === 'string') params.set(k, v)
-  })
+    if (Array.isArray(v)) params.set(k, v[0] as string);
+    else if (typeof v === 'string') params.set(k, v);
+  });
 
   const handleSortQuery = (column: string) => {
-    const isAsc = sortBy === column && sortDir === 'asc'
+    const isAsc = sortBy === column && sortDir === 'asc';
     return buildQuery(params, {
       sortBy: column,
       sortDir: isAsc ? 'desc' : 'asc',
       page: '0',
-    })
-  }
+    });
+  };
 
-  const handlePageLink = (nextPage: number) =>
-    buildQuery(params, { page: String(nextPage) })
+  const handlePageLink = (nextPage: number) => buildQuery(params, { page: String(nextPage) });
 
   return (
     <>
@@ -362,9 +327,7 @@ function CashTable({
                 </TableSortLabel>
               </Link>
             </TableCell>
-            <TableCell
-              sortDirection={sortBy === 'description' ? sortDir : false}
-            >
+            <TableCell sortDirection={sortBy === 'description' ? sortDir : false}>
               <Link href={handleSortQuery('description')}>
                 <TableSortLabel
                   active={sortBy === 'description'}
@@ -378,10 +341,7 @@ function CashTable({
             <TableCell>Profissional</TableCell>
             <TableCell>Pagamento</TableCell>
             <TableCell align="center">Tipo</TableCell>
-            <TableCell
-              align="right"
-              sortDirection={sortBy === 'amount' ? sortDir : false}
-            >
+            <TableCell align="right" sortDirection={sortBy === 'amount' ? sortDir : false}>
               <Link href={handleSortQuery('amount')}>
                 <TableSortLabel
                   active={sortBy === 'amount'}
@@ -400,9 +360,7 @@ function CashTable({
           {data.length === 0 ? (
             <TableRow>
               <TableCell colSpan={8}>
-                <Box
-                  sx={{ py: 6, textAlign: 'center', color: 'text.secondary' }}
-                >
+                <Box sx={{ py: 6, textAlign: 'center', color: 'text.secondary' }}>
                   Nenhuma movimentação encontrada com os filtros atuais.
                 </Box>
               </TableCell>
@@ -434,9 +392,7 @@ function CashTable({
                   <Typography
                     variant="body1"
                     fontWeight={600}
-                    color={
-                      movement.type === 'income' ? 'success.main' : 'error.main'
-                    }
+                    color={movement.type === 'income' ? 'success.main' : 'error.main'}
                   >
                     {formatCurrency(Math.abs(movement.amount))}
                   </Typography>
@@ -470,11 +426,7 @@ function CashTable({
           p: 2,
         }}
       >
-        <Button
-          component={Link}
-          href={handlePageLink(Math.max(0, page - 1))}
-          disabled={page === 0}
-        >
+        <Button component={Link} href={handlePageLink(Math.max(0, page - 1))} disabled={page === 0}>
           Anterior
         </Button>
         <Typography variant="body2" color="text.secondary">
@@ -489,10 +441,10 @@ function CashTable({
         </Button>
       </Box>
     </>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Caixa | Trato',
   description: 'Movimentações financeiras',
-}
+};

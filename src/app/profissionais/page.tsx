@@ -1,65 +1,62 @@
-import { unstable_noStore as noStore } from 'next/cache'
-import type { Metadata } from 'next'
-import { ProfissionaisContent } from './components/ProfissionaisContent'
+import { unstable_noStore as noStore } from 'next/cache';
+import type { Metadata } from 'next';
+import { ProfissionaisContent } from './components/ProfissionaisContent';
 
 // 🔌 Server Actions
-import { listProfessionals } from '@/actions/professionals'
+import { listProfessionals } from '@/actions/professionals';
 
 /** Tipos **/
 export type Professional = {
-  id: string
-  name: string
-  email?: string | null
-  phone?: string | null
-  role?: string | null
-  is_active: boolean
-  services_count?: number
-  avatar_url?: string | null
-  commission_percentage?: number
-  created_at?: string | null
-}
+  id: string;
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  role?: string | null;
+  is_active: boolean;
+  services_count?: number;
+  avatar_url?: string | null;
+  commission_percentage?: number;
+  created_at?: string | null;
+};
 
 export type ProfessionalsResponse = {
-  items: Professional[]
-  total: number
-}
+  items: Professional[];
+  total: number;
+};
 
 export const metadata: Metadata = {
   title: 'Profissionais | Trato',
   description: 'Gestão de profissionais e horários',
-}
+};
 
 /** Utils **/
 function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0]
-  if (typeof x === 'string') return x
-  return undefined
+  if (Array.isArray(x)) return x[0];
+  if (typeof x === 'string') return x;
+  return undefined;
 }
 function coerceNumber(x: unknown): number | undefined {
-  const s = coerceString(x)
-  if (!s) return undefined
-  const n = Number(s)
-  return Number.isFinite(n) ? n : undefined
+  const s = coerceString(x);
+  if (!s) return undefined;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : undefined;
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  noStore()
+  noStore();
 
   // 🔎 Filtros
-  const q = coerceString(searchParams.q) ?? ''
-  const status = coerceString(searchParams.status) || ''
-  const role = coerceString(searchParams.role) || ''
-  const sortBy = coerceString(searchParams.sortBy) || 'name'
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc'
-  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0)
-  const pageSize = Math.min(
-    100,
-    Math.max(5, coerceNumber(searchParams.pageSize) ?? 20)
-  )
+  const q = coerceString(searchParams.q) ?? '';
+  const status = coerceString(searchParams.status) || '';
+  const role = coerceString(searchParams.role) || '';
+  const sortBy = coerceString(searchParams.sortBy) || 'name';
+  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
+  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0);
+  const pageSize = Math.min(100, Math.max(5, coerceNumber(searchParams.pageSize) ?? 20));
 
   // 📥 Dados (mock para agora, integrar com backend depois)
   const professionalsData = await Promise.resolve({
@@ -102,7 +99,7 @@ export default async function Page({
       },
     ],
     total: 3,
-  } as ProfessionalsResponse)
+  } as ProfessionalsResponse);
 
   const searchParamsObj = {
     q,
@@ -112,12 +109,7 @@ export default async function Page({
     sortDir,
     page: page.toString(),
     pageSize: pageSize.toString(),
-  }
+  };
 
-  return (
-    <ProfissionaisContent
-      initialData={professionalsData}
-      searchParams={searchParamsObj}
-    />
-  )
+  return <ProfissionaisContent initialData={professionalsData} searchParams={searchParamsObj} />;
 }

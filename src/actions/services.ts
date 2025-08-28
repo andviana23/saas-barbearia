@@ -1,27 +1,27 @@
 // Mock actions para funcionalidades de serviços
 
 export type Service = {
-  id: string
-  name: string
-  description?: string
-  duration_minutes: number
-  price: number
-  category_id?: string
-  category_name?: string
-  is_active: boolean
-  created_at?: string
-}
+  id: string;
+  name: string;
+  description?: string;
+  duration_minutes: number;
+  price: number;
+  category_id?: string;
+  category_name?: string;
+  is_active: boolean;
+  created_at?: string;
+};
 
 export type ServiceCategory = {
-  id: string
-  name: string
-  description?: string
-  is_active: boolean
-}
+  id: string;
+  name: string;
+  description?: string;
+  is_active: boolean;
+};
 
 export async function listServices(): Promise<Service[]> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   return [
     {
@@ -57,12 +57,12 @@ export async function listServices(): Promise<Service[]> {
       is_active: true,
       created_at: '2025-01-01T00:00:00Z',
     },
-  ]
+  ];
 }
 
 export async function listServiceCategories(): Promise<ServiceCategory[]> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   return [
     {
@@ -77,32 +77,32 @@ export async function listServiceCategories(): Promise<ServiceCategory[]> {
       description: 'Tratamentos capilares',
       is_active: true,
     },
-  ]
+  ];
 }
 
 export async function createService(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Create service:', Object.fromEntries(formData))
+  console.log('Create service:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }
 
 export async function updateService(id: string, formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Update service:', id, Object.fromEntries(formData))
+  console.log('Update service:', id, Object.fromEntries(formData));
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function deleteService(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Delete service:', id)
+  console.log('Delete service:', id);
 
-  return { success: true }
+  return { success: true };
 }

@@ -1,28 +1,28 @@
 // Mock actions para funcionalidades de agendamentos
 
 export type Appointment = {
-  id: string
-  customer_name: string
-  professional_id: string
-  professional_name?: string
-  service_id: string
-  service_name?: string
-  date: string
-  start_time: string
-  end_time: string
-  status: 'scheduled' | 'confirmed' | 'completed' | 'canceled' | 'no_show'
-  notes?: string | null
-  price?: number
-}
+  id: string;
+  customer_name: string;
+  professional_id: string;
+  professional_name?: string;
+  service_id: string;
+  service_name?: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: 'scheduled' | 'confirmed' | 'completed' | 'canceled' | 'no_show';
+  notes?: string | null;
+  price?: number;
+};
 
 export type AppointmentsResponse = {
-  items: Appointment[]
-  total: number
-}
+  items: Appointment[];
+  total: number;
+};
 
 export async function listAppointments(): Promise<AppointmentsResponse> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   const appointments: Appointment[] = [
     {
@@ -53,55 +53,55 @@ export async function listAppointments(): Promise<AppointmentsResponse> {
       notes: null,
       price: 55,
     },
-  ]
+  ];
 
   return {
     items: appointments,
     total: appointments.length,
-  }
+  };
 }
 
 export async function createAppointment(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Create appointment:', Object.fromEntries(formData))
+  console.log('Create appointment:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }
 
 export async function updateAppointment(id: string, formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Update appointment:', id, Object.fromEntries(formData))
+  console.log('Update appointment:', id, Object.fromEntries(formData));
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function deleteAppointment(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Delete appointment:', id)
+  console.log('Delete appointment:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function confirmAppointment(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Confirm appointment:', id)
+  console.log('Confirm appointment:', id);
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function cancelAppointment(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Cancel appointment:', id)
+  console.log('Cancel appointment:', id);
 
-  return { success: true }
+  return { success: true };
 }

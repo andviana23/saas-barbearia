@@ -1,0 +1,179 @@
+name: 'Deploy SaaS Barbearia'
+description: 'Deploy the SaaS Barbearia application to specified environment'
+
+inputs:
+  environment:
+    description: 'Deployment environment (staging, production)'
+    required: true
+  image_tag:
+    description: 'Docker image tag to deploy'
+    required: false
+    default: 'latest'
+
+outputs:
+  deployment_url:
+    description: 'URL of the deployed application'
+    value: ${{ steps.deploy.outputs.url }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set environment variables
+      shell: bash
+      run: |
+        if [ "${{ inputs.environment }}" = "production" ]; then
+          echo "DEPLOY_HOST=${{ env.PRODUCTION_HOST }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=/opt/saas-barbearia" >> $GITHUB_ENV
+          echo "DOMAIN=saas-barbearia.com" >> $GITHUB_ENV
+        elif [ "${{ inputs.environment }}" = "staging" ]; then
+          echo "DEPLOY_HOST=${{ env.STAGING_HOST }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=/opt/saas-barbearia-staging" >> $GITHUB_ENV
+          echo "DOMAIN=staging.saas-barbearia.com" >> $GITHUB_ENV
+        fi
+
+    - name: Setup SSH
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ env.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H ${{ env.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to server
+      id: deploy
+      shell: bash
+      run: |
+        # Create deployment script
+        cat > deploy.sh << 'EOF'
+        #!/bin/bash
+        set -e
+
+        DEPLOY_PATH="${{ env.DEPLOY_PATH }}"
+        ENVIRONMENT="${{ inputs.environment }}"
+        IMAGE_TAG="${{ inputs.image_tag }}"
+        DOMAIN="${{ env.DOMAIN }}"
+
+        echo "🚀 Starting deployment to $ENVIRONMENT..."
+
+        # Create deployment directory
+        sudo mkdir -p $DEPLOY_PATH
+        cd $DEPLOY_PATH
+
+        # Download docker-compose file
+        curl -sSL https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose.production.yml -o docker-compose.yml
+
+        # Create environment file
+        cat > .env << ENVEOF
+        NODE_ENV=production
+        DOMAIN=$DOMAIN
+        DATABASE_URL=${{ env.DATABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_URL=${{ env.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY=${{ env.SUPABASE_SERVICE_ROLE_KEY }}
+        ASAAS_API_KEY=${{ env.ASAAS_API_KEY }}
+        ASAAS_WEBHOOK_SECRET=${{ env.ASAAS_WEBHOOK_SECRET }}
+        NEXTAUTH_SECRET=${{ env.NEXTAUTH_SECRET }}
+        NEXTAUTH_URL=https://$DOMAIN
+        EMAIL_FROM=${{ env.EMAIL_FROM }}
+        BACKUP_S3_BUCKET=${{ env.BACKUP_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}
+        GRAFANA_ADMIN_PASSWORD=${{ env.GRAFANA_ADMIN_PASSWORD }}
+        ENVEOF
+
+        # Pull latest images
+        echo "📦 Pulling Docker images..."
+        docker-compose pull
+
+        # Stop existing services
+        echo "🛑 Stopping existing services..."
+        docker-compose down --remove-orphans
+
+        # Start services
+        echo "🎬 Starting services..."
+        docker-compose up -d
+
+        # Wait for services to be healthy
+        echo "⏳ Waiting for services to be healthy..."
+        sleep 30
+
+        # Run health check
+        echo "🩺 Running health check..."
+        if curl -f -s "http://localhost:3000/api/health" > /dev/null; then
+          echo "✅ Health check passed"
+        else
+          echo "❌ Health check failed"
+          docker-compose logs app
+          exit 1
+        fi
+
+        # Run database migrations
+        echo "🗃️ Running database migrations..."
+        docker-compose exec -T app npm run db:migrate || true
+
+        # Clean up old images
+        echo "🧹 Cleaning up old images..."
+        docker system prune -f
+
+        echo "🎉 Deployment completed successfully!"
+        echo "🌐 Application available at: https://$DOMAIN"
+
+        EOF
+
+        # Make script executable and run
+        chmod +x deploy.sh
+
+        # Copy and execute deployment script on remote server
+        scp -i ~/.ssh/deploy_key deploy.sh ubuntu@${{ env.DEPLOY_HOST }}:/tmp/
+        ssh -i ~/.ssh/deploy_key ubuntu@${{ env.DEPLOY_HOST }} "sudo bash /tmp/deploy.sh"
+
+        # Set output
+        echo "url=https://${{ env.DOMAIN }}" >> $GITHUB_OUTPUT
+
+    - name: Run post-deployment tests
+      shell: bash
+      run: |
+        # Wait for deployment to be fully ready
+        sleep 60
+
+        # Basic connectivity test
+        if curl -f -s "https://${{ env.DOMAIN }}/api/health" > /dev/null; then
+          echo "✅ Post-deployment health check passed"
+        else
+          echo "❌ Post-deployment health check failed"
+          exit 1
+        fi
+
+    - name: Notify deployment status
+      if: always()
+      shell: bash
+      run: |
+        if [ ${{ job.status }} = "success" ]; then
+          STATUS="✅ Success"
+          COLOR="good"
+        else
+          STATUS="❌ Failed"
+          COLOR="danger"
+        fi
+
+        if [ -n "${{ env.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$STATUS: Deployed ${{ github.repository }} to ${{ inputs.environment }}\", \"color\":\"$COLOR\"}" \
+            ${{ env.SLACK_WEBHOOK_URL }}
+        fi
+
+    - name: Update deployment record
+      shell: bash
+      run: |
+        # Record deployment in database or external system
+        curl -X POST "https://api.deployment-tracker.com/deployments" \
+          -H "Authorization: Bearer ${{ env.DEPLOY_TRACKER_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"repository\": \"${{ github.repository }}\",
+            \"environment\": \"${{ inputs.environment }}\",
+            \"version\": \"${{ github.sha }}\",
+            \"status\": \"${{ job.status }}\",
+            \"url\": \"https://${{ env.DOMAIN }}\",
+            \"deployed_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+          }" || true

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card as MuiCard,
   CardProps as MuiCardProps,
@@ -6,45 +8,72 @@ import {
   CardActions,
   Typography,
   Box,
-} from '@mui/material'
-import { ReactNode } from 'react'
+  Chip,
+} from '@mui/material';
+import { ReactNode } from 'react';
+import { TrendingUp, TrendingDown } from '@mui/icons-material';
 
 export interface CardProps extends Omit<MuiCardProps, 'title'> {
-  title?: string
-  subtitle?: string
-  actions?: ReactNode
-  loading?: boolean
+  title?: string;
+  subtitle?: string;
+  value?: string;
+  trend?: string;
+  trendUp?: boolean;
+  actions?: ReactNode;
+  loading?: boolean;
 }
 
 export default function Card({
   title,
   subtitle,
+  value,
+  trend,
+  trendUp,
   actions,
   loading = false,
   children,
+  sx,
   ...props
 }: CardProps) {
   return (
     <MuiCard
-      {...props}
+      elevation={0} // usa padrão do tema (sem sombras artificiais)
       sx={{
-        borderRadius: 3,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        border: '1px solid',
-        borderColor: 'divider',
-        ...props.sx,
+        // deixa o tema mandar: background.paper = #040E18, radius/divider via theme
+        bgcolor: 'background.paper',
+        borderRadius: (t) => t.shape.borderRadius,
+        border: (t) => `1px solid ${t.palette.divider}`,
+        ...sx,
       }}
+      {...props}
     >
       {(title || subtitle) && (
         <CardHeader
           title={
             title && (
-              <Typography variant="h6" component="h2">
+              <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                 {title}
               </Typography>
             )
           }
-          subheader={subtitle}
+          subheader={
+            subtitle && (
+              <Typography variant="body2" color="text.secondary">
+                {subtitle}
+              </Typography>
+            )
+          }
+          action={
+            trend && (
+              <Chip
+                icon={trendUp ? <TrendingUp fontSize="small" /> : <TrendingDown fontSize="small" />}
+                label={trend}
+                size="small"
+                color={trendUp ? 'success' : 'error'}
+                variant="outlined"
+              />
+            )
+          }
           sx={{ pb: title && !subtitle ? 2 : 1 }}
         />
       )}
@@ -62,11 +91,22 @@ export default function Card({
             <Typography color="text.secondary">Carregando...</Typography>
           </Box>
         ) : (
-          children
+          <>
+            {value && (
+              <Typography
+                variant="h3"
+                component="div"
+                sx={{ fontWeight: 600, color: 'text.primary', mb: 1 }}
+              >
+                {value}
+              </Typography>
+            )}
+            {children}
+          </>
         )}
       </CardContent>
 
       {actions && <CardActions sx={{ px: 2, pb: 2 }}>{actions}</CardActions>}
     </MuiCard>
-  )
+  );
 }

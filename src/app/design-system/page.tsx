@@ -1,54 +1,40 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import {
-  Box,
-  Stack,
-  Paper,
-  Typography,
-  Divider,
-  Button,
-  Snackbar,
-  Alert,
-} from '@mui/material'
-import PageHeader from '@/components/ui/PageHeader'
-import FormRow from '@/components/ui/FormRow'
-import DSButton from '@/components/ui/DSButton'
-import DSTextField from '@/components/ui/DSTextField'
-import DSSelect from '@/components/ui/DSSelect'
-import DSDateTime from '@/components/ui/DSDateTime'
-import DSTable from '@/components/ui/DSTable'
-import DSDialog from '@/components/ui/DSDialog'
-import EmptyState from '@/components/ui/EmptyState'
-import dayjs, { Dayjs } from 'dayjs'
+import * as React from 'react';
+import { Box, Stack, Paper, Typography, Divider, Snackbar, Alert } from '@mui/material';
+import PageHeader from '@/components/ui/PageHeader';
+import FormRow from '@/components/ui/FormRow';
+import DSButton from '@/components/ui/DSButton';
+import DSTextField from '@/components/ui/DSTextField';
+import DSSelect from '@/components/ui/DSSelect';
+import DSDateTime from '@/components/ui/DSDateTime';
+import DSTable from '@/components/ui/DSTable';
+import DSDialog from '@/components/ui/DSDialog';
+import EmptyState from '@/components/ui/EmptyState';
+import dayjs, { Dayjs } from 'dayjs';
 
 export default function DesignSystemShowcase() {
-  const [snack, setSnack] = React.useState<string | null>(null)
-  const [dialogOpen, setDialogOpen] = React.useState(false)
-  const [select, setSelect] = React.useState('basic')
-  const [date, setDate] = React.useState<Dayjs | null>(dayjs())
-  const [name, setName] = React.useState('')
+  const [snack, setSnack] = React.useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [select, setSelect] = React.useState('basic');
+  const [date, setDate] = React.useState<Dayjs | null>(dayjs());
+  const [name, setName] = React.useState('');
   const rows = [
     { Mês: 'Jan', Usuários: 9800, Conversões: 320 },
     { Mês: 'Fev', Usuários: 10400, Conversões: 355 },
     { Mês: 'Mar', Usuários: 8700, Conversões: 289 },
-  ]
+  ];
 
   return (
     <Box p={3}>
-      <PageHeader
-        title="Catálogo do Design System"
-        subtitle="Componentes base e padrões de uso"
-      />
+      <PageHeader title="Catálogo do Design System" subtitle="Componentes base e padrões de uso" />
       <Stack gap={3}>
         <Paper sx={{ p: 3 }}>
           <Typography variant="h3" gutterBottom>
             Botões
           </Typography>
           <Stack direction="row" gap={1.5} flexWrap="wrap">
-            <DSButton onClick={() => setSnack('Ação principal')}>
-              Primário
-            </DSButton>
+            <DSButton onClick={() => setSnack('Ação principal')}>Primário</DSButton>
             <DSButton variant="outlined">Secundário</DSButton>
             <DSButton color="success">Sucesso</DSButton>
             <DSButton color="error">Erro</DSButton>
@@ -82,8 +68,7 @@ export default function DesignSystemShowcase() {
               <DSDateTime label="Agendar" value={date} onChange={setDate} />
             </FormRow>
             <Typography variant="caption" color="text.secondary">
-              Acessibilidade: labels, foco visível e navegação por teclado
-              habilitados.
+              Acessibilidade: labels, foco visível e navegação por teclado habilitados.
             </Typography>
           </Stack>
         </Paper>
@@ -106,14 +91,14 @@ export default function DesignSystemShowcase() {
           <Typography variant="h3" gutterBottom>
             Dialog
           </Typography>
-          <Button onClick={() => setDialogOpen(true)}>Abrir dialog</Button>
+          <DSButton onClick={() => setDialogOpen(true)}>Abrir dialog</DSButton>
           <DSDialog
             open={dialogOpen}
             title="Confirmação"
             onClose={() => setDialogOpen(false)}
             onConfirm={() => {
-              setSnack('Confirmado')
-              setDialogOpen(false)
+              setSnack('Confirmado');
+              setDialogOpen(false);
             }}
           >
             Tem certeza que deseja confirmar esta ação?
@@ -136,8 +121,8 @@ export default function DesignSystemShowcase() {
 
         <Divider />
         <Typography variant="body2" color="text.secondary">
-          Padrões de uso: utilize <code>sx</code> apenas para ajustes locais;
-          tokens de tema definem tipografia, cores e espaçamentos globais.
+          Padrões de uso: utilize <code>sx</code> apenas para ajustes locais; tokens de tema definem
+          tipografia, cores e espaçamentos globais.
         </Typography>
       </Stack>
 
@@ -152,5 +137,5 @@ export default function DesignSystemShowcase() {
         </Alert>
       </Snackbar>
     </Box>
-  )
+  );
 }

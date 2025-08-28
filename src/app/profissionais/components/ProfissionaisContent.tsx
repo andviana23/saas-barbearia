@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Container,
@@ -25,71 +25,62 @@ import {
   IconButton,
   Tooltip,
   Avatar,
-} from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AddIcon from '@mui/icons-material/Add'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import PersonIcon from '@mui/icons-material/Person'
-import { useState } from 'react'
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import PersonIcon from '@mui/icons-material/Person';
+import { useState } from 'react';
 
 // Types
 export type Professional = {
-  id: string
-  name: string
-  email?: string | null
-  phone?: string | null
-  role?: string | null
-  is_active: boolean
-  services_count?: number
-  avatar_url?: string | null
-  commission_percentage?: number
-  created_at?: string | null
-}
+  id: string;
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  role?: string | null;
+  is_active: boolean;
+  services_count?: number;
+  avatar_url?: string | null;
+  commission_percentage?: number;
+  created_at?: string | null;
+};
 
 export type ProfessionalsResponse = {
-  items: Professional[]
-  total: number
-}
+  items: Professional[];
+  total: number;
+};
 
 interface ProfissionaisContentProps {
-  initialData: ProfessionalsResponse
-  searchParams: Record<string, string>
+  initialData: ProfessionalsResponse;
+  searchParams: Record<string, string>;
 }
 
-export function ProfissionaisContent({
-  initialData,
-  searchParams,
-}: ProfissionaisContentProps) {
-  const [professionals, setProfessionals] = useState(initialData)
-  const [openCreateDialog, setOpenCreateDialog] = useState(false)
-  const [openEditDialog, setOpenEditDialog] = useState(false)
-  const [selectedProfessional, setSelectedProfessional] =
-    useState<Professional | null>(null)
+export function ProfissionaisContent({ initialData, searchParams }: ProfissionaisContentProps) {
+  const [professionals, setProfessionals] = useState(initialData);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null);
 
   const handleEdit = (professional: Professional) => {
-    setSelectedProfessional(professional)
-    setOpenEditDialog(true)
-  }
+    setSelectedProfessional(professional);
+    setOpenEditDialog(true);
+  };
 
   const handleDelete = async (professionalId: string) => {
     // TODO: Implementar exclusão via server action
-    console.log('Delete professional:', professionalId)
-  }
+    console.log('Delete professional:', professionalId);
+  };
 
   const handleManageSchedule = (professionalId: string) => {
-    window.location.href = `/profissionais/${professionalId}/horarios`
-  }
+    window.location.href = `/profissionais/${professionalId}/horarios`;
+  };
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ py: 3 }}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mb: 3 }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
           <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
             Profissionais
           </Typography>
@@ -113,11 +104,7 @@ export function ProfissionaisContent({
           sx={{ p: 2, mb: 3, borderRadius: 3 }}
         >
           <Toolbar disableGutters sx={{ gap: 2, flexWrap: 'wrap' }}>
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              sx={{ flex: 1 }}
-            >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ flex: 1 }}>
               <TextField
                 name="q"
                 label="Pesquisar"
@@ -165,10 +152,7 @@ export function ProfissionaisContent({
         {/* Resumo */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={4}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Total de Profissionais
               </Typography>
@@ -178,10 +162,7 @@ export function ProfissionaisContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Profissionais Ativos
               </Typography>
@@ -191,20 +172,15 @@ export function ProfissionaisContent({
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}
-            >
+            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 Média de Serviços
               </Typography>
               <Typography variant="h4" color="info.main">
                 {professionals.items.length > 0
                   ? Math.round(
-                      professionals.items.reduce(
-                        (sum, p) => sum + (p.services_count || 0),
-                        0
-                      ) / professionals.items.length
+                      professionals.items.reduce((sum, p) => sum + (p.services_count || 0), 0) /
+                        professionals.items.length,
                     )
                   : 0}
               </Typography>
@@ -283,11 +259,7 @@ export function ProfissionaisContent({
                     </TableCell>
                     <TableCell>
                       {professional.role ? (
-                        <Chip
-                          label={professional.role}
-                          size="small"
-                          variant="outlined"
-                        />
+                        <Chip label={professional.role} size="small" variant="outlined" />
                       ) : (
                         '—'
                       )}
@@ -314,27 +286,18 @@ export function ProfissionaisContent({
                       )}
                     </TableCell>
                     <TableCell align="right">
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        justifyContent="flex-end"
-                      >
+                      <Stack direction="row" spacing={1} justifyContent="flex-end">
                         <Tooltip title="Gerenciar Horários">
                           <IconButton
                             size="small"
                             color="info"
-                            onClick={() =>
-                              handleManageSchedule(professional.id)
-                            }
+                            onClick={() => handleManageSchedule(professional.id)}
                           >
                             <ScheduleIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Editar">
-                          <IconButton
-                            size="small"
-                            onClick={() => handleEdit(professional)}
-                          >
+                          <IconButton size="small" onClick={() => handleEdit(professional)}>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
@@ -367,8 +330,7 @@ export function ProfissionaisContent({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Exibindo {professionals.items.length} de {professionals.total}{' '}
-              profissionais
+              Exibindo {professionals.items.length} de {professionals.total} profissionais
             </Typography>
           </Box>
         </Paper>
@@ -386,5 +348,5 @@ export function ProfissionaisContent({
         /> */}
       </Box>
     </Container>
-  )
+  );
 }

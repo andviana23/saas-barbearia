@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -16,7 +16,7 @@ import {
   CardContent,
   Chip,
   Grid,
-} from '@mui/material'
+} from '@mui/material';
 import {
   Close as CloseIcon,
   Edit as EditIcon,
@@ -24,13 +24,13 @@ import {
   Phone as PhoneIcon,
   Cake as CakeIcon,
   CalendarToday as CalendarIcon,
-} from '@mui/icons-material'
+} from '@mui/icons-material';
 
 interface ClienteDetailDialogProps {
-  open: boolean
-  cliente?: any
-  onClose: () => void
-  onEdit: (cliente: any) => void
+  open: boolean;
+  cliente?: any;
+  onClose: () => void;
+  onEdit: (cliente: any) => void;
 }
 
 export default function ClienteDetailDialog({
@@ -39,30 +39,30 @@ export default function ClienteDetailDialog({
   onClose,
   onEdit,
 }: ClienteDetailDialogProps) {
-  if (!cliente) return null
+  if (!cliente) return null;
 
   const formatDate = (dateString: string) => {
-    if (!dateString) return '-'
+    if (!dateString) return '-';
     try {
-      return new Date(dateString).toLocaleDateString('pt-BR')
+      return new Date(dateString).toLocaleDateString('pt-BR');
     } catch {
-      return '-'
+      return '-';
     }
-  }
+  };
 
   const formatDateTime = (dateString: string) => {
-    if (!dateString) return '-'
+    if (!dateString) return '-';
     try {
-      return new Date(dateString).toLocaleString('pt-BR')
+      return new Date(dateString).toLocaleString('pt-BR');
     } catch {
-      return '-'
+      return '-';
     }
-  }
+  };
 
   const handleEdit = () => {
-    onEdit(cliente)
-    onClose()
-  }
+    onEdit(cliente);
+    onClose();
+  };
 
   return (
     <Dialog
@@ -75,11 +75,7 @@ export default function ClienteDetailDialog({
       }}
     >
       <DialogTitle>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="h6">Detalhes do Cliente</Typography>
             <Chip
@@ -141,9 +137,7 @@ export default function ClienteDetailDialog({
                         <Typography variant="body2" color="text.secondary">
                           Telefone
                         </Typography>
-                        <Typography variant="body1">
-                          {cliente.telefone}
-                        </Typography>
+                        <Typography variant="body1">{cliente.telefone}</Typography>
                       </Box>
                     </Stack>
                   </Grid>
@@ -172,9 +166,7 @@ export default function ClienteDetailDialog({
                       <Typography variant="body2" color="text.secondary">
                         Cliente desde
                       </Typography>
-                      <Typography variant="body1">
-                        {formatDate(cliente.created_at)}
-                      </Typography>
+                      <Typography variant="body1">{formatDate(cliente.created_at)}</Typography>
                     </Box>
                   </Stack>
                 </Grid>
@@ -184,16 +176,10 @@ export default function ClienteDetailDialog({
                 <>
                   <Divider sx={{ my: 2 }} />
                   <Box>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      gutterBottom
-                    >
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
                       Observações
                     </Typography>
-                    <Typography variant="body1">
-                      {cliente.observacoes}
-                    </Typography>
+                    <Typography variant="body1">{cliente.observacoes}</Typography>
                   </Box>
                 </>
               )}
@@ -267,18 +253,14 @@ export default function ClienteDetailDialog({
                   <Typography variant="body2" color="text.secondary">
                     Criado em
                   </Typography>
-                  <Typography variant="body1">
-                    {formatDateTime(cliente.created_at)}
-                  </Typography>
+                  <Typography variant="body1">{formatDateTime(cliente.created_at)}</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2" color="text.secondary">
                     Última atualização
                   </Typography>
-                  <Typography variant="body1">
-                    {formatDateTime(cliente.updated_at)}
-                  </Typography>
+                  <Typography variant="body1">{formatDateTime(cliente.updated_at)}</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -299,16 +281,12 @@ export default function ClienteDetailDialog({
       </DialogContent>
 
       <DialogActions>
-        <Button
-          onClick={handleEdit}
-          variant="outlined"
-          startIcon={<EditIcon />}
-        >
+        <Button onClick={handleEdit} variant="outlined" startIcon={<EditIcon />}>
           Editar
         </Button>
 
         <Button onClick={onClose}>Fechar</Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

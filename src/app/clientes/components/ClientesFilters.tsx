@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Stack,
   TextField,
@@ -9,101 +9,91 @@ import {
   ToggleButton,
   Chip,
   Box,
-} from '@mui/material'
-import {
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-} from '@mui/icons-material'
-import { DSSelect } from '@/components/ui'
+} from '@mui/material';
+import { Search as SearchIcon, FilterList as FilterIcon } from '@mui/icons-material';
+import { DSSelect } from '@/components/ui';
 
 interface ClientesFiltersProps {
   filters: {
-    q: string
-    ativo: boolean
-    page: number
-    limit: number
-  }
-  onChange: (filters: any) => void
+    q: string;
+    ativo: boolean;
+    page: number;
+    limit: number;
+  };
+  onChange: (filters: any) => void;
 }
 
-export default function ClientesFilters({
-  filters,
-  onChange,
-}: ClientesFiltersProps) {
-  const [localSearch, setLocalSearch] = useState(filters.q)
+export default function ClientesFilters({ filters, onChange }: ClientesFiltersProps) {
+  const [localSearch, setLocalSearch] = useState(filters.q);
 
   // Debounce da busca
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== filters.q) {
-        onChange({ q: localSearch })
+        onChange({ q: localSearch });
       }
-    }, 300)
+    }, 300);
 
-    return () => clearTimeout(timer)
-  }, [localSearch, filters.q, onChange])
+    return () => clearTimeout(timer);
+  }, [localSearch, filters.q, onChange]);
 
   const handleStatusChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newStatus: 'todos' | 'ativo' | 'arquivado'
+    newStatus: 'todos' | 'ativo' | 'arquivado',
   ) => {
-    if (newStatus === null) return
+    if (newStatus === null) return;
 
     const statusMap = {
       todos: undefined,
       ativo: true,
       arquivado: false,
-    }
+    };
 
-    onChange({ ativo: statusMap[newStatus] })
-  }
+    onChange({ ativo: statusMap[newStatus] });
+  };
 
   const handleLimitChange = (limit: string) => {
-    onChange({ limit: parseInt(limit) })
-  }
+    onChange({ limit: parseInt(limit) });
+  };
 
   const getCurrentStatus = () => {
-    if (filters.ativo === undefined) return 'todos'
-    return filters.ativo ? 'ativo' : 'arquivado'
-  }
+    if (filters.ativo === undefined) return 'todos';
+    return filters.ativo ? 'ativo' : 'arquivado';
+  };
 
   const getResultsText = () => {
-    const hasFilters = filters.q || filters.ativo !== undefined
-    if (!hasFilters) return ''
+    const hasFilters = filters.q || filters.ativo !== undefined;
+    if (!hasFilters) return '';
 
-    const parts = []
+    const parts = [];
 
     if (filters.q) {
-      parts.push(`"${filters.q}"`)
+      parts.push(`"${filters.q}"`);
     }
 
     if (filters.ativo === true) {
-      parts.push('ativos')
+      parts.push('ativos');
     } else if (filters.ativo === false) {
-      parts.push('arquivados')
+      parts.push('arquivados');
     }
 
-    return parts.length > 0 ? `Filtros: ${parts.join(', ')}` : ''
-  }
+    return parts.length > 0 ? `Filtros: ${parts.join(', ')}` : '';
+  };
 
   const clearFilters = () => {
-    setLocalSearch('')
+    setLocalSearch('');
     onChange({
       q: '',
       ativo: undefined,
-    })
-  }
+    });
+  };
 
-  const hasActiveFilters = filters.q || filters.ativo !== undefined
+  const hasActiveFilters = filters.q || filters.ativo !== undefined;
 
   return (
     <Stack spacing={2} sx={{ flex: 1, maxWidth: 600 }}>
       {/* Linha principal de filtros */}
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        alignItems="center"
-      >
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
         {/* Busca */}
         <TextField
           placeholder="Buscar por nome, email ou telefone..."
@@ -151,12 +141,7 @@ export default function ClientesFilters({
       {/* Filtros ativos */}
       {hasActiveFilters && (
         <Box>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            flexWrap="wrap"
-          >
+          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
             <FilterIcon color="action" fontSize="small" />
 
             {filters.q && (
@@ -164,8 +149,8 @@ export default function ClientesFilters({
                 label={`Busca: "${filters.q}"`}
                 size="small"
                 onDelete={() => {
-                  setLocalSearch('')
-                  onChange({ q: '' })
+                  setLocalSearch('');
+                  onChange({ q: '' });
                 }}
                 color="primary"
                 variant="outlined"
@@ -196,5 +181,5 @@ export default function ClientesFilters({
         </Box>
       )}
     </Stack>
-  )
+  );
 }

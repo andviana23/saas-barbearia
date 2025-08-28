@@ -1,69 +1,62 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Box, Typography, Stack, Alert } from '@mui/material'
-import Button from '@/components/ui/Button'
-import Card from '@/components/ui/Card'
-import { Form, Input } from '@/components/ui/Form'
-import { useCreateUnidade, useUnidades } from '@/hooks/use-unidades'
-import { ActionResult } from '@/types'
+import { useState } from 'react';
+import { Box, Typography, Stack, Alert } from '@mui/material';
+import { DSButton, Card, DSTextField, PageHeader } from '@/components/ui';
+import { useCreateUnidade, useUnidades } from '@/hooks/use-unidades';
+import { ActionResult } from '@/types';
 
 export default function ExamplesPage() {
-  const [formState, setFormState] = useState<ActionResult | null>(null)
-  const { data: unidades, isLoading } = useUnidades()
-  const createUnidadeMutation = useCreateUnidade()
+  const [formState, setFormState] = useState<ActionResult | null>(null);
+  const { data: unidades, isLoading } = useUnidades();
+  const createUnidadeMutation = useCreateUnidade();
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setFormState(null)
+    event.preventDefault();
+    setFormState(null);
 
-    const formData = new FormData(event.currentTarget as HTMLFormElement)
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
 
     try {
-      const result = await createUnidadeMutation.mutateAsync(formData)
-      setFormState(result)
+      const result = await createUnidadeMutation.mutateAsync(formData);
+      setFormState(result);
 
       if (result.success) {
         // Reset form on success
-        ;(event.currentTarget as HTMLFormElement).reset()
+        (event.currentTarget as HTMLFormElement).reset();
       }
     } catch (error) {
       setFormState({
         success: false,
         error: 'Erro ao criar unidade',
-      })
+      });
     }
-  }
+  };
 
   return (
     <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
-      <Typography variant="h4" gutterBottom>
-        Exemplos - Server Actions + Zod + React Query
-      </Typography>
+      <PageHeader title="Exemplos" subtitle="Server Actions + Zod + React Query" />
 
       <Stack spacing={4}>
         {/* Exemplo 1: Formulário com Validação */}
-        <Card
-          title="Criar Unidade"
-          subtitle="Exemplo de Server Action com validação Zod"
-        >
-          <Form onSubmit={handleSubmit}>
+        <Card title="Criar Unidade" subtitle="Exemplo de Server Action com validação Zod">
+          <Box component="form" onSubmit={handleSubmit}>
             <Stack spacing={2}>
-              <Input
+              <DSTextField
                 name="nome"
                 label="Nome da Unidade"
                 required
                 helperText="Mínimo 2 caracteres, máximo 100"
               />
 
-              <Input
+              <DSTextField
                 name="cnpj"
                 label="CNPJ"
                 placeholder="XX.XXX.XXX/XXXX-XX"
                 helperText="Formato: XX.XXX.XXX/XXXX-XX (opcional)"
               />
 
-              <Input
+              <DSTextField
                 name="endereco"
                 label="Endereço"
                 multiline
@@ -71,41 +64,32 @@ export default function ExamplesPage() {
                 helperText="Máximo 255 caracteres (opcional)"
               />
 
-              <Input
+              <DSTextField
                 name="telefone"
                 label="Telefone"
                 placeholder="(11) 99999-9999"
                 helperText="Formato brasileiro (opcional)"
               />
 
-              <Input
+              <DSTextField
                 name="email"
                 label="Email"
                 type="email"
                 helperText="Email válido (opcional)"
               />
 
-              <Button
-                type="submit"
-                loading={createUnidadeMutation.isPending}
-                fullWidth
-              >
+              <DSButton type="submit" loading={createUnidadeMutation.isPending} fullWidth>
                 Criar Unidade
-              </Button>
+              </DSButton>
             </Stack>
-          </Form>
+          </Box>
 
           {/* Feedback do formulário */}
           {formState && (
             <Box sx={{ mt: 2 }}>
-              <Alert
-                severity={formState.success ? 'success' : 'error'}
-                variant="outlined"
-              >
+              <Alert severity={formState.success ? 'success' : 'error'} variant="outlined">
                 {formState.success ? (
-                  <Typography>
-                    ✅ {formState.message || 'Unidade criada com sucesso!'}
-                  </Typography>
+                  <Typography>✅ {formState.message || 'Unidade criada com sucesso!'}</Typography>
                 ) : (
                   <Box>
                     <Typography sx={{ fontWeight: 'bold', mb: 1 }}>
@@ -128,10 +112,7 @@ export default function ExamplesPage() {
         </Card>
 
         {/* Exemplo 2: Lista com React Query */}
-        <Card
-          title="Lista de Unidades"
-          subtitle="Exemplo de Query com React Query"
-        >
+        <Card title="Lista de Unidades" subtitle="Exemplo de Query com React Query">
           {isLoading ? (
             <Typography>Carregando unidades...</Typography>
           ) : (
@@ -157,10 +138,7 @@ export default function ExamplesPage() {
               ))}
 
               {unidades?.data.length === 0 && (
-                <Typography
-                  color="text.secondary"
-                  sx={{ textAlign: 'center', py: 2 }}
-                >
+                <Typography color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
                   Nenhuma unidade encontrada
                 </Typography>
               )}
@@ -169,10 +147,7 @@ export default function ExamplesPage() {
         </Card>
 
         {/* Exemplo 3: Padrões de Validação */}
-        <Card
-          title="Padrões de Validação"
-          subtitle="Exemplos de validações implementadas"
-        >
+        <Card title="Padrões de Validação" subtitle="Exemplos de validações implementadas">
           <Stack spacing={2}>
             <Box>
               <Typography variant="subtitle2" gutterBottom>
@@ -225,5 +200,5 @@ export default function ExamplesPage() {
         </Card>
       </Stack>
     </Box>
-  )
+  );
 }

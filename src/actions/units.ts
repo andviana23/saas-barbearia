@@ -1,17 +1,17 @@
 // Mock actions para funcionalidades de unidades
 
 export type Unit = {
-  id: string
-  name: string
-  address?: string
-  phone?: string
-  is_active: boolean
-  created_at?: string
-}
+  id: string;
+  name: string;
+  address?: string;
+  phone?: string;
+  is_active: boolean;
+  created_at?: string;
+};
 
 export async function listUnits(): Promise<Unit[]> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   return [
     {
@@ -30,32 +30,32 @@ export async function listUnits(): Promise<Unit[]> {
       is_active: true,
       created_at: '2025-01-01T00:00:00Z',
     },
-  ]
+  ];
 }
 
 export async function createUnit(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Create unit:', Object.fromEntries(formData))
+  console.log('Create unit:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }
 
 export async function updateUnit(id: string, formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Update unit:', id, Object.fromEntries(formData))
+  console.log('Update unit:', id, Object.fromEntries(formData));
 
-  return { success: true }
+  return { success: true };
 }
 
 export async function deleteUnit(id: string) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  console.log('Delete unit:', id)
+  console.log('Delete unit:', id);
 
-  return { success: true }
+  return { success: true };
 }

@@ -5,20 +5,20 @@
  * Combina todas as migrações em um único arquivo SQL
  */
 
-require('dotenv').config({ path: '.env.local' })
-const fs = require('fs').promises
-const path = require('path')
+require('dotenv').config({ path: '.env.local' });
+const fs = require('fs').promises;
+const path = require('path');
 
 // Configuração
-const MIGRATIONS_DIR = path.join(__dirname, 'migrations')
-const OUTPUT_FILE = path.join(__dirname, 'all-migrations.sql')
+const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
+const OUTPUT_FILE = path.join(__dirname, 'all-migrations.sql');
 
 /**
  * Lista arquivos de migração
  */
 async function getMigrationFiles() {
   try {
-    const files = await fs.readdir(MIGRATIONS_DIR)
+    const files = await fs.readdir(MIGRATIONS_DIR);
     return files
       .filter((file) => file.endsWith('.sql'))
       .sort()
@@ -27,10 +27,10 @@ async function getMigrationFiles() {
         name: file.replace(/^\d+_(.+)\.sql$/, '$1').replace(/_/g, ' '),
         filename: file,
         path: path.join(MIGRATIONS_DIR, file),
-      }))
+      }));
   } catch (error) {
-    console.error('❌ Erro ao ler diretório de migrações:', error.message)
-    return []
+    console.error('❌ Erro ao ler diretório de migrações:', error.message);
+    return [];
   }
 }
 
@@ -39,19 +39,18 @@ async function getMigrationFiles() {
  */
 async function checkExistingOptimizedSQL() {
   try {
-    const content = await fs.readFile(OUTPUT_FILE, 'utf-8')
-    const isOptimized =
-      content.includes('IF NOT EXISTS') && content.includes('DO $')
-    const stats = await fs.stat(OUTPUT_FILE)
+    const content = await fs.readFile(OUTPUT_FILE, 'utf-8');
+    const isOptimized = content.includes('IF NOT EXISTS') && content.includes('DO $');
+    const stats = await fs.stat(OUTPUT_FILE);
 
     return {
       exists: true,
       isOptimized,
       size: stats.size,
       lastModified: stats.mtime,
-    }
+    };
   } catch (error) {
-    return { exists: false }
+    return { exists: false };
   }
 }
 
@@ -59,30 +58,26 @@ async function checkExistingOptimizedSQL() {
  * Combina todas as migrações em um arquivo otimizado
  */
 async function combineAllMigrations() {
-  console.log('🔧 Preparando arquivo SQL consolidado...\n')
+  console.log('🔧 Preparando arquivo SQL consolidado...\n');
 
   // Verificar se já existe versão otimizada
-  const existing = await checkExistingOptimizedSQL()
+  const existing = await checkExistingOptimizedSQL();
 
   if (existing.exists && existing.isOptimized) {
     console.log(
-      `   ✅ Arquivo consolidado otimizado já existe (${Math.round(existing.size / 1024)}KB)`
-    )
-    console.log(
-      `   📅 Última modificação: ${existing.lastModified.toLocaleString('pt-BR')}`
-    )
-    console.log(`   💡 Usando arquivo otimizado existente`)
-    console.log(
-      '\n📋 Para forçar nova geração, delete o arquivo all-migrations.sql'
-    )
-    return
+      `   ✅ Arquivo consolidado otimizado já existe (${Math.round(existing.size / 1024)}KB)`,
+    );
+    console.log(`   📅 Última modificação: ${existing.lastModified.toLocaleString('pt-BR')}`);
+    console.log(`   💡 Usando arquivo otimizado existente`);
+    console.log('\n📋 Para forçar nova geração, delete o arquivo all-migrations.sql');
+    return;
   }
 
-  const migrations = await getMigrationFiles()
+  const migrations = await getMigrationFiles();
 
   if (migrations.length === 0) {
-    console.log('ℹ️  Nenhum arquivo de migração encontrado')
-    return
+    console.log('ℹ️  Nenhum arquivo de migração encontrado');
+    return;
   }
 
   let combinedSQL = `-- =========================================================================
@@ -99,36 +94,31 @@ async function combineAllMigrations() {
 -- 5. Execute: npm run db:verify
 -- =========================================================================
 
-`
+`;
 
   for (const migration of migrations) {
-    console.log(
-      `   📄 Processando migração ${migration.version}: ${migration.name}`
-    )
+    console.log(`   📄 Processando migração ${migration.version}: ${migration.name}`);
 
     try {
-      const content = await fs.readFile(migration.path, 'utf-8')
+      const content = await fs.readFile(migration.path, 'utf-8');
 
       // Aplicar otimizações para tornar idempotente
       let optimizedContent = content
         // Adicionar IF NOT EXISTS para extensões (apenas se não existir)
         .replace(
           /CREATE EXTENSION (?!IF NOT EXISTS)([^;]+);/g,
-          'CREATE EXTENSION IF NOT EXISTS $1;'
+          'CREATE EXTENSION IF NOT EXISTS $1;',
         )
         // Adicionar IF NOT EXISTS para esquemas (apenas se não existir)
-        .replace(
-          /CREATE SCHEMA (?!IF NOT EXISTS)([^;]+);/g,
-          'CREATE SCHEMA IF NOT EXISTS $1;'
-        )
+        .replace(/CREATE SCHEMA (?!IF NOT EXISTS)([^;]+);/g, 'CREATE SCHEMA IF NOT EXISTS $1;')
         // Tipos ENUM já estão corretos nos arquivos de migração originais
         // Adicionar IF NOT EXISTS para tabelas (apenas se não existir)
         .replace(
           /CREATE TABLE (?!IF NOT EXISTS)([^\s\(]+)(\s*\()/g,
-          'CREATE TABLE IF NOT EXISTS $1$2'
+          'CREATE TABLE IF NOT EXISTS $1$2',
         )
         // Garantir CREATE OR REPLACE para funções
-        .replace(/CREATE FUNCTION/g, 'CREATE OR REPLACE FUNCTION')
+        .replace(/CREATE FUNCTION/g, 'CREATE OR REPLACE FUNCTION');
 
       combinedSQL += `
 -- =========================================================================
@@ -141,9 +131,9 @@ ${optimizedContent}
 -- FIM DA MIGRAÇÃO ${migration.version.toUpperCase()}
 -- =========================================================================
 
-`
+`;
     } catch (error) {
-      console.error(`   ❌ Erro ao ler ${migration.filename}: ${error.message}`)
+      console.error(`   ❌ Erro ao ler ${migration.filename}: ${error.message}`);
     }
   }
 
@@ -189,31 +179,31 @@ ORDER BY tablename;
 -- =========================================================================
 -- PARABÉNS! SE CHEGOU ATÉ AQUI SEM ERROS, SUAS MIGRAÇÕES FORAM APLICADAS!
 -- =========================================================================
-`
+`;
 
   // Salvar arquivo combinado
-  await fs.writeFile(OUTPUT_FILE, combinedSQL, 'utf-8')
+  await fs.writeFile(OUTPUT_FILE, combinedSQL, 'utf-8');
 
-  console.log(`\n✅ Arquivo SQL consolidado criado: ${OUTPUT_FILE}`)
-  console.log('\n📋 Próximos passos:')
-  console.log('1. Acesse o SQL Editor do seu projeto Supabase')
-  console.log('2. Cole o conteúdo do arquivo all-migrations.sql')
-  console.log('3. Execute com Ctrl+Enter ou "Run"')
-  console.log('4. Verifique se a execução ocorreu sem erros')
-  console.log('\n🎯 Após execução, execute: npm run db:verify')
+  console.log(`\n✅ Arquivo SQL consolidado criado: ${OUTPUT_FILE}`);
+  console.log('\n📋 Próximos passos:');
+  console.log('1. Acesse o SQL Editor do seu projeto Supabase');
+  console.log('2. Cole o conteúdo do arquivo all-migrations.sql');
+  console.log('3. Execute com Ctrl+Enter ou "Run"');
+  console.log('4. Verifique se a execução ocorreu sem erros');
+  console.log('\n🎯 Após execução, execute: npm run db:verify');
 }
 
 /**
  * Função principal
  */
 async function main() {
-  await combineAllMigrations()
+  await combineAllMigrations();
 }
 
 // Executar se chamado diretamente
 if (require.main === module) {
   main().catch((error) => {
-    console.error('❌ Erro na execução:', error.message)
-    process.exit(1)
-  })
+    console.error('❌ Erro na execução:', error.message);
+    process.exit(1);
+  });
 }

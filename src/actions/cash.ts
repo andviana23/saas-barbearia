@@ -1,59 +1,59 @@
 // Mock actions para funcionalidades de caixa
 
 export type CashMovement = {
-  id: string
-  description: string
-  amount: number
-  type: 'income' | 'expense'
-  category: string
-  professional_name?: string | null
-  payment_method: string
-  date: string
-  created_at?: string | null
-}
+  id: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  category: string;
+  professional_name?: string | null;
+  payment_method: string;
+  date: string;
+  created_at?: string | null;
+};
 
 export type CashResponse = {
-  items: CashMovement[]
-  total: number
+  items: CashMovement[];
+  total: number;
   summary: {
-    total_income: number
-    total_expense: number
-    balance: number
-  }
-}
+    total_income: number;
+    total_expense: number;
+    balance: number;
+  };
+};
 
 export type DailyCashSummary = {
-  date: string
-  opening_balance: number
-  total_income: number
-  total_expense: number
-  calculated_balance: number
-  cash_count?: number | null
-  difference?: number | null
-  is_closed: boolean
-  movements_count: number
+  date: string;
+  opening_balance: number;
+  total_income: number;
+  total_expense: number;
+  calculated_balance: number;
+  cash_count?: number | null;
+  difference?: number | null;
+  is_closed: boolean;
+  movements_count: number;
   payment_methods: {
-    cash: number
-    card: number
-    pix: number
-    transfer: number
-  }
-}
+    cash: number;
+    card: number;
+    pix: number;
+    transfer: number;
+  };
+};
 
 export async function listCashMovements(_params: {
-  q?: string
-  type?: string
-  category?: string
-  professional?: string
-  paymentMethod?: string
-  period?: string
-  sortBy?: string
-  sortDir?: string
-  page?: number
-  pageSize?: number
+  q?: string;
+  type?: string;
+  category?: string;
+  professional?: string;
+  paymentMethod?: string;
+  period?: string;
+  sortBy?: string;
+  sortDir?: string;
+  page?: number;
+  pageSize?: number;
 }): Promise<CashResponse> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   const movements: CashMovement[] = [
     {
@@ -78,7 +78,7 @@ export async function listCashMovements(_params: {
       date: '2025-01-21',
       created_at: '2025-01-21T14:15:00Z',
     },
-  ]
+  ];
 
   return {
     items: movements,
@@ -88,14 +88,12 @@ export async function listCashMovements(_params: {
       total_expense: 1500,
       balance: 3500,
     },
-  }
+  };
 }
 
-export async function getDailyCashSummary(
-  date?: string
-): Promise<DailyCashSummary> {
+export async function getDailyCashSummary(date?: string): Promise<DailyCashSummary> {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   return {
     date: date || new Date().toISOString().split('T')[0],
@@ -113,23 +111,23 @@ export async function getDailyCashSummary(
       pix: 400,
       transfer: 0,
     },
-  }
+  };
 }
 
 export async function createCashMovement(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log('Create cash movement:', Object.fromEntries(formData))
+  console.log('Create cash movement:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }
 
 export async function closeDailyCash(formData: FormData) {
   // Mock implementation
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  console.log('Close daily cash:', Object.fromEntries(formData))
+  console.log('Close daily cash:', Object.fromEntries(formData));
 
-  return { success: true, id: Date.now().toString() }
+  return { success: true, id: Date.now().toString() };
 }

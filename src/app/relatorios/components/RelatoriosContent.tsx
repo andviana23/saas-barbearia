@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   Box,
   Typography,
@@ -12,16 +12,16 @@ import {
   Avatar,
   Chip,
   Paper,
-} from '@mui/material'
-import AssessmentIcon from '@mui/icons-material/Assessment'
-import DownloadIcon from '@mui/icons-material/Download'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import PeopleIcon from '@mui/icons-material/People'
-import InventoryIcon from '@mui/icons-material/Inventory'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import BarChartIcon from '@mui/icons-material/BarChart'
-import Link from 'next/link'
+} from '@mui/material';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import DownloadIcon from '@mui/icons-material/Download';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PeopleIcon from '@mui/icons-material/People';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import Link from 'next/link';
 
 // Mock data para preview dos relatórios
 const RELATORIOS_DISPONIVEIS = [
@@ -89,7 +89,7 @@ const RELATORIOS_DISPONIVEIS = [
     ],
     ultimaAtualizacao: 'Hoje às 09:20',
   },
-]
+];
 
 const RELATORIOS_RAPIDOS = [
   {
@@ -120,23 +120,18 @@ const RELATORIOS_RAPIDOS = [
     cor: 'warning',
     icone: <PeopleIcon />,
   },
-]
+];
 
 export function RelatoriosContent() {
   const handleExportGeral = () => {
-    console.log('Exportando relatório geral...')
+    console.log('Exportando relatório geral...');
     // Implementar exportação geral
-  }
+  };
 
   return (
     <Box sx={{ py: 3 }}>
       {/* Header */}
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 3 }}
-      >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
         <Box>
           <Typography variant="h4" gutterBottom sx={{ mb: 0.5 }}>
             Central de Relatórios
@@ -145,11 +140,7 @@ export function RelatoriosContent() {
             Análises e relatórios detalhados do seu negócio
           </Typography>
         </Box>
-        <Button
-          variant="outlined"
-          startIcon={<DownloadIcon />}
-          onClick={handleExportGeral}
-        >
+        <Button variant="outlined" startIcon={<DownloadIcon />} onClick={handleExportGeral}>
           Exportar Geral
         </Button>
       </Stack>
@@ -229,12 +220,7 @@ export function RelatoriosContent() {
                   flexDirection: 'column',
                 }}
               >
-                <Stack
-                  direction="row"
-                  alignItems="flex-start"
-                  spacing={2}
-                  sx={{ mb: 2 }}
-                >
+                <Stack direction="row" alignItems="flex-start" spacing={2} sx={{ mb: 2 }}>
                   <Avatar
                     sx={{
                       bgcolor: `${relatorio.cor}.light`,
@@ -249,11 +235,7 @@ export function RelatoriosContent() {
                     <Typography variant="h6" gutterBottom>
                       {relatorio.titulo}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      paragraph
-                    >
+                    <Typography variant="body2" color="text.secondary" paragraph>
                       {relatorio.descricao}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -263,11 +245,7 @@ export function RelatoriosContent() {
                 </Stack>
 
                 <Box sx={{ mb: 2, flex: 1 }}>
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    color="text.secondary"
-                  >
+                  <Typography variant="subtitle2" gutterBottom color="text.secondary">
                     Relatórios inclusos:
                   </Typography>
                   <Stack spacing={1}>
@@ -277,10 +255,7 @@ export function RelatoriosContent() {
                         variant="body2"
                         sx={{ display: 'flex', alignItems: 'center' }}
                       >
-                        <BarChartIcon
-                          fontSize="small"
-                          sx={{ mr: 1, color: 'text.secondary' }}
-                        />
+                        <BarChartIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
                         {tipo}
                       </Typography>
                     ))}
@@ -317,11 +292,7 @@ export function RelatoriosContent() {
       {/* Seção de Ajuda */}
       <Card sx={{ borderRadius: 3, mt: 4, bgcolor: 'grey.50' }}>
         <CardContent>
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            alignItems="center"
-            spacing={3}
-          >
+          <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" spacing={3}>
             <Avatar sx={{ bgcolor: 'info.main', width: 64, height: 64 }}>
               <AssessmentIcon fontSize="large" />
             </Avatar>
@@ -330,10 +301,9 @@ export function RelatoriosContent() {
                 Precisa de ajuda com os relatórios?
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Nossa central de relatórios oferece análises detalhadas sobre
-                todos os aspectos do seu negócio. Cada relatório pode ser
-                personalizado por período, filtrado por critérios específicos e
-                exportado em diversos formatos.
+                Nossa central de relatórios oferece análises detalhadas sobre todos os aspectos do
+                seu negócio. Cada relatório pode ser personalizado por período, filtrado por
+                critérios específicos e exportado em diversos formatos.
               </Typography>
             </Box>
             <Button variant="contained" color="info">
@@ -343,5 +313,5 @@ export function RelatoriosContent() {
         </CardContent>
       </Card>
     </Box>
-  )
+  );
 }

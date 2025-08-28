@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material';
 
 export default function RelatoriosPage() {
   return (
@@ -14,10 +14,10 @@ export default function RelatoriosPage() {
         </Typography>
       </Box>
     </Container>
-  )
+  );
 }
 
 export const metadata = {
   title: 'Central de Relatórios | Trato',
   description: 'Central de relatórios e análises',
-}
+};

@@ -1,65 +1,38 @@
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/database'
+// src/lib/supabase/server.ts
+import type { Database } from '@/types/database';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
-// Verifica se estamos no servidor (Node.js) ou no cliente (browser)
-const isServer = typeof window === 'undefined'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-// Só valida as variáveis no servidor
-if (isServer && (!supabaseUrl || !supabaseServiceRoleKey)) {
-  throw new Error('Missing Supabase server environment variables')
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  throw new Error('Faltam NEXT_PUBLIC_SUPABASE_URL/ANON_KEY no ambiente.');
 }
 
-// No cliente, usar valores padrão para evitar erros
-const serverUrl = isServer
-  ? supabaseUrl
-  : supabaseUrl || 'http://127.0.0.1:54321'
-const serverKey = isServer ? supabaseServiceRoleKey : 'dummy-key'
-
 /**
- * Cliente Supabase para uso no servidor (Server Actions)
- * Usa a service role key que bypassa RLS quando necessário
- * ATENÇÃO: Use apenas em Server Actions, nunca no cliente
+ * SERVER (SSR) — respeita RLS e LÊ COOKIES
+ * Usado em Server Components, Server Actions e Pages
  */
-export const supabaseAdmin = createClient<Database>(serverUrl, serverKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
-  db: {
-    schema: 'public',
-  },
-  global: {
-    headers: {
-      'x-client-info': 'trato-server-admin',
-    },
-  },
-})
 
-/**
- * Cliente Supabase para uso no servidor respeitando RLS
- * Para operações que devem respeitar as políticas de segurança
+/** SERVER (SSR) — respeita RLS e lê COOKIES
+ * Usado em Server Components, Server Actions e Pages
+ * Exportação única, sem instância global
  */
-export const supabaseServer = createClient<Database>(
-  serverUrl,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy-anon-key',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-    db: {
-      schema: 'public',
-    },
-    global: {
-      headers: {
-        'x-client-info': 'trato-server-rls',
+export function createServerSupabase() {
+  const cookieStore = cookies();
+  return createServerClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        } catch {
+          // The `setAll` method foi chamado de um Server Component.
+          // Ignorar se houver middleware que atualiza sessão.
+        }
       },
     },
-  }
-)
-
-// Export padrão para compatibilidade com imports existentes
-export const supabase = supabaseServer
+  });
+}

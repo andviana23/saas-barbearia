@@ -1,0 +1,206 @@
+version: '3.8'
+
+# ===============================================
+# DOCKER COMPOSE - PRODUCTION
+# SaaS Barbearia - Production Stack
+# ===============================================
+
+services:
+  # =====================================================
+  # MAIN APPLICATION
+  # =====================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - ASAAS_API_KEY=${ASAAS_API_KEY}
+      - ASAAS_WEBHOOK_SECRET=${ASAAS_WEBHOOK_SECRET}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - BACKUP_S3_BUCKET=${BACKUP_S3_BUCKET}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - /app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.saas-barbearia.rule=Host(`${DOMAIN}`)'
+      - 'traefik.http.routers.saas-barbearia.tls=true'
+      - 'traefik.http.routers.saas-barbearia.tls.certresolver=letsencrypt'
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # =====================================================
+  # REDIS FOR CACHING
+  # =====================================================
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.1'
+
+  # =====================================================
+  # REVERSE PROXY
+  # =====================================================
+  traefik:
+    image: traefik:v2.10
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080' # Dashboard (disable in production)
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - './traefik.yml:/etc/traefik/traefik.yml:ro'
+      - './traefik_dynamic.yml:/etc/traefik/dynamic.yml:ro'
+      - 'traefik_certificates:/certificates'
+    restart: unless-stopped
+    networks:
+      - app-network
+    labels:
+      - 'traefik.enable=true'
+      # Dashboard (disable in production)
+      - 'traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN}`)'
+      - 'traefik.http.routers.dashboard.tls=true'
+      - 'traefik.http.routers.dashboard.tls.certresolver=letsencrypt'
+
+  # =====================================================
+  # MONITORING
+  # =====================================================
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - '9090:9090'
+    volumes:
+      - './monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
+      - 'prometheus_data:/prometheus'
+    restart: unless-stopped
+    networks:
+      - app-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3001:3000'
+    volumes:
+      - 'grafana_data:/var/lib/grafana'
+      - './monitoring/grafana/provisioning:/etc/grafana/provisioning:ro'
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    restart: unless-stopped
+    networks:
+      - app-network
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)'
+      - 'traefik.http.routers.grafana.tls=true'
+      - 'traefik.http.routers.grafana.tls.certresolver=letsencrypt'
+
+  # =====================================================
+  # LOG AGGREGATION
+  # =====================================================
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - '3100:3100'
+    volumes:
+      - './monitoring/loki.yml:/etc/loki/local-config.yaml:ro'
+      - 'loki_data:/tmp/loki'
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - '/var/log:/var/log:ro'
+      - '/var/lib/docker/containers:/var/lib/docker/containers:ro'
+      - './monitoring/promtail.yml:/etc/promtail/config.yml:ro'
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # =====================================================
+  # BACKUP SERVICE
+  # =====================================================
+  backup:
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+    volumes:
+      - './scripts/backup:/scripts:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    environment:
+      - SUPABASE_DB_URL=${DATABASE_URL}
+      - BACKUP_S3_BUCKET=${BACKUP_S3_BUCKET}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - BACKUP_RETENTION_DAYS=${BACKUP_RETENTION_DAYS:-30}
+    restart: unless-stopped
+    networks:
+      - app-network
+    # Run backup daily at 2 AM
+    depends_on:
+      - app
+
+# =====================================================
+# NETWORKS
+# =====================================================
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =====================================================
+# VOLUMES
+# =====================================================
+volumes:
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+  traefik_certificates:
+    driver: local

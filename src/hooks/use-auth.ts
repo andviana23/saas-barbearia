@@ -1,212 +1,147 @@
-'use client'
+'use client';
+import { useEffect, useMemo, useState } from 'react';
+import { createBrowserSupabase } from '@/lib/supabase/client';
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
-import type { User, Session } from '@supabase/supabase-js'
+type AuthStatus = 'INIT' | 'SIGNED_OUT' | 'SIGNED_IN';
 
 export interface AuthUser {
-  id: string
-  email: string
-  nome?: string
-  telefone?: string
-  unidade_default_id?: string
-  role?: string
+  id: string;
+  email: string;
+  nome?: string;
+  telefone?: string;
+  unidade_default_id?: string;
+  role?: string;
 }
 
 export function useAuth() {
-  const [user, setUser] = useState<AuthUser | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
+  const supabase = useMemo(() => createBrowserSupabase(), []);
+  const [session, setSession] = useState<any>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [status, setStatus] = useState<AuthStatus>('INIT');
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    // Obter sessão inicial
-    const getInitialSession = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession()
-        setSession(session)
-        if (session?.user) {
-          await fetchUserProfile(session.user)
-        }
-      } catch (error) {
-        console.error('Erro ao obter sessão inicial:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+    let cancelled = false;
 
-    getInitialSession()
+    const { data: subscription } = supabase.auth.onAuthStateChange((_e, s) => {
+      if (cancelled) return;
+      setSession(s);
+      setStatus(s ? 'SIGNED_IN' : 'SIGNED_OUT');
 
-    // Escutar mudanças de autenticação
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session)
-      if (session?.user) {
-        await fetchUserProfile(session.user)
+      if (s?.user) {
+        // Buscar perfil em background, sem bloquear
+        fetchUserProfile(s.user).catch((err) =>
+          console.warn('Background profile fetch failed:', err),
+        );
       } else {
-        setUser(null)
+        setUser(null);
       }
-      setLoading(false)
-    })
+    });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    (async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (cancelled) return;
 
-  const fetchUserProfile = async (authUser: User) => {
+        setSession(data.session ?? null);
+        setStatus(data.session ? 'SIGNED_IN' : 'SIGNED_OUT');
+
+        if (data.session?.user) {
+          // Buscar perfil em background, não bloqueia boot
+          fetchUserProfile(data.session.user).catch((err) =>
+            console.warn('Profile fetch failed:', err),
+          );
+        }
+      } catch (_) {
+        if (!cancelled) setStatus('SIGNED_OUT');
+      } finally {
+        if (!cancelled) setAuthLoading(false); // sempre solta
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      subscription?.subscription?.unsubscribe();
+    };
+  }, [supabase]);
+
+  // Função pura para buscar perfil (SEM hooks)
+  // authUser vem do supabase; tipagem mínima para evitar any profundo
+  const fetchUserProfile = async (authUser: { id: string; email?: string | null }) => {
     try {
+      console.log('🔍 Buscando perfil para usuário:', authUser.id);
+
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('*')
-        .eq('id', authUser.id)
-        .single()
+        .select('user_id, name, email, phone, unit_default_id, role')
+        .eq('user_id', authUser.id)
+        .maybeSingle();
 
       if (error) {
-        console.error('Erro ao buscar perfil:', error)
-        return
+        console.error('❌ Erro ao buscar perfil (usando fallback mínimo):', error);
+        // Fallback: ainda consideramos o usuário autenticado com dados mínimos
+        setUser({ id: authUser.id, email: authUser.email || '' });
+        return;
       }
 
-      setUser({
-        id: authUser.id,
-        email: authUser.email || '',
-        nome: profile?.nome,
-        telefone: profile?.telefone,
-        unidade_default_id: profile?.unidade_default_id,
-        role: profile?.role,
-      })
+      if (profile) {
+        console.log('✅ Perfil encontrado:', (profile as any).name);
+        setUser({
+          id: authUser.id,
+          email: authUser.email || '',
+          nome: (profile as any).name,
+          telefone: (profile as any).phone,
+          unidade_default_id: (profile as any).unit_default_id,
+          role: (profile as any).role,
+        });
+      } else {
+        console.log('⚠️ Perfil não encontrado. Usando dados mínimos do auth user:', authUser.id);
+        // Fallback quando não existe registro em profiles
+        setUser({ id: authUser.id, email: authUser.email || '' });
+      }
     } catch (error) {
-      console.error('Erro ao buscar perfil do usuário:', error)
+      console.error('❌ Erro inesperado ao buscar perfil:', error);
+      // Não limpa user em caso de erro de perfil - mantém autenticação
     }
-  }
+  };
 
-  const signIn = async (email: string, password: string) => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (error) {
-        throw error
-      }
-
-      if (data.user) {
-        await fetchUserProfile(data.user)
-        router.push('/dashboard')
-      }
-
-      return { success: true, data }
-    } catch (error) {
-      console.error('Erro no login:', error)
-      return { success: false, error }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const signUp = async (
-    email: string,
-    password: string,
-    userData: Partial<AuthUser>
-  ) => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            nome: userData.nome,
-            telefone: userData.telefone,
-            unidade_default_id: userData.unidade_default_id,
-          },
-        },
-      })
-
-      if (error) {
-        throw error
-      }
-
-      return { success: true, data }
-    } catch (error) {
-      console.error('Erro no cadastro:', error)
-      return { success: false, error }
-    } finally {
-      setLoading(false)
-    }
-  }
+  const signInWithPassword = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  };
 
   const signOut = async () => {
-    try {
-      setLoading(true)
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        throw error
-      }
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    setUser(null);
+    setSession(null);
+  };
 
-      setUser(null)
-      setSession(null)
-      router.push('/login')
-    } catch (error) {
-      console.error('Erro no logout:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // Stub simples de resetPassword (envia magic link do Supabase)
   const resetPassword = async (email: string) => {
     try {
-      setLoading(true)
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
-      })
-
-      if (error) {
-        throw error
-      }
-
-      return { success: true }
-    } catch (error) {
-      console.error('Erro ao resetar senha:', error)
-      return { success: false, error }
-    } finally {
-      setLoading(false)
+      });
+      if (error) return { success: false, error: error.message };
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: (e as Error).message };
     }
-  }
-
-  const updatePassword = async (newPassword: string) => {
-    try {
-      setLoading(true)
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      })
-
-      if (error) {
-        throw error
-      }
-
-      return { success: true }
-    } catch (error) {
-      console.error('Erro ao atualizar senha:', error)
-      return { success: false, error }
-    } finally {
-      setLoading(false)
-    }
-  }
+  };
 
   return {
-    user,
     session,
-    loading,
-    signIn,
-    signUp,
+    user,
+    status,
+    authLoading,
+    signInWithPassword,
     signOut,
     resetPassword,
-    updatePassword,
-    isAuthenticated: !!user,
-  }
+    // Compatibilidade com código existente
+    loading: authLoading,
+    isAuthenticated: !!session?.user,
+    signIn: signInWithPassword,
+  };
 }

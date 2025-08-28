@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createMovimentacao,
   updateMovimentacao,
@@ -12,19 +12,19 @@ import {
   fechamentoCaixa,
   gerarRelatorioFinanceiro,
   getEstatisticasFinanceiras,
-} from '@/actions/financeiro'
+} from '@/actions/financeiro';
 import type {
   MovimentacaoFilterData,
   EstatisticasFinanceirasData,
   RelatorioFinanceiroData,
-} from '@/schemas'
+} from '@/schemas';
 
 // Query keys para o sistema financeiro
-export const FINANCEIRO_QUERY_KEY = 'financeiro'
-export const MOVIMENTACOES_QUERY_KEY = 'movimentacoes'
-export const ESTATISTICAS_QUERY_KEY = 'estatisticas-financeiras'
-export const RELATORIOS_QUERY_KEY = 'relatorios-financeiros'
-export const COMISSOES_QUERY_KEY = 'comissoes'
+export const FINANCEIRO_QUERY_KEY = 'financeiro';
+export const MOVIMENTACOES_QUERY_KEY = 'movimentacoes';
+export const ESTATISTICAS_QUERY_KEY = 'estatisticas-financeiras';
+export const RELATORIOS_QUERY_KEY = 'relatorios-financeiros';
+export const COMISSOES_QUERY_KEY = 'comissoes';
 
 // =====================================================
 // REACT QUERY HOOKS PARA GESTÃO FINANCEIRA (EP9)
@@ -40,7 +40,7 @@ export function useMovimentacoes(filters?: MovimentacaoFilterData) {
     staleTime: 1000 * 60 * 2, // 2 minutos (dados financeiros mudam frequentemente)
     retry: 3,
     enabled: true,
-  })
+  });
 }
 
 /**
@@ -52,102 +52,102 @@ export function useMovimentacao(id: string) {
     queryFn: () => getMovimentacao(id),
     enabled: !!id,
     staleTime: 1000 * 60 * 5, // 5 minutos
-  })
+  });
 }
 
 /**
  * Hook para criar movimentação financeira
  */
 export function useCreateMovimentacao() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await createMovimentacao(formData)
+      return await createMovimentacao(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache das movimentações
-        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao criar movimentação:', error)
+      console.error('Erro ao criar movimentação:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para atualizar movimentação financeira
  */
 export function useUpdateMovimentacao() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await updateMovimentacao(formData)
+      return await updateMovimentacao(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache das movimentações
-        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao atualizar movimentação:', error)
+      console.error('Erro ao atualizar movimentação:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para deletar movimentação financeira
  */
 export function useDeleteMovimentacao() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      return await deleteMovimentacao(id)
+      return await deleteMovimentacao(id);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache das movimentações
-        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao deletar movimentação:', error)
+      console.error('Erro ao deletar movimentação:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para lançamento rápido
  */
 export function useLancamentoRapido() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await lancamentoRapido(formData)
+      return await lancamentoRapido(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache das movimentações
-        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro ao criar lançamento rápido:', error)
+      console.error('Erro ao criar lançamento rápido:', error);
     },
-  })
+  });
 }
 
 /**
@@ -156,36 +156,36 @@ export function useLancamentoRapido() {
 export function useCalcularComissao() {
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await calcularComissao(formData)
+      return await calcularComissao(formData);
     },
     onError: (error) => {
-      console.error('Erro ao calcular comissão:', error)
+      console.error('Erro ao calcular comissão:', error);
     },
-  })
+  });
 }
 
 /**
  * Hook para fechamento de caixa
  */
 export function useFechamentoCaixa() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      return await fechamentoCaixa(formData)
+      return await fechamentoCaixa(formData);
     },
     onSuccess: (result) => {
       if (result.success) {
         // Invalidar cache relevante
-        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
-        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
+        queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
       }
     },
     onError: (error) => {
-      console.error('Erro no fechamento de caixa:', error)
+      console.error('Erro no fechamento de caixa:', error);
     },
-  })
+  });
 }
 
 /**
@@ -197,21 +197,19 @@ export function useRelatorioFinanceiro(filtros?: RelatorioFinanceiroData) {
     queryFn: () => gerarRelatorioFinanceiro(filtros),
     enabled: !!filtros?.data_inicio && !!filtros?.data_fim,
     staleTime: 1000 * 60 * 10, // 10 minutos (relatórios não mudam tão frequentemente)
-  })
+  });
 }
 
 /**
  * Hook para obter estatísticas financeiras
  */
-export function useEstatisticasFinanceiras(
-  filtros?: EstatisticasFinanceirasData
-) {
+export function useEstatisticasFinanceiras(filtros?: EstatisticasFinanceirasData) {
   return useQuery({
     queryKey: [ESTATISTICAS_QUERY_KEY, filtros],
     queryFn: () => getEstatisticasFinanceiras(filtros),
     staleTime: 1000 * 60 * 5, // 5 minutos
     refetchInterval: 1000 * 60 * 5, // Atualizar a cada 5 minutos automaticamente
-  })
+  });
 }
 
 // =====================================================
@@ -222,7 +220,7 @@ export function useEstatisticasFinanceiras(
  * Hook para movimentações do dia atual
  */
 export function useMovimentacoesHoje(unidadeId?: string) {
-  const hoje = new Date().toISOString().split('T')[0]
+  const hoje = new Date().toISOString().split('T')[0];
 
   return useMovimentacoes({
     page: 1,
@@ -231,17 +229,13 @@ export function useMovimentacoesHoje(unidadeId?: string) {
     data_fim: hoje,
     ordenacao: 'criado_desc',
     limit: 100,
-  })
+  });
 }
 
 /**
  * Hook para entradas do período
  */
-export function useEntradasPeriodo(
-  unidadeId?: string,
-  dataInicio?: string,
-  dataFim?: string
-) {
+export function useEntradasPeriodo(unidadeId?: string, dataInicio?: string, dataFim?: string) {
   return useMovimentacoes({
     page: 1,
     unidade_id: unidadeId,
@@ -250,17 +244,13 @@ export function useEntradasPeriodo(
     data_fim: dataFim,
     ordenacao: 'data_desc',
     limit: 100,
-  })
+  });
 }
 
 /**
  * Hook para saídas do período
  */
-export function useSaidasPeriodo(
-  unidadeId?: string,
-  dataInicio?: string,
-  dataFim?: string
-) {
+export function useSaidasPeriodo(unidadeId?: string, dataInicio?: string, dataFim?: string) {
   return useMovimentacoes({
     page: 1,
     unidade_id: unidadeId,
@@ -269,7 +259,7 @@ export function useSaidasPeriodo(
     data_fim: dataFim,
     ordenacao: 'data_desc',
     limit: 100,
-  })
+  });
 }
 
 /**
@@ -279,7 +269,7 @@ export function useMovimentacoesProfissional(
   profissionalId: string,
   unidadeId?: string,
   dataInicio?: string,
-  dataFim?: string
+  dataFim?: string,
 ) {
   return useMovimentacoes({
     page: 1,
@@ -289,7 +279,7 @@ export function useMovimentacoesProfissional(
     data_fim: dataFim,
     ordenacao: 'data_desc',
     limit: 50,
-  })
+  });
 }
 
 /**
@@ -301,7 +291,7 @@ export function useResumoFinanceiroDia(unidadeId?: string) {
     periodo: 'hoje',
     incluir_comparativo: true,
     incluir_metas: false,
-  })
+  });
 }
 
 /**
@@ -313,7 +303,7 @@ export function useResumoFinanceiroMes(unidadeId?: string) {
     periodo: 'mes',
     incluir_comparativo: true,
     incluir_metas: false,
-  })
+  });
 }
 
 /**
@@ -325,7 +315,7 @@ export function useResumoFinanceiroSemana(unidadeId?: string) {
     periodo: 'semana',
     incluir_comparativo: true,
     incluir_metas: false,
-  })
+  });
 }
 
 /**
@@ -335,7 +325,7 @@ export function useRelatorioPorProfissional(
   profissionalId: string,
   dataInicio: string,
   dataFim: string,
-  unidadeId?: string
+  unidadeId?: string,
 ) {
   return useRelatorioFinanceiro({
     tipo_relatorio: 'por_profissional',
@@ -346,17 +336,13 @@ export function useRelatorioPorProfissional(
     incluir_comissoes: true,
     incluir_impostos: false,
     formato: 'json',
-  })
+  });
 }
 
 /**
  * Hook para relatório de fluxo de caixa
  */
-export function useRelatorioFluxoCaixa(
-  dataInicio: string,
-  dataFim: string,
-  unidadeId?: string
-) {
+export function useRelatorioFluxoCaixa(dataInicio: string, dataFim: string, unidadeId?: string) {
   return useRelatorioFinanceiro({
     tipo_relatorio: 'fluxo_caixa',
     unidade_id: unidadeId,
@@ -365,7 +351,7 @@ export function useRelatorioFluxoCaixa(
     incluir_comissoes: false,
     incluir_impostos: false,
     formato: 'json',
-  })
+  });
 }
 
 /**
@@ -373,14 +359,14 @@ export function useRelatorioFluxoCaixa(
  */
 export function useTopOrigensReceita(
   unidadeId?: string,
-  periodo: 'semana' | 'mes' | 'ano' = 'mes'
+  periodo: 'semana' | 'mes' | 'ano' = 'mes',
 ) {
   const estatisticas = useEstatisticasFinanceiras({
     unidade_id: unidadeId,
     periodo,
     incluir_comparativo: false,
     incluir_metas: false,
-  })
+  });
 
   return {
     ...estatisticas,
@@ -388,24 +374,18 @@ export function useTopOrigensReceita(
       estatisticas.data?.success && estatisticas.data.data
         ? {
             ...estatisticas.data.data,
-            top_origens: Object.entries(
-              (estatisticas.data.data as any).origens_receita || {}
-            )
+            top_origens: Object.entries((estatisticas.data.data as any).origens_receita || {})
               .sort(([, a], [, b]) => (b as number) - (a as number))
               .slice(0, 5),
           }
         : null,
-  }
+  };
 }
 
 /**
  * Hook para comissões do período
  */
-export function useComissoesPeriodo(
-  dataInicio: string,
-  dataFim: string,
-  unidadeId?: string
-) {
+export function useComissoesPeriodo(dataInicio: string, dataFim: string, unidadeId?: string) {
   return useMovimentacoes({
     page: 1,
     unidade_id: unidadeId,
@@ -414,7 +394,7 @@ export function useComissoesPeriodo(
     data_fim: dataFim,
     ordenacao: 'data_desc',
     limit: 100,
-  })
+  });
 }
 
 /**
@@ -431,7 +411,7 @@ export function useEstatisticasRealTime(unidadeId?: string) {
     staleTime: 1000 * 30, // 30 segundos
     refetchInterval: 1000 * 60, // 1 minuto
     refetchOnWindowFocus: true,
-  })
+  });
 }
 
 /**
@@ -450,31 +430,31 @@ export function useBuscarMovimentacoes(termo: string, unidadeId?: string) {
       }),
     enabled: !!termo && termo.length >= 3,
     staleTime: 1000 * 60 * 2, // 2 minutos
-  })
+  });
 }
 
 /**
  * Hook para invalidar cache financeiro manualmente
  */
 export function useInvalidateFinanceiro() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return {
     invalidateAll: () => {
-      queryClient.invalidateQueries({ queryKey: [FINANCEIRO_QUERY_KEY] })
-      queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
-      queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
-      queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
-      queryClient.invalidateQueries({ queryKey: [COMISSOES_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [FINANCEIRO_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COMISSOES_QUERY_KEY] });
     },
     invalidateMovimentacoes: () => {
-      queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [MOVIMENTACOES_QUERY_KEY] });
     },
     invalidateEstatisticas: () => {
-      queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [ESTATISTICAS_QUERY_KEY] });
     },
     invalidateRelatorios: () => {
-      queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] })
+      queryClient.invalidateQueries({ queryKey: [RELATORIOS_QUERY_KEY] });
     },
-  }
+  };
 }
