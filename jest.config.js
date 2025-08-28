@@ -27,8 +27,10 @@ const config = {
   ],
 
   // Coverage configuration
+  // IMPORTANTE: o pattern anterior 'src/**/*.(ts|tsx)' estava incorreto e não
+  // correspondia a arquivos TypeScript. Correção para a sintaxe brace expansion.
   collectCoverageFrom: [
-    'src/**/*.(ts|tsx)',
+    'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/*.stories.*',
     '!src/**/index.ts',
