@@ -79,7 +79,7 @@ describe('agendamentos actions (branches principais)', () => {
         status: 'confirmado' as AppointmentStatus,
       });
       expect(result.success).toBe(true);
-  expect(result.data?.status).toBe('confirmado');
+      expect(result.data?.status).toBe('confirmado');
     });
   });
 
@@ -87,7 +87,12 @@ describe('agendamentos actions (branches principais)', () => {
     test('já concluído não pode cancelar', async () => {
       supabaseMock = {
         from: () => ({
-          select: () => ({ eq: () => ({ single: () => ok({ status: 'concluido', notas: '', inicio: new Date().toISOString() }) }) }),
+          select: () => ({
+            eq: () => ({
+              single: () =>
+                ok({ status: 'concluido', notas: '', inicio: new Date().toISOString() }),
+            }),
+          }),
         }),
       };
       const result = await cancelAppointment({
@@ -103,8 +108,16 @@ describe('agendamentos actions (branches principais)', () => {
       const inicio = new Date(Date.now() + 60 * 60 * 1000).toISOString();
       supabaseMock = {
         from: () => ({
-          select: () => ({ eq: () => ({ single: () => ok({ status: 'confirmado', notas: '', inicio }) }) }),
-          update: () => ({ eq: () => ({ select: () => ({ single: () => ok({ id: 'apt1', status: 'cancelado', notas: '...[CANCELADO' }) }) }) }),
+          select: () => ({
+            eq: () => ({ single: () => ok({ status: 'confirmado', notas: '', inicio }) }),
+          }),
+          update: () => ({
+            eq: () => ({
+              select: () => ({
+                single: () => ok({ id: 'apt1', status: 'cancelado', notas: '...[CANCELADO' }),
+              }),
+            }),
+          }),
         }),
       };
       const result = await cancelAppointment({
@@ -113,7 +126,7 @@ describe('agendamentos actions (branches principais)', () => {
         cancelado_por: 'user',
       });
       expect(result.success).toBe(true);
-  expect(result.data?.status).toBe('cancelado');
+      expect(result.data?.status).toBe('cancelado');
     });
   });
 
@@ -129,7 +142,9 @@ describe('agendamentos actions (branches principais)', () => {
 
     test('sucesso', async () => {
       supabaseMock = {
-        from: () => ({ select: () => ({ eq: () => ({ single: () => ok({ id: 'apt1', status: 'criado' }) }) }) }),
+        from: () => ({
+          select: () => ({ eq: () => ({ single: () => ok({ id: 'apt1', status: 'criado' }) }) }),
+        }),
       };
       const result = await getAppointmentById('apt1');
       expect(result.success).toBe(true);
@@ -146,8 +161,16 @@ describe('agendamentos actions (branches principais)', () => {
         total,
         inicio: now.toISOString(),
         appointments_servicos: [
-          { servico: { id: 's1', nome: 'Corte' }, preco_aplicado: total / 2, duracao_aplicada: duracao },
-          { servico: { id: 's2', nome: 'Barba' }, preco_aplicado: total / 2, duracao_aplicada: duracao },
+          {
+            servico: { id: 's1', nome: 'Corte' },
+            preco_aplicado: total / 2,
+            duracao_aplicada: duracao,
+          },
+          {
+            servico: { id: 's2', nome: 'Barba' },
+            preco_aplicado: total / 2,
+            duracao_aplicada: duracao,
+          },
         ],
       });
       const dataset = [
@@ -174,21 +197,21 @@ describe('agendamentos actions (branches principais)', () => {
         }),
       };
 
-  const result = await getAgendamentoStats({ periodo: 'hoje' });
-  expect(result.success).toBe(true);
-  const stats: AgendamentoStats = result.data;
-  expect(stats.total_agendamentos).toBe(dataset.length);
-  expect(stats.agendamentos_concluidos).toBe(1);
-  expect(stats.agendamentos_cancelados).toBe(2);
-  expect(stats.servicos_mais_agendados.length).toBeGreaterThan(0);
+      const result = await getAgendamentoStats({ periodo: 'hoje' });
+      expect(result.success).toBe(true);
+      const stats: AgendamentoStats = result.data;
+      expect(stats.total_agendamentos).toBe(dataset.length);
+      expect(stats.agendamentos_concluidos).toBe(1);
+      expect(stats.agendamentos_cancelados).toBe(2);
+      expect(stats.servicos_mais_agendados.length).toBeGreaterThan(0);
     });
   });
 
   describe('checkDisponibilidade', () => {
     test('gera slots e marca conflitos', async () => {
       const day = new Date('2025-08-28T00:00:00Z');
-  const aptInicio = new Date(day);
-  aptInicio.setHours(9, 0, 0, 0);
+      const aptInicio = new Date(day);
+      aptInicio.setHours(9, 0, 0, 0);
       const aptFim = new Date(aptInicio.getTime() + 30 * 60 * 1000);
       supabaseMock = {
         from: () => ({
@@ -232,7 +255,7 @@ describe('agendamentos actions (branches principais)', () => {
         duracao_minutos: 30,
       });
       expect(result.success).toBe(true);
-  const dispo: DisponibilidadeInfo = result.data;
+      const dispo: DisponibilidadeInfo = result.data;
       // Validar que retornou o agendamento ocupado
       expect(dispo.horarios_ocupados.length).toBe(1);
       const ocupadoInicio = new Date(dispo.horarios_ocupados[0].inicio).toISOString();
@@ -251,17 +274,26 @@ describe('agendamentos actions (branches principais)', () => {
       supabaseMock = {
         rpc: () => Promise.resolve({ data: true, error: null }),
         from: () => ({
-          select: () => ({ eq: () => ({ single: () => ok({
-            id: 'apt1',
-            status: 'confirmado',
-            profissional_id: 'prof1',
-            notas: '',
-            appointments_servicos: [{ duracao_aplicada: 30 }],
-          }) }) }),
+          select: () => ({
+            eq: () => ({
+              single: () =>
+                ok({
+                  id: 'apt1',
+                  status: 'confirmado',
+                  profissional_id: 'prof1',
+                  notas: '',
+                  appointments_servicos: [{ duracao_aplicada: 30 }],
+                }),
+            }),
+          }),
           update: () => ({ eq: () => ({ select: () => ({ single: () => ok({}) }) }) }),
         }),
       };
-      const result = await rescheduleAppointment({ id: 'apt1', novo_inicio: new Date(), notas_reagendamento: 'troca' });
+      const result = await rescheduleAppointment({
+        id: 'apt1',
+        novo_inicio: new Date(),
+        notas_reagendamento: 'troca',
+      });
       expect(result.success).toBe(false);
       expect(result.error).toContain('Conflito de horário');
     });
@@ -271,19 +303,35 @@ describe('agendamentos actions (branches principais)', () => {
       supabaseMock = {
         rpc: () => Promise.resolve({ data: false, error: null }),
         from: () => ({
-          select: () => ({ eq: () => ({ single: () => ok({
-            id: 'apt1',
-            status: 'confirmado',
-            profissional_id: 'prof1',
-            notas: 'orig',
-            appointments_servicos: [{ duracao_aplicada: 30 }],
-          }) }) }),
-          update: () => ({ eq: () => ({ select: () => ({ single: () => ok({ id: 'apt1', status: 'confirmado', inicio: new Date().toISOString() }) }) }) }),
+          select: () => ({
+            eq: () => ({
+              single: () =>
+                ok({
+                  id: 'apt1',
+                  status: 'confirmado',
+                  profissional_id: 'prof1',
+                  notas: 'orig',
+                  appointments_servicos: [{ duracao_aplicada: 30 }],
+                }),
+            }),
+          }),
+          update: () => ({
+            eq: () => ({
+              select: () => ({
+                single: () =>
+                  ok({ id: 'apt1', status: 'confirmado', inicio: new Date().toISOString() }),
+              }),
+            }),
+          }),
         }),
       };
-      const result = await rescheduleAppointment({ id: 'apt1', novo_inicio: new Date(), notas_reagendamento: 'ajuste' });
+      const result = await rescheduleAppointment({
+        id: 'apt1',
+        novo_inicio: new Date(),
+        notas_reagendamento: 'ajuste',
+      });
       expect(result.success).toBe(true);
-  expect(result.data?.id).toBe('apt1');
+      expect(result.data?.id).toBe('apt1');
     });
   });
 });

@@ -22,10 +22,10 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
         textRendering: 'optimizeLegibility',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
-  // Fundo global atualizado
-  backgroundColor: isDark ? '#0B0E13' : '#F8FAFC',
-  // Focus ring acessível (aplicado via data attribute quando necessário)
-  '--focus-ring': '#4F8CFF',
+        // Fundo global atualizado
+        backgroundColor: isDark ? '#0B0E13' : '#F8FAFC',
+        // Focus ring acessível (aplicado via data attribute quando necessário)
+        '--focus-ring': '#4F8CFF',
       },
     },
   },
@@ -201,7 +201,9 @@ export function makeTheme(mode: 'dark' | 'light' = 'dark') {
   const isDark = mode === 'dark';
   const palette = isDark ? paletteDark : paletteLight;
 
-  const neutralBorder: string = (palette as Record<string, unknown> & { neutralBorder?: string }).neutralBorder || 'rgba(255,255,255,0.08)';
+  const neutralBorder: string =
+    (palette as Record<string, unknown> & { neutralBorder?: string }).neutralBorder ||
+    'rgba(255,255,255,0.08)';
   return createTheme({
     palette: { mode, ...palette },
     shape: { borderRadius: radius.md },

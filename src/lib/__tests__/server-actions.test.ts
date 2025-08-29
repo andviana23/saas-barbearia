@@ -30,8 +30,8 @@ describe('server-actions helpers', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.errors).toHaveLength(2);
-  const fields = result.errors.map((e) => e.field).sort();
-  expect(fields).toEqual(['count', 'id']);
+      const fields = result.errors.map((e) => e.field).sort();
+      expect(fields).toEqual(['count', 'id']);
     }
   });
 

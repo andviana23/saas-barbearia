@@ -76,7 +76,7 @@ describe('API Routes', () => {
   test('health GET degraded se falta env', async () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     const res = await healthGET(makeRequest('GET'));
-  expect([200, 503]).toContain(res.status); // overall pode marcar degraded -> 503
+    expect([200, 503]).toContain(res.status); // overall pode marcar degraded -> 503
     const json = await res.json();
     expect(json.components.environment.status).toBe('unhealthy');
   });

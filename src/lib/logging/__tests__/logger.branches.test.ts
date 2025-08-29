@@ -54,11 +54,11 @@ describe('logger branches adicionais', () => {
     });
     tl.instance.info('client ctx');
     // acessa buffer privado (TS apenas) para validar userAgent & traceId
-  type Entry = { userAgent?: string; traceId?: string };
-  const buf = (tl.instance as { buffer: Entry[] }).buffer;
-  // jsdom pode sobrescrever userAgent, então validamos presença e padrão
-  expect(buf[0]?.userAgent).toMatch(/jsdom|jest-agent/);
-  expect(buf[0]?.traceId).toMatch(/^[a-z0-9]{5,}$/); // cobre generateTraceId
+    type Entry = { userAgent?: string; traceId?: string };
+    const buf = (tl.instance as { buffer: Entry[] }).buffer;
+    // jsdom pode sobrescrever userAgent, então validamos presença e padrão
+    expect(buf[0]?.userAgent).toMatch(/jsdom|jest-agent/);
+    expect(buf[0]?.traceId).toMatch(/^[a-z0-9]{5,}$/); // cobre generateTraceId
   });
 
   test('flush early return (buffer vazio) com remote habilitado não chama fetch', async () => {

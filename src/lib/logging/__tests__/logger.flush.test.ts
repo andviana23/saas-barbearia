@@ -54,7 +54,7 @@ describe('logger flush remoto', () => {
 
   test('falha em fetch faz fallback console', async () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-  global.fetch = jest.fn().mockRejectedValue(new Error('netfail')) as unknown as typeof fetch;
+    global.fetch = jest.fn().mockRejectedValue(new Error('netfail')) as unknown as typeof fetch;
     const tl = new TestLoggerWrapper({
       level: LogLevel.INFO,
       enableConsole: true,
