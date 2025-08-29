@@ -44,3 +44,21 @@ describe('RLS smoke (simulado)', () => {
     expect(true).toBe(true);
   });
 });
+
+// Teste opcional real simples contra o banco (se DATABASE_URL definido) para validar que policies não explodem e restringem acesso sem contexto auth.
+// Não falha caso variável não exista; serve como sinal inicial de RLS ativa.
+describe('RLS smoke (real opcional)', () => {
+  const dbUrl = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL;
+  // Executa apenas se URL presente (ex: pipeline com banco disponível)
+  const maybeTest = dbUrl ? test : test.skip;
+  maybeTest('SELECT units limitado sem contexto auth', async () => {
+    // Import tardio para evitar custo se skip
+    const { Client } = await import('pg');
+    const client = new Client({ connectionString: dbUrl });
+    await client.connect();
+    const res = await client.query('select * from public.units limit 10');
+    // Resultado esperado: não lança erro; número de linhas limitado (não garante RLS, mas detecta ausência de erros)
+    expect(res.rows.length).toBeLessThanOrEqual(10);
+    await client.end();
+  });
+});

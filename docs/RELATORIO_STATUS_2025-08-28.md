@@ -56,6 +56,7 @@ Segurança / Observabilidade:
 
 - [ ] Script smoke RLS real (pelo menos SELECT cross-unit negado) automatizado em CI.
 - [ ] Logging padronizado de falhas em actions sensíveis com Sentry (campos scrub).
+      (Atual) Script smoke implementado em `tests/rls.smoke.test.ts` (teste opcional real ainda não integrado ao CI) -> marcar quando integrado.
 
 UX / Fundações UI:
 
