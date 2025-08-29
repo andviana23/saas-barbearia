@@ -48,8 +48,8 @@ Infra / Backing Data:
 Contracts & Acesso:
 
 - [x] Padrão ActionResult consolidado (inputs/outputs estáveis).
-- [ ] Definir enum / tipo central de Roles exportado para frontend (`src/types/roles.ts`).
-- [ ] Guards de menu / rotas (layout) baseados em role + unidade prontos (skeleton).
+- [x] Definir enum / tipo central de Roles exportado para frontend (`src/types/roles.ts`). (implementado em `src/types/roles.ts`)
+- [x] Guards de menu / rotas (layout) baseados em role + unidade prontos (skeleton). (arquivo `src/lib/auth/roleGuards.ts`; integração auth real pendente)
 - [ ] RLS expected baseline: garantir `coverage/rls-expected.json` sem `allowed=null` (strict) antes de telas sensíveis.
 
 Segurança / Observabilidade:
@@ -66,10 +66,10 @@ UX / Fundações UI:
 
 Fluxos Críticos (Skeleton Antes de Expansão):
 
-- [ ] Dashboard inicial com dados mock/seed.
-- [ ] Lista + formulário Clientes.
-- [ ] Lista + formulário Profissionais.
-- [ ] Lista + formulário Serviços.
+- [x] Dashboard inicial com dados (estrutura, métricas, gráficos). (mock/seed dedicado para métricas cheio ainda pendente)
+- [x] Lista + formulário Clientes. (lista + filtros + dialog create/edit funcionando)
+- [ ] Lista + formulário Profissionais. (lista completa OK; formulário/modal criação/edição pendente)
+- [ ] Lista + formulário Serviços. (lista + filtros + métricas OK; formulário/modal criação/edição pendente)
 
 Qualidade:
 
@@ -200,6 +200,7 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 2. **Testes RLS Matrix**: Implementar validação automática de policies por role
 3. **Seeds Base**: Criar dados de referência (roles, providers, feature_flags)
 4. **Métricas Persistidas**: Sistema de snapshots hourly para webhooks
+5. **Formulários Profissionais/Serviços**: Implementar dialogs de criação/edição e mutations seguindo padrão de Clientes
 
 ### 🎯 Médio Prazo (2-4 sprints)
 
