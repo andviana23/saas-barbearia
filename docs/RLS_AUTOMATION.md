@@ -95,6 +95,19 @@ Script inicial (`npm run rls:report`) compara somente expectativas `allowed=true
 
 Exit code ≠ 0 quando existir pelo menos uma divergência listada para facilitar bloqueio em CI.
 
+### Execuções Reais e allowedReal
+
+Pipeline experimental:
+
+1. Rodar testes CRUD em modo real: `RLS_CRUD_REAL=1 npm run rls:crud:test` (necessário `DATABASE_URL`).
+2. Cada tentativa gera linha em `coverage/rls-exec-log.jsonl`.
+3. Consolidar resultados no expected: `npm run rls:exec:merge` (preenche/atualiza campo `allowedReal`).
+4. Gerar relatório: `npm run rls:report` (produz `coverage/rls-report.json` e `coverage/rls-report.md`).
+
+Heurística de merge: se qualquer execução registrou sucesso para combinação, `allowedReal=true`, caso contrário `false`.
+
+Próximo aprimoramento: armazenar contagens (success/fail) e latência média para cada combinação.
+
 ## Troubleshooting
 
 | Sintoma                      | Causa Provável                                  | Ação                                              |

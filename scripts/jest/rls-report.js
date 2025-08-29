@@ -63,18 +63,47 @@ const withReal = expected.filter((e) => e.allowedReal !== undefined).length;
 console.log('Total expected decididas:', decided);
 console.log('Entradas com campo allowedReal presente:', withReal);
 console.log('Divergências encontradas:', divergencias.length);
+// Geração de artefatos (JSON + Markdown)
+try {
+  const fs = require('fs');
+  const path = require('path');
+  const dir = path.join(process.cwd(), 'coverage');
+  fs.mkdirSync(dir, { recursive: true });
+  const reportData = {
+    generatedAt: new Date().toISOString(),
+    decided,
+    withReal,
+    divergences: divergencias,
+  };
+  fs.writeFileSync(path.join(dir, 'rls-report.json'), JSON.stringify(reportData, null, 2));
+  // Markdown
+  let md = `# RLS Report\n\nGerado em: ${reportData.generatedAt}  \nEntradas decididas: ${decided}  \nCom allowedReal: ${withReal}  \nDivergências: ${divergencias.length}\n\n`;
+  if (divergencias.length) {
+    md += `## Divergências\n\n| Tipo | Tabela | Role | Operação | allowed | allowedReal |\n|------|--------|------|----------|---------|------------|\n`;
+    for (const d of divergencias) {
+      md += `| ${d.type} | ${d.table} | ${d.role} | ${d.operation} | ${d.allowed} | ${'allowedReal' in d ? d.allowedReal : ''} |\n`;
+    }
+    const byType = divergencias.reduce((acc, d) => {
+      acc[d.type] = (acc[d.type] || 0) + 1;
+      return acc;
+    }, {});
+    md += `\n### Resumo por Tipo\n\n`;
+    for (const [t, c] of Object.entries(byType)) md += `- ${t}: ${c}\n`;
+  } else {
+    md += 'Nenhuma divergência.\n';
+  }
+  fs.writeFileSync(path.join(dir, 'rls-report.md'), md);
+} catch (e) {
+  // não falha se não conseguir gerar artefatos
+}
+
 if (divergencias.length) {
   console.log('\nTipo, Tabela, Role, Operação');
   for (const d of divergencias) {
     console.log(`${d.type}, ${d.table}, ${d.role}, ${d.operation}`);
   }
-  console.log('\nResumo por tipo:');
-  const byType = divergencias.reduce((acc, d) => {
-    acc[d.type] = (acc[d.type] || 0) + 1;
-    return acc;
-  }, {});
-  for (const [t, c] of Object.entries(byType)) console.log(`${t}: ${c}`);
-  process.exitCode = 1; // sinaliza falhas para CI se divergências existirem
+  console.log('\nRelatórios salvos em coverage/rls-report.(json|md)');
+  process.exitCode = 1; // falha em divergência
 } else {
-  console.log('Nenhuma divergência detectada nesta fase.');
+  console.log('Nenhuma divergência detectada nesta fase. Relatórios salvos.');
 }
