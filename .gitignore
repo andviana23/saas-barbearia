@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+!coverage/rls-expected.json
+!coverage/rls-matrix.json
 
 # next.js
 /.next/

@@ -22,8 +22,10 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
         textRendering: 'optimizeLegibility',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
-        // ✅ Fundo global
-        backgroundColor: isDark ? '#080F18' : '#F8FAFC',
+  // Fundo global atualizado
+  backgroundColor: isDark ? '#0B0E13' : '#F8FAFC',
+  // Focus ring acessível (aplicado via data attribute quando necessário)
+  '--focus-ring': '#4F8CFF',
       },
     },
   },
@@ -35,7 +37,7 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
         borderRadius: radius.md,
         border: `1px solid ${neutralBorder}`,
         backgroundClip: 'padding-box',
-        // Paper já usa background.paper por padrão — sem override de cor aqui
+        backgroundColor: isDark ? '#161A23' : undefined, // surface-1
       },
     },
   },
@@ -46,14 +48,23 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
         borderRadius: radius.md,
         border: `1px solid ${neutralBorder}`,
         boxShadow: shadows.sm,
-        // Card também herda background.paper
+        backgroundColor: isDark ? '#161A23' : undefined, // surface-1
       },
     },
   },
 
   MuiButton: {
     styleOverrides: {
-      root: { borderRadius: radius.sm, paddingInline: 14, height: 38 },
+      root: {
+        borderRadius: radius.md,
+        paddingInline: 16,
+        height: 40,
+        fontWeight: 600,
+        '&:focus-visible': {
+          outline: '2px solid var(--focus-ring)',
+          outlineOffset: 2,
+        },
+      },
       containedPrimary: { boxShadow: shadows.sm },
       outlined: { borderWidth: 1.2 },
     },
@@ -66,22 +77,20 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
-        borderRadius: radius.sm,
+        borderRadius: radius.md,
         '& fieldset': { borderColor: neutralBorder },
-        '&:hover fieldset': { borderColor: isDark ? '#2F3541' : '#CBD5E1' },
-        '&.Mui-focused fieldset': { borderWidth: 1.5 },
-        // ✅ Fundo do input no dark
-        ...(isDark && { backgroundColor: '#05070A' }),
-        // ✅ Placeholder
+        '&:hover fieldset': { borderColor: isDark ? '#4F8CFF' : '#2563EB' },
+        '&.Mui-focused fieldset': { borderWidth: 1.5, borderColor: '#4F8CFF' },
+        ...(isDark && { backgroundColor: '#12151D' }),
         '& input::placeholder': {
-          color: isDark ? '#343E51' : 'inherit',
+          color: isDark ? '#3A4353' : 'inherit',
           opacity: 1,
         },
       },
       input: {
         paddingBlock: 10,
         '::placeholder': {
-          color: isDark ? '#343E51' : 'inherit',
+          color: isDark ? '#3A4353' : 'inherit',
           opacity: 1,
         },
       },
@@ -110,9 +119,9 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
   MuiListItemButton: {
     styleOverrides: {
       root: {
-        borderRadius: radius.sm,
+        borderRadius: radius.md,
         '&:hover': {
-          backgroundColor: isDark ? '#73777E' : 'rgba(2,6,23,0.04)',
+          backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(2,6,23,0.04)',
         },
       },
     },
@@ -121,8 +130,9 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
   MuiTableHead: {
     styleOverrides: {
       root: {
+        backgroundColor: isDark ? '#1C202B' : undefined, // surface-2
         '& .MuiTableCell-head': {
-          fontWeight: 700,
+          fontWeight: 600,
           borderBottom: `1px solid ${neutralBorder}`,
         },
       },
@@ -130,15 +140,60 @@ const components = (isDark: boolean, neutralBorder: string): ThemeOptions['compo
   },
 
   MuiTableCell: {
-    styleOverrides: { root: { borderBottom: `1px solid ${neutralBorder}` } },
+    styleOverrides: {
+      root: { borderBottom: `1px solid ${neutralBorder}` },
+      head: { fontSize: '0.75rem', letterSpacing: 0.5, textTransform: 'uppercase' },
+    },
+  },
+
+  MuiTableRow: {
+    styleOverrides: {
+      root: {
+        '&:hover': {
+          backgroundColor: isDark ? 'rgba(79,140,255,0.08)' : 'rgba(37,99,235,0.06)',
+        },
+      },
+    },
   },
 
   MuiChip: {
-    styleOverrides: { root: { borderRadius: radius.xs, fontWeight: 600 } },
+    styleOverrides: {
+      root: {
+        borderRadius: radius.xs,
+        fontWeight: 600,
+        fontSize: '0.625rem', // ~10px
+        letterSpacing: 0.3,
+        '&.MuiChip-filledDefault': {
+          backgroundColor: isDark ? '#1C202B' : '#F1F5F9',
+        },
+      },
+    },
   },
 
   MuiDivider: {
     styleOverrides: { root: { borderColor: neutralBorder } },
+  },
+
+  MuiTooltip: {
+    styleOverrides: {
+      tooltip: {
+        backgroundColor: isDark ? '#1C202B' : '#1E293B',
+        border: `1px solid ${neutralBorder}`,
+        fontSize: '0.75rem',
+        padding: '6px 8px',
+        borderRadius: radius.sm,
+      },
+    },
+  },
+
+  MuiDialog: {
+    styleOverrides: {
+      paper: {
+        backgroundColor: isDark ? '#1C202B' : undefined, // surface-2
+        borderRadius: radius.md,
+        border: `1px solid ${neutralBorder}`,
+      },
+    },
   },
 });
 
@@ -146,10 +201,11 @@ export function makeTheme(mode: 'dark' | 'light' = 'dark') {
   const isDark = mode === 'dark';
   const palette = isDark ? paletteDark : paletteLight;
 
+  const neutralBorder: string = (palette as Record<string, unknown> & { neutralBorder?: string }).neutralBorder || 'rgba(255,255,255,0.08)';
   return createTheme({
     palette: { mode, ...palette },
     shape: { borderRadius: radius.md },
     typography,
-    components: components(isDark, (palette as any).neutralBorder),
+    components: components(isDark, neutralBorder),
   });
 }

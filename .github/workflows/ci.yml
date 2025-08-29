@@ -63,8 +63,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check migration divergence
+        run: npm run db:migrate:check
+        env:
+          DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL || secrets.DATABASE_URL }}
+
+      - name: RLS expected strict check
+        run: npm run rls:expected:check
+
       - name: Run unit tests
         run: npm run test:unit
+        env:
+          NODE_ENV: test
+
+      - name: Run RLS smoke test
+        run: npx jest tests/rls.smoke.test.ts --runInBand --silent
         env:
           NODE_ENV: test
 
@@ -75,6 +88,54 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
+
+  # =====================================================
+  # SUPABASE RLS REAL (OPCIONAL)
+  # =====================================================
+
+  supabase-rls-real:
+    name: RLS Execução Real (Supabase Test DB)
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    needs: [unit-tests]
+    services:
+      supabase-db:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 54329:5432
+        options: >-
+          --health-cmd pg_isready -U postgres
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Prepare Supabase test DB
+        run: npm run supabase:test:prepare
+        env:
+          TEST_SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54329/postgres
+      - name: Run RLS real cycle
+        run: npm run test:rls:real
+        env:
+          TEST_SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54329/postgres
+      - name: Upload RLS exec log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: rls-exec-log
+          path: coverage/rls-exec-log.jsonl
 
   # =====================================================
   # E2E TESTS
@@ -124,6 +185,11 @@ jobs:
 
       - name: Run database migrations
         run: npm run db:test:reset
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_saas_barbearia
+
+      - name: Verify no pending migrations (shadow check)
+        run: npm run db:migrate:check
         env:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_saas_barbearia
 
@@ -240,6 +306,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check migration divergence (production safety)
+        run: npm run db:migrate:check
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: RLS expected strict check (production gate)
+        run: npm run rls:expected:check
+
+      - name: RLS expected summary (production)
+        run: npm run rls:expected:summary | tee rls-expected-summary.prod.txt
+
+      - name: Upload RLS summary (prod)
+        uses: actions/upload-artifact@v3
+        with:
+          name: rls-expected-summary-prod
+          path: rls-expected-summary.prod.txt
+
       - name: Build application
         run: npm run build
         env:
@@ -293,6 +376,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js (staging pre-check)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies (staging pre-check)
+        run: npm ci
+
+      - name: Check migration divergence (staging)
+        run: npm run db:migrate:check
+        env:
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+
+      - name: RLS expected strict check (staging gate)
+        run: npm run rls:expected:check
+
+      - name: RLS expected summary (staging)
+        run: npm run rls:expected:summary | tee rls-expected-summary.staging.txt
+
+      - name: Upload RLS summary (staging)
+        uses: actions/upload-artifact@v3
+        with:
+          name: rls-expected-summary-staging
+          path: rls-expected-summary.staging.txt
 
       - name: Deploy to staging
         uses: ./.github/actions/deploy

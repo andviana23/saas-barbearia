@@ -48,22 +48,31 @@ Acesse [http://localhost:3000](http://localhost:3000) para ver a aplicação.
 
 ```bash
 # Desenvolvimento
-npm run dev              # Servidor de desenvolvimento
-npm run build           # Build de produção
-npm run start           # Servidor de produção
-npm run lint            # Linting
-npm run type-check      # Verificação de tipos TypeScript
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run type-check
 
 # Testes
-npm run test            # Todos os testes
-npm run test:unit       # Testes unitários
-npm run test:e2e        # Testes E2E com Playwright
-npm run test:coverage   # Cobertura de testes
+npm run test
+npm run test:unit
+npm run test:e2e
+npm run test:coverage
 
 # Banco de Dados
-npm run db:migrate      # Executar migrações
-npm run db:status       # Status das migrações
+npm run db:migrate           # Executar migrações pendentes
+npm run db:status            # Status das migrações
+npm run db:migrate:baseline  # Registrar baseline (DB já existente)
+npm run db:migrate:force     # Reaplicar divergentes (desenvolvimento)
+npm run db:migrate:check     # Verificar pendentes/divergentes (CI)
+npm run db:seed              # Executar seeds (idempotente)
+npm run db:seed:dev          # Seeds em modo development
 ```
+
+### Guia Completo de Operações de Banco
+
+Veja `docs/OPERACOES_DB.md` para naming, baseline, rollback e troubleshooting.
 
 ## Arquitetura
 
@@ -248,11 +257,11 @@ SENTRY_AUTH_TOKEN=
 
 Para problemas técnicos, consulte:
 
-1. Documentação do Supabase: [https://supabase.com/docs](https://supabase.com/docs)
-2. Next.js 14: [https://nextjs.org/docs](https://nextjs.org/docs)
-3. Material-UI: [https://mui.com/](https://mui.com/)
+1. Documentação do Supabase: https://supabase.com/docs
+2. Next.js 14: https://nextjs.org/docs
+3. Material-UI: https://mui.com/
 
 ---
 
-**Versão**: 1.1.0  
+**Versão**: 1.2.0  
 **Última Atualização**: Agosto 2025

@@ -1,8 +1,9 @@
+// Radius padronizado (DS v2.1): tudo principal em 12px; mantemos xs para chips/sutilezas
 export const radius = {
-  xs: 6,
-  sm: 8,
-  md: 12,
-  lg: 16,
+  xs: 1,
+  sm: 2, // pode ser usado em inputs específicos; próximo mas distinto
+  md: 4, // padrão universal (cards, modais, botões)
+  lg: 6,
 } as const;
 
 export const shadows = {
@@ -12,11 +13,12 @@ export const shadows = {
   lg: '0 8px 24px rgba(0,0,0,0.22)',
 } as const;
 
+// Paleta Dark atualizada (DS v2.1)
 export const paletteDark = {
   primary: {
-    main: '#C2C9D6', // Botões
-    light: '#D3D8E2',
-    dark: '#9EA6B3',
+    main: '#4F8CFF', // cor de destaque para ações primárias
+    light: '#76A9FF',
+    dark: '#2E6ED9',
   },
   secondary: {
     main: '#6B7A8F',
@@ -29,23 +31,29 @@ export const paletteDark = {
   info: { main: '#60A5FA' },
   divider: 'rgba(255,255,255,0.08)',
   background: {
-    default: '#080F18', // Fundo principal
-    paper: '#040E18', // Cards/containers
+    default: '#0B0E13', // Fundo principal v2.1
+    paper: '#12151D', // Base containers
+  },
+  // Surfaces adicionais para hierarquia (extensão não tipada do MUI)
+  // @ts-ignore
+  surfaces: {
+    1: '#161A23', // surface-1 (cards primários)
+    2: '#1C202B', // surface-2 (modais / cabeçalhos de tabela / tooltips)
   },
   text: {
     primary: '#E6EBF2',
-    secondary: '#B6C0CD',
-    disabled: '#7C8796',
+    secondary: '#A0A6B5', // atualizado
+    disabled: '#6E7785',
   },
   action: {
-    hover: '#73777E', // Hover Sidebar
-    selected: 'rgba(115,119,126,0.24)',
+    hover: 'rgba(255,255,255,0.06)',
+    selected: 'rgba(79,140,255,0.16)',
     disabledOpacity: 0.38,
   },
-  neutralBorder: 'rgba(255,255,255,0.08)',
+  neutralBorder: 'rgba(255,255,255,0.1)', // border-white/10
   input: {
-    background: '#05070A', // Fundo dos inputs
-    placeholder: '#343E51', // Placeholder
+    background: '#12151D', // Inputs seguem paper para integração visual
+    placeholder: '#3A4353',
   },
 } as const;
 

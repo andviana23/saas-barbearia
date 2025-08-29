@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
+import ProfissionaisClient from './profissionais.client';
 
 export default function ProfissionaisPage() {
   return (
     <AppLayout title="Profissionais">
-      <p>Lista de profissionais (placeholder)</p>
+      <Suspense fallback={<p>Carregando profissionais...</p>}>
+        <ProfissionaisClient />
+      </Suspense>
     </AppLayout>
   );
 }

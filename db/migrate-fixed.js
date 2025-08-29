@@ -1,379 +1,196 @@
 #!/usr/bin/env node
-
 /**
- * Sistema de Migração Corrigido para Supabase PostgreSQL
- *
- * Como usar:
- * node db/migrate-fixed.js                # Executar migrações pendentes
- * node db/migrate-fixed.js --status      # Ver status das migrações
+ * Migration runner simples para aplicar arquivos em `supabase/migrations` usando node-postgres.
+ * - Cria tabela public.migrations_history se não existir
+ * - Ordena arquivos por nome e aplica apenas os ainda não aplicados (por filename)
+ * - Valida checksum (md5); se checksum diferente de registro anterior, avisa e exige flag --force para reaplicar
+ * Uso:
+ *   node db/migrate-fixed.js            -> aplica pendentes
+ *   node db/migrate-fixed.js --status   -> lista status
+ *   node db/migrate-fixed.js --force    -> permite reaplicar divergentes (re-insere registro)
  */
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const { Client } = require('pg');
 
-require('dotenv').config({ path: '.env.local' });
+function md5(c) {
+  return crypto.createHash('md5').update(c).digest('hex');
+}
+function log(msg) {
+  console.log(`[migrate] ${msg}`);
+}
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  console.error('❌ Variáveis de ambiente do Supabase não configuradas');
-  console.error('Configure NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no .env.local');
+const args = process.argv.slice(2);
+const showStatusOnly = args.includes('--status');
+const force = args.includes('--force');
+const baselineMode = args.includes('--baseline');
+
+const MIGRATIONS_DIR = path.join(process.cwd(), 'supabase', 'migrations');
+if (!fs.existsSync(MIGRATIONS_DIR)) {
+  console.error('Diretório supabase/migrations não encontrado.');
   process.exit(1);
 }
 
-const fs = require('fs').promises;
-const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
+const files = fs
+  .readdirSync(MIGRATIONS_DIR)
+  .filter((f) => f.endsWith('.sql'))
+  .sort();
 
-// Configuração
-const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-
-/**
- * Executa SQL diretamente via consulta PostgreSQL
- */
-async function executeSQLDirect(sql) {
-  try {
-    // Para migrações, vamos usar uma abordagem mais simples
-    // Dividir o SQL em comandos individuais
-    const commands = sql
-      .split(';')
-      .map((cmd) => cmd.trim())
-      .filter((cmd) => cmd.length > 0 && !cmd.startsWith('--'))
-      .filter((cmd) => !cmd.match(/^\s*$/));
-
-    console.log(`   📝 Executando ${commands.length} comandos SQL...`);
-
-    for (let i = 0; i < commands.length; i++) {
-      const command = commands[i].trim();
-      if (!command) continue;
-
-      // Para comandos DDL, precisamos usar uma abordagem especial
-      console.log(`   ⚠️  Comando ${i + 1}/${commands.length}: ${command.substring(0, 60)}...`);
-      console.log(`   💡 Este comando precisa ser executado manualmente no SQL Editor do Supabase`);
-    }
-
-    return { success: true, message: 'Comandos listados para execução manual' };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
+async function ensureTable(client) {
+  await client.query(`CREATE TABLE IF NOT EXISTS public.migrations_history (
+    id bigserial PRIMARY KEY,
+    filename text NOT NULL UNIQUE,
+    checksum text NOT NULL,
+    applied_at timestamptz NOT NULL DEFAULT now(),
+    execution_time_ms integer,
+    success boolean NOT NULL DEFAULT false,
+    error_message text
+  );`);
 }
 
-/**
- * Lista arquivos de migração
- */
-async function getMigrationFiles() {
-  try {
-    const files = await fs.readdir(MIGRATIONS_DIR);
-    return files
-      .filter((file) => file.endsWith('.sql'))
-      .sort()
-      .map((file) => ({
-        version: file.split('_')[0],
-        name: file.replace(/^\d+_(.+)\.sql$/, '$1').replace(/_/g, ' '),
-        filename: file,
-        path: path.join(MIGRATIONS_DIR, file),
-      }));
-  } catch (error) {
-    console.error('❌ Erro ao ler diretório de migrações:', error.message);
-    return [];
-  }
-}
-
-/**
- * Verifica status das migrações (simulado)
- */
-async function checkMigrationStatus() {
-  try {
-    // Tentar verificar se a tabela migrations existe
-    const { data, error } = await supabase
-      .from('migrations')
-      .select('*', { count: 'exact', head: true });
-
-    if (error) {
-      if (
-        error.message.includes('relation "migrations" does not exist') ||
-        error.message.includes('does not exist') ||
-        error.message.includes('schema cache')
-      ) {
-        console.log('   ℹ️  Tabela migrations não existe ainda');
-        return [];
-      }
-      throw error;
-    }
-
-    // Se chegou aqui, a tabela existe
-    const { data: migrations, error: selectError } = await supabase
-      .from('migrations')
-      .select('*')
-      .order('version');
-
-    if (selectError) throw selectError;
-
-    return migrations || [];
-  } catch (error) {
-    console.log('   ⚠️  Não foi possível verificar status das migrações');
-    return [];
-  }
-}
-
-/**
- * Executa uma migração
- */
-async function runMigration(migration) {
-  console.log(`\n⏳ Processando migração ${migration.version}: ${migration.name}`);
-
-  try {
-    // Ler conteúdo da migração
-    const content = await fs.readFile(migration.path, 'utf-8');
-
-    console.log(`   📄 Arquivo: ${migration.filename}`);
-    console.log(`   📝 Conteúdo carregado (${content.length} caracteres)`);
-
-    // Como não conseguimos executar DDL via API, vamos mostrar instruções
-    console.log(`\n   💡 INSTRUÇÕES PARA EXECUTAR ESTA MIGRAÇÃO:`);
-    console.log(`   1. Abra o SQL Editor do Supabase`);
-    console.log(`   2. Cole o conteúdo do arquivo: ${migration.path}`);
-    console.log(`   3. Execute com Ctrl+Enter ou clique em "Run"`);
-    console.log(`   4. Verifique se não há erros na execução`);
-
-    return { success: true, manual: true };
-  } catch (error) {
-    console.error(`   ❌ Erro ao processar migração ${migration.version}: ${error.message}`);
-    return { success: false, error: error.message };
-  }
-}
-
-/**
- * Mostra status das migrações
- */
-async function showStatus() {
-  console.log('📊 Status das Migrações\n');
-
-  const files = await getMigrationFiles();
-  const dbMigrations = await checkMigrationStatus();
-
-  if (files.length === 0) {
-    console.log('ℹ️  Nenhum arquivo de migração encontrado');
-    return;
-  }
-
-  console.log('┌─────────┬──────────────────────────────────┬──────────┬─────────────────────┐');
-  console.log('│ Versão  │ Nome                             │ Status   │ Executado em        │');
-  console.log('├─────────┼──────────────────────────────────┼──────────┼─────────────────────┤');
-
-  files.forEach((file) => {
-    const dbMigration = dbMigrations.find((m) => m.version === file.version);
-    const status = dbMigration ? (dbMigration.success ? '✅ OK' : '❌ ERRO') : '⏳ Pendente';
-    const executedAt = dbMigration
-      ? new Date(dbMigration.executed_at).toLocaleString('pt-BR')
-      : '-';
-
-    const name = file.name.length > 32 ? file.name.substring(0, 29) + '...' : file.name;
-
-    console.log(
-      `│ ${file.version.padEnd(7)} │ ${name.padEnd(32)} │ ${status.padEnd(8)} │ ${executedAt.padEnd(19)} │`,
-    );
-  });
-
-  console.log('└─────────┴──────────────────────────────────┴──────────┴─────────────────────┘');
-
-  const pending = files.filter(
-    (f) => !dbMigrations.find((m) => m.version === f.version && m.success),
+async function getHistory(client) {
+  const { rows } = await client.query(
+    'SELECT filename, checksum, success FROM public.migrations_history ORDER BY filename',
   );
-
-  if (pending.length > 0) {
-    console.log(`\n⏳ ${pending.length} migração(ões) pendente(s)`);
-  } else {
-    console.log('\n🎉 Todas as migrações foram executadas!');
-  }
+  return rows;
 }
 
-/**
- * Executa migrações pendentes
- */
-async function migrate() {
-  console.log('🚀 Iniciando processamento de migrações\n');
-
-  const files = await getMigrationFiles();
-
-  if (files.length === 0) {
-    console.log('ℹ️  Nenhum arquivo de migração encontrado');
-    return;
-  }
-
-  console.log(`📝 Encontradas ${files.length} migração(ões)\n`);
-  console.log('⚠️  IMPORTANTE: Como o Supabase não permite execução de DDL via API,');
-  console.log('   as migrações precisam ser executadas manualmente no SQL Editor.\n');
-
-  // Gerar arquivo consolidado automaticamente
-  console.log('📄 Gerando arquivo SQL consolidado...');
-  await generateConsolidatedSQL(files);
-
-  console.log('\n📋 PRÓXIMOS PASSOS:');
-  console.log('1. Abra o dashboard do Supabase');
-  console.log('2. Vá para SQL Editor');
-  console.log('3. Cole o conteúdo do arquivo: db/all-migrations.sql');
-  console.log('4. Execute com Ctrl+Enter');
-  console.log('5. Execute: npm run db:verify');
-}
-
-/**
- * Verifica se arquivo consolidado otimizado já existe
- */
-async function checkExistingOptimizedSQL() {
-  try {
-    const outputFile = path.join(__dirname, 'all-migrations.sql');
-    const stats = await fs.stat(outputFile);
-    const content = await fs.readFile(outputFile, 'utf-8');
-
-    // Verifica se é a versão otimizada (contém IF NOT EXISTS e DO $ blocks)
-    const isOptimized = content.includes('IF NOT EXISTS') && content.includes('DO $');
-
-    return {
-      exists: true,
-      isOptimized,
-      size: stats.size,
-      lastModified: stats.mtime,
-    };
-  } catch (error) {
-    return { exists: false };
-  }
-}
-
-/**
- * Gera arquivo SQL consolidado otimizado
- */
-async function generateConsolidatedSQL(migrations) {
-  try {
-    // Verificar se já existe versão otimizada
-    const existing = await checkExistingOptimizedSQL();
-
-    if (existing.exists && existing.isOptimized) {
-      console.log(
-        `   ✅ Arquivo consolidado otimizado já existe (${Math.round(existing.size / 1024)}KB)`,
-      );
-      console.log(`   📅 Última modificação: ${existing.lastModified.toLocaleString('pt-BR')}`);
-      console.log(`   💡 Usando arquivo otimizado existente`);
-      return;
-    }
-
-    let combinedSQL = `-- =========================================================================
--- ARQUIVO CONSOLIDADO DE MIGRAÇÕES OTIMIZADO - SISTEMA BARBERSHOP SaaS
--- Data de geração: ${new Date().toISOString()}
--- Total de migrações: ${migrations.length}
--- VERSÃO IDEMPOTENTE: Pode ser executado múltiplas vezes sem erro
--- =========================================================================
-
-`;
-
-    for (const migration of migrations) {
-      const content = await fs.readFile(migration.path, 'utf-8');
-
-      // Aplicar otimizações básicas para tornar idempotente
-      let optimizedContent = content
-        // Adicionar IF NOT EXISTS para extensões (apenas se não existir)
-        .replace(
-          /CREATE EXTENSION (?!IF NOT EXISTS)([^;]+);/g,
-          'CREATE EXTENSION IF NOT EXISTS $1;',
-        )
-        // Adicionar IF NOT EXISTS para esquemas (apenas se não existir)
-        .replace(/CREATE SCHEMA (?!IF NOT EXISTS)([^;]+);/g, 'CREATE SCHEMA IF NOT EXISTS $1;')
-        // Adicionar IF NOT EXISTS para tabelas (apenas se não existir)
-        .replace(
-          /CREATE TABLE (?!IF NOT EXISTS)([^\s\(]+)(\s*\()/g,
-          'CREATE TABLE IF NOT EXISTS $1$2',
-        )
-        // Garantir CREATE OR REPLACE para funções
-        .replace(/CREATE FUNCTION/g, 'CREATE OR REPLACE FUNCTION');
-
-      combinedSQL += `
--- =========================================================================
--- MIGRAÇÃO ${migration.version.toUpperCase()}: ${migration.name.toUpperCase()}  
--- =========================================================================
-
-${optimizedContent}
-
-`;
-    }
-
-    // Adicionar bloco de finalização
-    combinedSQL += `
--- =========================================================================
--- FINALIZAÇÃO E VERIFICAÇÕES
--- =========================================================================
-
--- Verificar se todas as extensões foram instaladas
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'uuid-ossp') THEN
-    RAISE WARNING 'Extensão uuid-ossp não encontrada';
-  END IF;
-  
-  IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pgcrypto') THEN
-    RAISE WARNING 'Extensão pgcrypto não encontrada';
-  END IF;
-END
-$$;
-
--- Notificação de sucesso
-DO $$
-BEGIN
-  RAISE NOTICE 'Migrações executadas com sucesso!';
-  RAISE NOTICE 'Sistema pronto para uso.';
-END
-$$;
-`;
-
-    const outputFile = path.join(__dirname, 'all-migrations.sql');
-    await fs.writeFile(outputFile, combinedSQL, 'utf-8');
-
-    console.log(`   ✅ Arquivo consolidado otimizado criado: ${outputFile}`);
-    console.log(`   📊 Tamanho: ${Math.round(combinedSQL.length / 1024)}KB`);
-  } catch (error) {
-    console.error(`   ❌ Erro ao gerar arquivo consolidado: ${error.message}`);
-  }
-}
-
-/**
- * Função principal
- */
-async function main() {
-  const args = process.argv.slice(2);
-  const command = args[0];
-
-  try {
-    switch (command) {
-      case '--status':
-        await showStatus();
-        break;
-
-      case '--help':
-      case '-h':
-        console.log('🔧 Sistema de Migração Corrigido para Supabase');
-        console.log('\nComandos:');
-        console.log('  node migrate-fixed.js          Processar migrações');
-        console.log('  node migrate-fixed.js --status Ver status das migrações');
-        console.log('  node migrate-fixed.js --help   Mostrar esta ajuda');
-        break;
-
-      default:
-        await migrate();
-        break;
-    }
-  } catch (error) {
-    console.error('❌ Erro na execução:', error.message);
+async function run() {
+  const url = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL;
+  if (!url) {
+    console.error('Defina DATABASE_URL ou SUPABASE_DB_URL');
     process.exit(1);
   }
+  const client = new Client({
+    connectionString: url,
+    ssl: { rejectUnauthorized: false }, // Supabase/produções normalmente requer SSL
+  });
+  await client.connect();
+  await ensureTable(client);
+  const history = await getHistory(client);
+  const historyMap = new Map(history.map((h) => [h.filename, h]));
+
+  if (baselineMode) {
+    log('Modo baseline: registrando arquivos como aplicados (sem executar SQL).');
+    for (const file of files) {
+      const full = path.join(MIGRATIONS_DIR, file);
+      const sql = fs.readFileSync(full, 'utf8');
+      const checksum = md5(sql);
+      const existing = historyMap.get(file);
+      if (existing && existing.success && existing.checksum === checksum) {
+        log(`SKIP baseline ${file} (já registrado)`);
+        continue;
+      }
+      await client.query(
+        `INSERT INTO public.migrations_history(filename, checksum, success) VALUES ($1,$2,true)
+        ON CONFLICT (filename) DO UPDATE SET checksum=EXCLUDED.checksum, applied_at=now(), success=true, error_message=NULL`,
+        [file, checksum],
+      );
+      log(`Baseline marcado: ${file}`);
+    }
+    await client.end();
+    log('Baseline concluído.');
+    return;
+  }
+
+  if (showStatusOnly) {
+    log('Status das migrações:');
+    for (const f of files) {
+      const h = historyMap.get(f);
+      if (h) {
+        log(`${f} - ${h.success ? 'APLICADA' : 'ERRO'} (checksum ${h.checksum.slice(0, 8)})`);
+      } else {
+        log(`${f} - PENDENTE`);
+      }
+    }
+    await client.end();
+    return;
+  }
+
+  const startAll = Date.now();
+  const applied = [];
+  const skipped = [];
+  const divergent = [];
+  let failed = null;
+  for (const file of files) {
+    const full = path.join(MIGRATIONS_DIR, file);
+    const sql = fs.readFileSync(full, 'utf8');
+    const checksum = md5(sql);
+    const existing = historyMap.get(file);
+    if (existing && existing.success) {
+      if (existing.checksum === checksum) {
+        log(`SKIP ${file} (já aplicado)`);
+        skipped.push(file);
+        continue;
+      } else if (!force) {
+        log(`DIVERGENTE ${file} (checksum mudou). Use --force para reaplicar.`);
+        divergent.push(file);
+        continue;
+      } else {
+        log(`REAPLICANDO (force) ${file}`);
+      }
+    } else {
+      log(`APLICANDO ${file}`);
+    }
+    const start = Date.now();
+    await client.query('BEGIN');
+    try {
+      // Inserir/atualizar registro (marca success=false até concluir)
+      await client.query(
+        `INSERT INTO public.migrations_history(filename, checksum, success) VALUES ($1,$2,false)
+        ON CONFLICT (filename) DO UPDATE SET checksum=EXCLUDED.checksum, applied_at=now(), success=false, error_message=NULL`,
+        [file, checksum],
+      );
+      await client.query(sql);
+      const elapsed = Date.now() - start;
+      await client.query(
+        'UPDATE public.migrations_history SET success=true, execution_time_ms=$1 WHERE filename=$2',
+        [elapsed, file],
+      );
+      await client.query('COMMIT');
+      log(`OK ${file}`);
+      applied.push({ file, elapsed });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      const elapsed = Date.now() - start;
+      await client.query(
+        'UPDATE public.migrations_history SET success=false, execution_time_ms=$1, error_message=$2 WHERE filename=$3',
+        [elapsed, err.message || 'erro', file],
+      );
+      console.error(`FALHA ${file}:`, err.message);
+      failed = { file, error: err.message };
+      break;
+    }
+  }
+
+  const totalMs = Date.now() - startAll;
+  const summary = {
+    totalFiles: files.length,
+    applied: applied.length,
+    skipped: skipped.length,
+    divergent: divergent.length,
+    failed: failed ? 1 : 0,
+    durationMs: totalMs,
+    force,
+  };
+  log(`Resumo: ${JSON.stringify(summary)}`);
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const coverageDir = path.join(process.cwd(), 'coverage');
+    fs.mkdirSync(coverageDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(coverageDir, 'migrate-summary.json'),
+      JSON.stringify({ ...summary, appliedDetail: applied.slice(0, 50) }, null, 2),
+    );
+  } catch (_) {}
+  await client.end();
+  if (failed) process.exit(1);
+  else log('Migrações concluídas.');
 }
 
-// Executar se chamado diretamente
-if (require.main === module) {
-  main();
-}
-
-module.exports = {
-  getMigrationFiles,
-  checkMigrationStatus,
-  runMigration,
-  showStatus,
-  migrate,
-};
+run().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

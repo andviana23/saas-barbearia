@@ -21,5 +21,16 @@
   },
   "files.eol": "\n",
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "copilot.chat.mcpServers": {
+    "postgres_trato_cloud": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres:%40Aa300192587310@db.aadfqninxfigsaqfijke.supabase.co:5432/postgres?sslmode=require",
+        "--debug"
+      ]
+    }
+  }
 }

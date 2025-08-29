@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import type { Metadata } from 'next';
-import { AgendaContent } from './components/AgendaContent';
+import { Agenda } from '@/components/features/agenda/components/Agenda';
 
 // 🔌 Server Actions (commented out - using mock data for now)
 // import { listAppointments } from '@/actions/appointments'
@@ -61,9 +61,7 @@ export default async function Page({
   // 🔎 Filtros
   const view = coerceString(searchParams.view) || 'week';
   const start = coerceString(searchParams.start) || new Date().toISOString().split('T')[0];
-  const professionalId = coerceString(searchParams.professionalId) || '';
-  const serviceId = coerceString(searchParams.serviceId) || '';
-  const status = coerceString(searchParams.status) || '';
+  // Filtros adicionais (professionalId, serviceId, status) serão integrados ao novo componente Agenda depois
 
   // 📥 Dados (mock para agora, integrar com backend depois)
   const [appointmentsData, professionalsData, servicesData] = await Promise.all([
@@ -129,20 +127,15 @@ export default async function Page({
     ] as Service[]),
   ]);
 
-  const searchParamsObj = {
-    view,
-    start,
-    professionalId,
-    serviceId,
-    status,
-  };
+  // searchParamsObj removido ao migrar para novo componente Agenda
 
   return (
-    <AgendaContent
-      initialData={appointmentsData}
+    <Agenda
+      appointments={appointmentsData.items}
       professionals={professionalsData}
       services={servicesData}
-      searchParams={searchParamsObj}
+      view={view as 'day' | 'week' | 'month'}
+      currentDate={start}
     />
   );
 }

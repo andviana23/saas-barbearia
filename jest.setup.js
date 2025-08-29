@@ -1,6 +1,16 @@
 import '@testing-library/jest-dom';
 // (hooks de ciclo de vida não necessários sem MSW)
 
+// Polyfill TextEncoder/TextDecoder para libs (pg) em ambiente Node <18 ou jsdom
+if (typeof TextEncoder === 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { TextEncoder, TextDecoder } = require('util');
+  // @ts-ignore
+  global.TextEncoder = TextEncoder;
+  // @ts-ignore
+  global.TextDecoder = TextDecoder;
+}
+
 // Polyfill Response se ausente antes de mocks
 if (typeof Response === 'undefined') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

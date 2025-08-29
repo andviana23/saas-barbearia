@@ -1,2 +1,0 @@
--- Consolidated migration placeholder
--- TODO: Dividir conteúdo real de all-migrations.sql em steps menores datados

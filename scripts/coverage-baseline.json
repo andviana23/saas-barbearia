@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2025-08-28T16:38:39.279Z",
+  "updatedAt": "2025-08-28T16:56:24.586Z",
   "metrics": {
-    "statements": 5.52,
-    "lines": 5.52,
-    "branches": 44.89,
-    "functions": 25.27
+    "statements": 5.7,
+    "lines": 5.7,
+    "branches": 48.32,
+    "functions": 26.59
   }
 }

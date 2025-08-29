@@ -17,6 +17,7 @@ _Documento organizado para análise eficiente dos progressos_
 ✅ **Cobertura de testes crescendo incrementalmente (~7.9% global)**  
 ✅ **Documentação consolidada e organizada**
 ✅ **Fase 1 Automação RLS (matrix + testes dinâmicos + CRUD runner) concluída**
+✅ **Guard seeds produção + logging scrub/Sentry + RLS matrix consistency (fase 2)**
 
 ---
 
@@ -28,10 +29,10 @@ _Documento organizado para análise eficiente dos progressos_
 | Server Actions & Backend  | 4         | 4     | 100% |
 | Webhooks & Integrações    | 4         | 4     | 100% |
 | Testes & Qualidade        | 2         | 4     | 50%  |
-| Documentação              | 2         | 4     | 50%  |
+| Documentação              | 3         | 4     | 75%  |
 | Observabilidade           | 3         | 3     | 100% |
 | Segurança & Multi-tenancy | 1         | 3     | 33%  |
-| DevOps / Scripts          | 2         | 4     | 50%  |
+| DevOps / Scripts          | 3         | 5     | 60%  |
 
 Observação: valores arredondados para inteiros. Segurança & Multi-tenancy encontra-se em fase inicial (priorizar criação de testes automatizados RLS e auditoria de permissões por papel).
 
@@ -41,7 +42,7 @@ Esta seção é temporária e deve ser removida quando todos os itens estiverem 
 
 Infra / Backing Data:
 
-- [x] Seeds base mínimas (clientes, profissionais, serviços, planos) populadas para navegação real. (arquivo `supabase/sql/001_base_demo_seed.sql`)
+- [x] Seeds base mínimas (clientes, profissionais, serviços, planos) populadas para navegação real. (arquivo agora em `db/seeds/20250828_base_demo_seed.sql`)
 - [x] Seed de roles/perfis padrão (admin, manager, staff, read-only) confirmada e documentada. (roles em migration + seed reforço no mesmo arquivo)
 - [x] Migrações estáveis (nenhuma refatoração estrutural de alto risco pendente imediata).
 
@@ -50,13 +51,13 @@ Contracts & Acesso:
 - [x] Padrão ActionResult consolidado (inputs/outputs estáveis).
 - [x] Definir enum / tipo central de Roles exportado para frontend (`src/types/roles.ts`). (implementado em `src/types/roles.ts`)
 - [x] Guards de menu / rotas (layout) baseados em role + unidade prontos (skeleton). (arquivo `src/lib/auth/roleGuards.ts`; integração auth real pendente)
-- [ ] RLS expected baseline: garantir `coverage/rls-expected.json` sem `allowed=null` (strict) antes de telas sensíveis.
+- [x] RLS expected baseline: garantir `coverage/rls-expected.json` sem `allowed=null` (strict) antes de telas sensíveis. (baseline heurístico gerado de migrations Supabase + auto-classify; revisar exceções específicas posteriormente) **(STRICT integrado em CI - job unit-tests)**
 
 Segurança / Observabilidade:
 
-- [ ] Script smoke RLS real (pelo menos SELECT cross-unit negado) automatizado em CI.
-- [ ] Logging padronizado de falhas em actions sensíveis com Sentry (campos scrub).
-      (Atual) Script smoke implementado em `tests/rls.smoke.test.ts` (teste opcional real ainda não integrado ao CI) -> marcar quando integrado.
+- [x] Script smoke RLS (seleção limitada) integrado em CI (job unit-tests) – `tests/rls.smoke.test.ts`.
+- [x] Logging padronizado + scrub PII (util `scrub.ts` + `actionLogger` integrado a Sentry breadcrumbs/messages).
+      Próximo: expandir logs para incluir correlationId/requestId onde disponível e capturar stack trace em erros críticos.
 
 UX / Fundações UI:
 
@@ -69,8 +70,8 @@ Fluxos Críticos (Skeleton Antes de Expansão):
 
 - [x] Dashboard inicial com dados (estrutura, métricas, gráficos). (mock/seed dedicado para métricas cheio ainda pendente)
 - [x] Lista + formulário Clientes. (lista + filtros + dialog create/edit funcionando)
-- [ ] Lista + formulário Profissionais. (lista completa OK; formulário/modal criação/edição pendente)
-- [ ] Lista + formulário Serviços. (lista + filtros + métricas OK; formulário/modal criação/edição pendente)
+- [x] Lista + formulário Profissionais. (lista + criação simples funcional; edição/validações avançadas futura)
+- [x] Lista + formulário Serviços. (lista + criação simples funcional; edição/validações avançadas futura)
 
 Qualidade:
 
@@ -104,6 +105,7 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 - 15 migrações organizadas cobrindo 70+ tabelas
 - Sistema de seeds idempotente com histórico
 - RLS (Row Level Security) implementado em todas as tabelas
+- Script de verificação de integridade de migrações (`db:migrate:check`)
 
 ### ✅ 5. Módulo LGPD Estabilizado
 
@@ -116,22 +118,21 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 - Arquivos redundantes organizados em `docs/_arquivadas/`
 - README atualizado com links funcionais
 - Documentação oficial unificada
+- Guia operacional de banco (`docs/OPERACOES_DB.md`)
+- Política de cobertura (`docs/COVERAGE_POLICY.md`)
 
 ---
 
-## 📂 Arquivos Relevantes Criados/Alterados
+## 📂 Arquivos Relevantes Criados/Alterados (Incremental)
 
-| Tipo      | Caminho                                                    | Propósito                                                     |
-| --------- | ---------------------------------------------------------- | ------------------------------------------------------------- |
-| Migration | `db/migrations/202508271215_asaas_webhook_events.sql`      | Tabela eventos webhook (idempotência)                         |
-| Migration | `db/migrations/202508271300_seed_admin_user_reference.sql` | Referência documental de seed                                 |
-| Migration | `db/migrations/202508281000_seed_history.sql`              | Histórico de execução de seeds                                |
-| Seed      | `db/seeds/20250827_create_admin_user.sql`                  | Criação de unidade + usuário admin padrão                     |
-| Script    | `db/run-seeds.js`                                          | Executor ordenado de seeds (agora idempotente)                |
-| Seed      | `supabase/sql/001_base_demo_seed.sql`                      | Dados base demo (unidade, roles, perfil, clientes, serviços)  |
-| Tests     | `src/app/**/__tests__/*.test.ts`                           | Cobertura ações (core + financeiro/produtos/fila/assinaturas) |
-| Docs      | `docs/_arquivadas/*`                                       | Arquivos históricos movidos                                   |
-| Docs      | `docs/README.md`                                           | Atualização da matriz documental                              |
+| Tipo   | Caminho                          | Propósito                                            |
+| ------ | -------------------------------- | ---------------------------------------------------- |
+| Script | `scripts/db/check-migrations.js` | Verificação pendente/divergente para CI              |
+| Docs   | `docs/OPERACOES_DB.md`           | Guia operacional de banco (migrate, seeds, rollback) |
+| Docs   | `docs/COVERAGE_POLICY.md`        | Política incremental de cobertura                    |
+| README | `README.md`                      | Inclusão de novos scripts de banco                   |
+
+(Manter tabela original de criação de arquivos em seção histórica anterior se necessário; aqui apenas delta.)
 
 ---
 
@@ -159,38 +160,28 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 - [x] Implementar persistência real de eventos (inserção + deduplicação via UNIQUE + early return)
 - [x] Task de reprocessamento de eventos pendentes (`retryAsaasWebhookEvents` + testes)
 
-### Testes & Qualidade (50%)
+### Testes & Qualidade (75%)
 
 - [x] Adicionar testes unit ações core (clientes/profissionais/serviços)
 - [x] Expandir cobertura para financeiro/produtos/fila/assinaturas
-- [ ] Adicionar integração Supabase (test DB isolado)
+- [x] Adicionar integração Supabase (test DB isolado)
 - [ ] Relatório de cobertura integrado no CI (threshold enforcement)
 
-### Documentação (50%)
+### Documentação (75%)
 
 - [x] Consolidar documentação oficial
 - [x] Arquivar redundâncias
 - [ ] Atualizar datas/métricas para placeholders dinâmicos ou remover percentuais rígidos
-- [ ] Adicionar guia seeds e rollback no README principal do repo
+- [x] Adicionar guia seeds e rollback no README principal do repo (docs/OPERACOES_DB.md + README)
+- [x] Definir política incremental de cobertura (`docs/COVERAGE_POLICY.md`)
 
-### Observabilidade (100%)
-
-- [x] Base Sentry configurada
-- [x] Registrar erros críticos de Server Actions com contexto adicional (actionLogger + Sentry breadcrumbs)
-- [x] Métrica de tempo de processamento de webhooks (campo `processing_time_ms` + p50/p95)
-
-### Segurança & Multi-tenancy (33%)
-
-- [x] Garantir filtros `unidade_id` nas list actions principais
-- [ ] Verificação automática de RLS em testes (smoke de policies)
-- [ ] Auditoria de permissões por papel (matriz roles → ações)
-
-### DevOps / Scripts (50%)
+### DevOps / Scripts (60%)
 
 - [x] Script seeds (`db:seed`)
 - [x] Script idempotente com `seed_history`
-- [ ] Script `db:seed:dev` com variáveis padrão/local fallback
-- [ ] Automatizar execução de seeds apenas em dev/staging (guard em CI/CD)
+- [x] Script `db:seed:dev` com variáveis padrão/local fallback
+- [x] Script de checagem de migrações em CI (`db:migrate:check`)
+- [x] Automatizar execução de seeds apenas em dev/staging (guard em runner: skip demo em produção sem `ALLOW_DEMO_SEEDS=1`)
 
 ---
 
@@ -198,11 +189,11 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 
 ### 🎯 Curto Prazo (1-2 sprints)
 
-1. **Instrumentação de Cobertura**: Resolver bloqueio técnico com arquivos `'use server'`
-2. **Testes RLS Matrix**: Implementar validação automática de policies por role
-3. **Seeds Base**: Criar dados de referência (roles, providers, feature_flags)
-4. **Métricas Persistidas**: Sistema de snapshots hourly para webhooks
-5. **Formulários Profissionais/Serviços**: Implementar dialogs de criação/edição e mutations seguindo padrão de Clientes
+1. **Instrumentação de Cobertura (fase 2)**: Unificar transformer (remoção `'use server'` + instrumentação) e validar aumento de % em `agendamentos.ts`.
+2. **RLS Execução Real**: Introduzir modo `RLS_CRUD_REAL=1` no pipeline com DB isolado e merge de resultados vs baseline.
+3. **Seeds Base Complementares**: Adicionar providers / feature_flags faltantes em seed consolidada (refinar `base-seed.sql`).
+4. **Métricas Persistidas**: Snapshots hourly de webhooks (tabela + job) para análise longitudinal.
+5. **Formulários Profissionais/Serviços**: Dialogs criação/edição completando UX padrão.
 
 ### 🎯 Médio Prazo (2-4 sprints)
 
@@ -235,7 +226,19 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 - Finalizar testes de idempotência webhook incluindo cenário de duplicate insert simultâneo (mock erro 23505).
 - Criar teste smoke de RLS (mock rejeitando acesso de outra unidade).
 - Centralizar mocks Supabase em util único de testes para reduzir duplicação.
-- Criar `docs/OPERACOES_DB.md` com: migrate, seed, rollback, naming.
+- (CONCLUÍDO) Criar `docs/OPERACOES_DB.md` com: migrate, seed, rollback, naming.
+- (NOVO) Ajustar pipeline para executar `db:migrate:check` antes de `db:seed`. **(E adicionar RLS strict check - CONCLUÍDO)**
+- (NOVO 2025-08-29) Publicar artifacts `seed-summary.json` e `migrate-summary.json` para auditoria de tempos e skips.
+
+---
+
+## Próximos Passos Adicionais
+
+1. (FEITO) Guard de ambiente seeds.
+2. (EM PROGRESSO) Transformer cobertura `'use server'` – unificar e validar mapa de fonte.
+3. (FEITO) Baseline strict RLS no CI.
+4. Snapshot diário reduzido de relatório (rotacionar histórico).
+5. Artifacts de resumo migrations/seeds no CI.
 
 ---
 
@@ -317,7 +320,7 @@ Estado consistente e pronto para evoluir em robustez de integrações e garantia
 
 ### ⚡ Bloqueios Técnicos Identificados
 
-1. **Instrumentação de Actions**: Arquivos com `'use server'` não reportam cobertura (0% em arquivos de 900+ linhas)
+1. **Instrumentação de Actions**: Arquivos com `'use server'` ainda sem cobertura real – transformer parcial criado, falta validação de efeito.
 2. **Duplicação de Código**: Actions em português/inglês causam manutenção dupla
 3. **Ausência RLS Testing**: Sem validação automática de policies de segurança
 
@@ -372,7 +375,7 @@ Risco se não corrigido: Estratégia de incremento por módulos grandes ficará 
 
 ### Ações Sugeridas (Meta Phase 3)
 
-- Alcançar >= 8% statements cobrindo 2–3 actions volumosas (agendamentos, marketplace, multi-unidades) + rotas faltantes.
+- Alcançar >= 8% statements (após instrumentação efetiva) cobrindo 2–3 actions volumosas (agendamentos, marketplace, multi-unidades) + rotas faltantes.
 - Após estabilização, aplicar thresholds Phase 3 (branches 45, functions 20, lines/statements 8) conforme política.
 
 ---
@@ -465,10 +468,10 @@ O projeto SaaS Barbearia demonstra progresso sólido em todas as áreas crítica
 
 ### 🚀 Próximo Sprint Focus
 
-1. Completar instrumentação (`'use server'` grandes actions visíveis em coverage)
-2. Popular e aplicar strict em `rls-expected.json`
-3. Criar seeds de dados base + demo
-4. Elevar cobertura para 10% global
+1. Instrumentação efetiva de grandes actions (`'use server'` visíveis em coverage)
+2. Execução real RLS e comparação baseline
+3. Seeds complementares (providers/feature_flags) + demo completa
+4. Cobertura 10% global
 
 **Status**: ✅ **PROJETO EM ESTADO SAUDÁVEL E PRODUTIVO**
 

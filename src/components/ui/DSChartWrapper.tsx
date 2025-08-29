@@ -9,24 +9,28 @@ type LinePoint = { x: string | number | Date; y: number };
 type BarPoint = { x: string | number | Date; y: number };
 
 interface DSLineAreaProps {
-  data: LinePoint[];
+  data?: LinePoint[];
   height?: number;
   label?: string;
   valueType?: 'currency' | 'number';
+  variant?: 'elevated' | 'flat'; // flat remove box wrapper para evitar bordas sobrepostas
+  compact?: boolean; // reduz padding interno
 }
 
 interface DSBarsProps {
-  data: BarPoint[];
+  data?: BarPoint[];
   height?: number;
   label?: string;
   valueType?: 'currency' | 'number';
 }
 
 export function DSLineArea({
-  data,
+  data = [],
   height = 320,
   label = 'Série',
   valueType = 'number',
+  variant = 'elevated',
+  compact = false,
 }: DSLineAreaProps) {
   const theme = useTheme();
 
@@ -42,13 +46,13 @@ export function DSLineArea({
   );
 
   const isDateX = React.useMemo(
-    () => data.length > 0 && !isNaN(new Date(data[0].x as any).getTime()),
+    () => data.length > 0 && !isNaN(new Date(data[0].x as unknown as string).getTime()),
     [data],
   );
 
   const formatDate = React.useCallback(
     (input: unknown) => {
-      const d = input instanceof Date ? input : new Date(input as any);
+      const d = input instanceof Date ? input : new Date(input as string | number | Date);
       // Densidade simples: mais de 12 pontos → incluir hora e rotacionar
       const dense = data.length > 12;
       if (dense) {
@@ -64,17 +68,26 @@ export function DSLineArea({
     [data.length],
   );
 
+  const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
+    variant === 'flat' ? (
+      <>{children}</>
+    ) : (
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          borderRadius: 3,
+          p: compact ? 1 : 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          overflow: 'hidden',
+        }}
+      >
+        {children}
+      </Box>
+    );
+
   return (
-    <Box
-      sx={{
-        bgcolor: 'background.paper',
-        borderRadius: 3, // 12px
-        p: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        overflow: 'hidden',
-      }}
-    >
+    <Wrapper>
       <svg width="0" height="0" style={{ position: 'absolute' }}>
         <defs>
           <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -94,15 +107,15 @@ export function DSLineArea({
             // Cor primária DS v2 com gradiente
             color: theme.palette.primary.main,
             showMark: true,
-            valueFormatter: (v: any) => formatNumber(v as number),
+            valueFormatter: (v: number | null) => (v == null ? '' : formatNumber(v)),
           },
         ]}
         xAxis={[
           {
-            data: data.map((d) => (isDateX ? new Date(d.x as any) : d.x)),
+            data: data.map((d) => (isDateX ? new Date(d.x as string | number | Date) : d.x)),
             scaleType: isDateX ? 'point' : 'point',
             hideTooltip: false,
-            valueFormatter: isDateX ? (v: any) => formatDate(v) : undefined,
+            valueFormatter: isDateX ? (v: Date) => formatDate(v) : undefined,
             tickNumber: Math.min(6, Math.max(2, Math.floor(data.length / 2))),
             tickLabelStyle: data.length > 12 ? { angle: -30, textAnchor: 'end' } : undefined,
           },
@@ -110,7 +123,7 @@ export function DSLineArea({
         yAxis={[
           {
             tickNumber: 6,
-            valueFormatter: (v: any) => formatNumber(v as number),
+            valueFormatter: (v: number | null) => (v == null ? '' : formatNumber(v)),
           },
         ]}
         grid={{ horizontal: true, vertical: false }}
@@ -153,11 +166,16 @@ export function DSLineArea({
           },
         }}
       />
-    </Box>
+    </Wrapper>
   );
 }
 
-export function DSBars({ data, height = 320, label = 'Série', valueType = 'number' }: DSBarsProps) {
+export function DSBars({
+  data = [],
+  height = 320,
+  label = 'Série',
+  valueType = 'number',
+}: DSBarsProps) {
   const theme = useTheme();
   const brl = React.useMemo(
     () => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }),
@@ -169,11 +187,11 @@ export function DSBars({ data, height = 320, label = 'Série', valueType = 'numb
     [brl, valueType],
   );
   const isDateX = React.useMemo(
-    () => data.length > 0 && !isNaN(new Date(data[0].x as any).getTime()),
+    () => data.length > 0 && !isNaN(new Date(data[0].x as unknown as string).getTime()),
     [data],
   );
   const formatDate = React.useCallback((input: unknown) => {
-    const d = input instanceof Date ? input : new Date(input as any);
+    const d = input instanceof Date ? input : new Date(input as string | number | Date);
     return d.toLocaleDateString('pt-BR', { month: '2-digit', year: '2-digit' });
   }, []);
 
@@ -195,15 +213,15 @@ export function DSBars({ data, height = 320, label = 'Série', valueType = 'numb
             data: data.map((d) => d.y),
             label,
             color: theme.palette.secondary.main,
-            valueFormatter: (v: any) => formatNumber(v as number),
+            valueFormatter: (v: number | null) => (v == null ? '' : formatNumber(v)),
           },
         ]}
         xAxis={[
           {
-            data: data.map((d) => (isDateX ? new Date(d.x as any) : d.x)),
+            data: data.map((d) => (isDateX ? new Date(d.x as string | number | Date) : d.x)),
             scaleType: isDateX ? 'band' : 'band',
             hideTooltip: false,
-            valueFormatter: isDateX ? (v: any) => formatDate(v) : undefined,
+            valueFormatter: isDateX ? (v: Date) => formatDate(v) : undefined,
             tickNumber: Math.min(6, Math.max(2, Math.floor(data.length / 2))),
             tickLabelStyle: data.length > 12 ? { angle: -30, textAnchor: 'end' } : undefined,
           },
@@ -211,7 +229,7 @@ export function DSBars({ data, height = 320, label = 'Série', valueType = 'numb
         yAxis={[
           {
             tickNumber: 6,
-            valueFormatter: (v: any) => formatNumber(v as number),
+            valueFormatter: (v: number | null) => (v == null ? '' : formatNumber(v)),
           },
         ]}
         grid={{ horizontal: true, vertical: false }}
@@ -253,19 +271,7 @@ export function DSBars({ data, height = 320, label = 'Série', valueType = 'numb
 }
 
 // Componente PieChart adicional para futuro uso
-export function DSPieChart({
-  data,
-  height = 320,
-  innerRadius = 60,
-  outerRadius = 120,
-}: {
-  data: { id: string; value: number; label: string }[];
-  height?: number;
-  innerRadius?: number;
-  outerRadius?: number;
-}) {
-  const theme = useTheme();
-
+export function DSPieChart({ height = 320 }: { height?: number }) {
   return (
     <Box
       sx={{

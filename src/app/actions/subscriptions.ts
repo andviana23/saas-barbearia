@@ -16,6 +16,18 @@ import {
 } from '@/types/subscription';
 
 // ===== SCHEMAS ATUALIZADOS PARA AS TABELAS EM INGLÊS =====
+// MIGRATION NOTE:
+// Atualmente o banco (ver migration 006_assinaturas.sql) ainda utiliza tabelas em PT: planos, assinaturas, pagamentos_assinaturas.
+// Este action file já referencia nomes em inglês (subscription_plans, subscriptions, customers, units) visando a nova estrutura.
+// TODO (migração):
+// 1. Criar migrations para renomear: planos -> subscription_plans, assinaturas -> subscriptions.
+// 2. Mapear colunas: nome->name, descricao->description, preco->price_cents (converter numeric para integer cents), duracao_meses->duration_months,
+//    ativo->active, unidade_id->unit_id, plano_id->plan_id, cliente_id->customer_id, inicio->start_date, fim->end_date, status normalizar (ativa->active, cancelada->cancelled, expirada->expired).
+// 3. Criar views ou materialized views temporárias para compatibilidade com UI legada (ex: CREATE VIEW planos AS SELECT ... FROM subscription_plans ...), se necessário.
+// 4. Ajustar policies RLS para novas tabelas e funções RPC (current_unit_id substitui current_unidade_id).
+// 5. Atualizar triggers de updated_at.
+// 6. Remover campos/@ts-ignore de legado (unidadeId/unidade) após UI migrar totalmente.
+// 7. Validar hooks em use-subscriptions.ts para refletir campos novos sem casts `as any`.
 
 // Schema alinhado com colunas em inglês (doc oficial)
 const PlanSchema = z.object({
@@ -121,7 +133,6 @@ function transformSubscriptionToInterface(dbSubscription: DbSubscription): Subsc
     asaasSubscriptionId: '',
     status: dbSubscription.status,
     startDate: dbSubscription.start_date,
-    endDate: dbSubscription.end_date,
     nextBillingDate: dbSubscription.end_date,
     billingCycle,
     paymentMethod: 'pix',
@@ -143,12 +154,19 @@ function transformSubscriptionToInterface(dbSubscription: DbSubscription): Subsc
     // @ts-ignore
     unidade: dbSubscription.unit
       ? {
-          id: dbSubscription.unit.id,
           name: dbSubscription.unit.name,
           cnpj: '',
         }
       : undefined,
   };
+}
+// Função auxiliar que tenta as duas variantes (EN/PT) enquanto a migração ocorre
+async function resolveCurrentUnitId(supabase: ReturnType<typeof createServerSupabase>) {
+  const r1 = await supabase.rpc('current_unit_id');
+  if (!r1.error) return r1.data as string | null;
+  const r2 = await supabase.rpc('current_unidade_id');
+  if (!r2.error) return r2.data as string | null;
+  return null;
 }
 
 // ===== PLANOS DE ASSINATURA =====
@@ -173,10 +191,7 @@ export async function createSubscriptionPlan(
     });
 
     // Usa função segura para obter a unidade corrente sob RLS
-    const { data: currentUnitId, error: unitFnError } = await supabase.rpc('current_unit_id');
-    if (unitFnError) {
-      return { success: false, error: 'Falha ao resolver unidade atual' };
-    }
+    const currentUnitId = await resolveCurrentUnitId(supabase);
     if (!currentUnitId) {
       return { success: false, error: 'Unidade atual não definida' };
     }
@@ -253,25 +268,19 @@ export async function updateSubscriptionPlan(
         message: JSON.stringify(error.errors),
       };
     }
-
     return { success: false, error: (error as Error).message };
   }
 }
 
 export async function getSubscriptionPlans(): Promise<SubscriptionPlan[]> {
   const supabase = createServerSupabase();
-  const { data: currentUnitId } = await supabase.rpc('current_unit_id');
-
+  const currentUnitId = await resolveCurrentUnitId(supabase);
   let query = supabase
     .from('subscription_plans')
     .select('*')
     .eq('active', true)
     .order('price_cents', { ascending: true });
-
-  if (currentUnitId) {
-    query = query.eq('unit_id', currentUnitId);
-  }
-
+  if (currentUnitId) query = query.eq('unit_id', currentUnitId);
   const { data, error } = await query;
   if (error) throw error;
   return (data || []).map(transformPlanToInterface);
@@ -338,7 +347,6 @@ export async function createSubscription(formData: FormData): Promise<Subscripti
         message: JSON.stringify(error.errors),
       };
     }
-
     return { success: false, error: (error as Error).message };
   }
 }
@@ -387,17 +395,14 @@ export async function updateSubscription(
         message: JSON.stringify(error.errors),
       };
     }
-
     return { success: false, error: (error as Error).message };
   }
 }
-
 export async function cancelSubscription(
   subscriptionId: string,
 ): Promise<SubscriptionActionResult> {
   try {
     const supabase = createServerSupabase();
-
     const { data, error } = await supabase
       .from('subscriptions')
       .update({
@@ -414,9 +419,7 @@ export async function cancelSubscription(
       `,
       )
       .single();
-
     if (error) throw error;
-
     revalidatePath('/subscriptions');
     return {
       success: true,
@@ -433,7 +436,7 @@ export async function getSubscriptions(
   pagination: PaginationParams = { page: 1, limit: 10 },
 ): Promise<PaginatedResponse<Subscription>> {
   const supabase = createServerSupabase();
-  const { data: currentUnitId } = await supabase.rpc('current_unit_id');
+  const currentUnitId = await resolveCurrentUnitId(supabase);
 
   let query = supabase.from('subscriptions').select(
     `
@@ -516,7 +519,7 @@ export async function getSubscription(subscriptionId: string): Promise<Subscript
 export async function getSubscriptionMetrics(): Promise<SubscriptionMetricsActionResult> {
   try {
     const supabase = createServerSupabase();
-    const { data: currentUnitId } = await supabase.rpc('current_unit_id');
+    const currentUnitId = await resolveCurrentUnitId(supabase);
     const unitFilter = currentUnitId ? { column: 'unit_id', value: currentUnitId } : null;
 
     const base = supabase.from('subscriptions');
@@ -592,7 +595,7 @@ export async function getSubscriptionUsage(unitId: string): Promise<Subscription
   try {
     const supabase = createServerSupabase();
     // Garantir que usuário só veja uso da sua unidade atual (se RLS não bloquear já)
-    const { data: currentUnitId } = await supabase.rpc('current_unit_id');
+    const currentUnitId = await resolveCurrentUnitId(supabase);
     if (currentUnitId && currentUnitId !== unitId) {
       return { success: false, error: 'Acesso negado para unidade informada' };
     }

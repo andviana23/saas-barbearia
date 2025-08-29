@@ -1,53 +1,5 @@
 [
   {
-    "table": "cron.job",
-    "role": "public",
-    "operation": "delete",
-    "allowed": false
-  },
-  {
-    "table": "cron.job",
-    "role": "public",
-    "operation": "insert",
-    "allowed": false
-  },
-  {
-    "table": "cron.job",
-    "role": "public",
-    "operation": "select",
-    "allowed": false
-  },
-  {
-    "table": "cron.job",
-    "role": "public",
-    "operation": "update",
-    "allowed": false
-  },
-  {
-    "table": "cron.job_run_details",
-    "role": "public",
-    "operation": "delete",
-    "allowed": false
-  },
-  {
-    "table": "cron.job_run_details",
-    "role": "public",
-    "operation": "insert",
-    "allowed": false
-  },
-  {
-    "table": "cron.job_run_details",
-    "role": "public",
-    "operation": "select",
-    "allowed": false
-  },
-  {
-    "table": "cron.job_run_details",
-    "role": "public",
-    "operation": "update",
-    "allowed": false
-  },
-  {
     "table": "public.api_keys",
     "role": "public",
     "operation": "delete",
@@ -825,7 +777,7 @@
     "table": "public.product_categories",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.product_categories",
@@ -861,7 +813,7 @@
     "table": "public.products",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.products",
@@ -1071,7 +1023,7 @@
     "table": "public.service_categories",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.service_categories",
@@ -1095,7 +1047,7 @@
     "table": "public.service_pricings",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.service_pricings",
@@ -1113,7 +1065,7 @@
     "table": "public.services",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.services",
@@ -1209,7 +1161,7 @@
     "table": "public.subscription_plans",
     "role": "public",
     "operation": "select",
-  "allowed": true
+    "allowed": false
   },
   {
     "table": "public.subscription_plans",

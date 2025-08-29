@@ -1,3 +1,16 @@
+// Config específica CI (pode ajustar thresholds independente se necessário)
+const base = require('./jest.config.base');
+module.exports = {
+  ...base,
+  coverageThreshold: {
+    global: {
+      branches: 40,
+      functions: 15,
+      lines: 5,
+      statements: 5,
+    },
+  },
+};
 // Config de cobertura reduzida inicial para CI incremental
 // Repetimos a base para evitar problemas ao fazer require do config principal (next/jest async)
 const nextJest = require('next/jest');
@@ -27,7 +40,8 @@ const config = {
   ],
   // Thresholds baseados no baseline atual (~3.26% stmts, 15% funcs, 33% branches) para permitir incremento progressivo
   coverageThreshold: {
-    global: { branches: 30, functions: 10, lines: 3, statements: 3 },
+    // Fase 2: thresholds elevados mas ainda abaixo do baseline para evitar falsos negativos
+    global: { branches: 40, functions: 15, lines: 5, statements: 5 },
   },
   testEnvironmentOptions: { customExportConditions: [''] },
   transform: {

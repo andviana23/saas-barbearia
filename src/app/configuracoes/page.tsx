@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@mui/material';
+import ConfiguracoesContent from './components/ConfiguracoesContent';
 
 export default function ConfiguracoesPage() {
   return (
@@ -7,11 +8,7 @@ export default function ConfiguracoesPage() {
         <Typography variant="h4" gutterBottom>
           Configurações
         </Typography>
-
-        {/* TODO: Implementar ConfiguracoesContent component */}
-        <Typography variant="body1" color="text.secondary">
-          Central de configurações
-        </Typography>
+        <ConfiguracoesContent />
       </Box>
     </Container>
   );

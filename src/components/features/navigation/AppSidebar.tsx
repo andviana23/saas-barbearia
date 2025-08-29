@@ -64,6 +64,13 @@ const navigationItems = [
     group: 'business',
   },
   {
+    title: 'Profissionais',
+    icon: People,
+    path: '/profissionais',
+    badge: null,
+    group: 'business',
+  },
+  {
     title: 'Produtos/Serviços',
     icon: Inventory,
     path: '/servicos',

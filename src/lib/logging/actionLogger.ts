@@ -25,32 +25,18 @@ export interface ActionLogContext {
   meta?: Record<string, unknown>;
 }
 
-function redact(value: unknown): unknown {
-  if (value == null) return value;
-  if (typeof value === 'string') {
-    return value.length > 200 ? value.slice(0, 200) + '…' : value;
-  }
-  if (Array.isArray(value)) return value.slice(0, 10).map(redact);
-  if (typeof value === 'object') {
-    const out: Record<string, unknown> = {};
-    Object.entries(value as Record<string, unknown>).forEach(([k, v]) => {
-      if (/password|secret|token|key/i.test(k)) return; // skip sensitive
-      out[k] = redact(v);
-    });
-    return out;
-  }
-  return value;
-}
+import { scrub, buildLogEnvelope } from '@/lib/logging/scrub';
+const redact = scrub;
 
 export function logActionSuccess(ctx: ActionLogContext) {
-  const payload = { level: 'info', type: 'action.success', ...ctx };
+  const payload = buildLogEnvelope({ level: 'info', type: 'action.success', ...ctx });
   // eslint-disable-next-line no-console
   console.log(JSON.stringify(payload));
   Sentry.addBreadcrumb?.({ category: 'action', level: 'info', data: payload, message: ctx.action });
 }
 
 export function logActionError(ctx: ActionLogContext) {
-  const payload = { level: 'error', type: 'action.error', ...ctx };
+  const payload = buildLogEnvelope({ level: 'error', type: 'action.error', ...ctx });
   // eslint-disable-next-line no-console
   console.error(JSON.stringify(payload));
   Sentry.captureMessage?.(`ActionError:${ctx.action}`, {
