@@ -41,8 +41,8 @@ Esta seção é temporária e deve ser removida quando todos os itens estiverem 
 
 Infra / Backing Data:
 
-- [ ] Seeds base mínimas (clientes, profissionais, serviços, planos) populadas para navegação real.
-- [ ] Seed de roles/perfis padrão (admin, manager, staff, read-only) confirmada e documentada.
+- [x] Seeds base mínimas (clientes, profissionais, serviços, planos) populadas para navegação real. (arquivo `supabase/sql/001_base_demo_seed.sql`)
+- [x] Seed de roles/perfis padrão (admin, manager, staff, read-only) confirmada e documentada. (roles em migration + seed reforço no mesmo arquivo)
 - [x] Migrações estáveis (nenhuma refatoração estrutural de alto risco pendente imediata).
 
 Contracts & Acesso:
@@ -127,6 +127,7 @@ Remover esta seção quando 100% concluída ou migrada para issues.
 | Migration | `db/migrations/202508281000_seed_history.sql`              | Histórico de execução de seeds                                |
 | Seed      | `db/seeds/20250827_create_admin_user.sql`                  | Criação de unidade + usuário admin padrão                     |
 | Script    | `db/run-seeds.js`                                          | Executor ordenado de seeds (agora idempotente)                |
+| Seed      | `supabase/sql/001_base_demo_seed.sql`                      | Dados base demo (unidade, roles, perfil, clientes, serviços)  |
 | Tests     | `src/app/**/__tests__/*.test.ts`                           | Cobertura ações (core + financeiro/produtos/fila/assinaturas) |
 | Docs      | `docs/_arquivadas/*`                                       | Arquivos históricos movidos                                   |
 | Docs      | `docs/README.md`                                           | Atualização da matriz documental                              |
