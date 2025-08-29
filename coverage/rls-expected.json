@@ -1,0 +1,1490 @@
+[
+  {
+    "table": "cron.job",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "cron.job",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "cron.job",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "cron.job",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "cron.job_run_details",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "cron.job_run_details",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "cron.job_run_details",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "cron.job_run_details",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.api_keys",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.api_keys",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.api_keys",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.api_keys",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_notifications",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_notifications",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_services",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_services",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_services",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_services",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_stats_daily",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_stats_daily",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_stats_daily",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_stats_daily",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_status_history",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.appointment_status_history",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.appointments",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.appointments",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.appointments",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.asaas_webhook_events",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.asaas_webhook_events",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.asaas_webhook_events",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.audit_logs",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.audit_logs",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.campaign_targets",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.campaign_targets",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.campaign_targets",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.campaign_targets",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.campaigns",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.campaigns",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.campaigns",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.campaigns",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_sessions",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_sessions",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_sessions",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_sessions",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_transactions",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_transactions",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_transactions",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.cashbox_transactions",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_addresses",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_addresses",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_addresses",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_addresses",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_notes",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_notes",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tag_links",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tag_links",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tag_links",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tag_links",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tags",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tags",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tags",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.customer_tags",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.customers",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.customers",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.customers",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.discount_usages",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.discount_usages",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.discounts",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.discounts",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.discounts",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.discounts",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.export_jobs",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.export_jobs",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.export_jobs",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.external_accounts",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.external_accounts",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.external_accounts",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.external_accounts",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.external_providers",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.external_providers",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.external_providers",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.external_providers",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.feature_flags",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.feature_flags",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.feature_flags",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.feature_flags",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.financial_transactions",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.financial_transactions",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.financial_transactions",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.geo_locations",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.geo_locations",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.import_rows",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.import_rows",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.import_rows",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.imports",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.imports",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.imports",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.invoice_items",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.invoice_items",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.invoice_items",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.invoice_items",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.invoices",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.invoices",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.invoices",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.kpi_snapshots",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.kpi_snapshots",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.kpi_snapshots",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.kpi_snapshots",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.media_files",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.media_files",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.media_files",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.media_files",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_preferences",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_preferences",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_preferences",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_preferences",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_templates",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_templates",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_templates",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.notification_templates",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.notifications",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.notifications",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.notifications",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_methods",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_methods",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_methods",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_methods",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_provider_mappings",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_provider_mappings",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_provider_mappings",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.payment_provider_mappings",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.plan_benefits",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.plan_benefits",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.plan_benefits",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.plan_benefits",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.product_categories",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.product_categories",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.product_categories",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.product_categories",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.product_stock_movements",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.product_stock_movements",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.products",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.products",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.products",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.products",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.professional_services",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.professional_services",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.professional_services",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.professional_services",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.profiles",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.profiles",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.profiles",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.refunds",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.refunds",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.refunds",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.refunds",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.revenue_aggregation_daily",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.revenue_aggregation_daily",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.revenue_aggregation_daily",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.revenue_aggregation_daily",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.role_assignments",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.role_assignments",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.role_assignments",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.role_assignments",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.roles",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.roles",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_items",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_items",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_items",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_items",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_payments",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_payments",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_payments",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.sale_payments",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.sales",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.sales",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.sales",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.service_categories",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.service_categories",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.service_categories",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.service_pricings",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.service_pricings",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.service_pricings",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.service_pricings",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.services",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.services",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.services",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.sessions_extended",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.sessions_extended",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.sessions_extended",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.sessions_extended",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_cycles",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_cycles",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_cycles",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_cycles",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_payments",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_payments",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_payments",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_payments",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_plans",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_plans",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_plans",
+    "role": "public",
+    "operation": "select",
+  "allowed": true
+  },
+  {
+    "table": "public.subscription_plans",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_stats_monthly",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_stats_monthly",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_stats_monthly",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_stats_monthly",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_usage",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_usage",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_usage",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.subscription_usage",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.subscriptions",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.subscriptions",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.subscriptions",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.support_ticket_messages",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.support_ticket_messages",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.support_tickets",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.support_tickets",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.support_tickets",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.system_settings",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.system_settings",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.system_settings",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.system_settings",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.time_offs",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.time_offs",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.time_offs",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.time_offs",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_members",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_members",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_members",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_settings",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_settings",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_settings",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.unit_settings",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.units",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.units",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.units",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.waiting_list",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.waiting_list",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.waiting_list",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.waiting_list",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.webhook_events",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.webhook_events",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.webhook_events",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  },
+  {
+    "table": "public.working_hours",
+    "role": "public",
+    "operation": "delete",
+    "allowed": false
+  },
+  {
+    "table": "public.working_hours",
+    "role": "public",
+    "operation": "insert",
+    "allowed": false
+  },
+  {
+    "table": "public.working_hours",
+    "role": "public",
+    "operation": "select",
+    "allowed": false
+  },
+  {
+    "table": "public.working_hours",
+    "role": "public",
+    "operation": "update",
+    "allowed": false
+  }
+]

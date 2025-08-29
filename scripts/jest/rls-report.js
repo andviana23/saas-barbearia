@@ -46,11 +46,22 @@ for (const e of expected) {
   if (e.allowed === true && !inMatrix) {
     divergencias.push({ type: 'MISSING_POLICY_FOR_ALLOWED', ...e });
   }
-  // allowed=false + presente na matriz não é suficiente para apontar divergência ainda.
+  // Se já temos execução real (campo allowedReal presente), comparar:
+  if (Object.prototype.hasOwnProperty.call(e, 'allowedReal') && e.allowedReal !== null) {
+    if (e.allowed === true && e.allowedReal === false) {
+      divergencias.push({ type: 'EXPECT_TRUE_BUT_DENIED', ...e });
+    }
+    if (e.allowed === false && e.allowedReal === true) {
+      divergencias.push({ type: 'EXPECT_FALSE_BUT_ALLOWED', ...e });
+    }
+  }
 }
 
 console.log('=== RLS REPORT (fase heurística) ===');
-console.log('Total expected decididas:', expected.filter((e) => e.allowed !== null).length);
+const decided = expected.filter((e) => e.allowed !== null).length;
+const withReal = expected.filter((e) => e.allowedReal !== undefined).length;
+console.log('Total expected decididas:', decided);
+console.log('Entradas com campo allowedReal presente:', withReal);
 console.log('Divergências encontradas:', divergencias.length);
 if (divergencias.length) {
   console.log('\nTipo, Tabela, Role, Operação');

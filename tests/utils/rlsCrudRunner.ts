@@ -84,3 +84,6 @@ export async function executeCrud(attempt: CrudAttempt): Promise<CrudResult> {
     return { success: false, error: msg };
   }
 }
+
+// Futuro: função para registrar resultado real (append em coverage/rls-exec-log.json) e um script que consolida isso em allowedReal
+// export function recordRealResult(attempt: CrudAttempt, success: boolean) { /* implementação futura */ }
