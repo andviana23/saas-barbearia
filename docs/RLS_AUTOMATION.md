@@ -54,19 +54,28 @@ Editar `coverage/rls-expected.json`:
 - Define `allowed=false` se deve ser negada.
 - Mantém histórico – novas combinações serão adicionadas (não sobrescreve decisões). Use controle de versão.
 
-## Próximas Evoluções
+## Evoluções & Status
 
-1. Implementar impersonação real no runner CRUD (JWT por role / claims).
-2. Registrar resultado real (permitido/negado) e comparar com `allowed`.
-3. Gerar relatório dif (`coverage/rls-report.json`) para auditoria.
-4. Adicionar cobertura de casos negativos (tentativas de escalada de privilégio).
-5. Versionar `coverage/rls-expected.json` e `coverage/rls-matrix.json` (exceção adicionada no `.gitignore`).
-6. Refinar heurística anon: hoje assume SELECT permitido — avaliar tabela a tabela (ex: `api_keys` deve continuar totalmente negado).
-7. Reativar `tests/rls.crud.test.ts` após implementação de execução real ou simulação consistente; remover `.skip`.
-8. Adicionar script `rls:report` para gerar CSV/markdown usando `rls-expected-summary.js` e difs entre commits.
-9. Flag de controle `RLS_CRUD_REAL=1` para habilitar execução real gradualmente (já suportada no runner – default é simulado).
-10. Expandir `rls:report` para incluir coluna `allowedReal` (resultado observado) e sinalizar divergências: EXPECT_TRUE_BUT_DENIED / EXPECT_FALSE_BUT_ALLOWED.
-11. Integrar `rls:report` ao CI (falhar pipeline em divergências críticas).
+| #   | Item                                                                 | Status                              |
+| --- | -------------------------------------------------------------------- | ----------------------------------- |
+| 1   | Implementar impersonação real (SET LOCAL ROLE / JWT)                 | Parcial (SET ROLE opcional via env) |
+| 2   | Registrar resultado real (permitido/negado) e comparar com `allowed` | Concluído                           |
+| 3   | Gerar relatório dif (`coverage/rls-report.json` / `.md`)             | Concluído                           |
+| 4   | Casos negativos adicionais (escalada de privilégio)                  | Pendente                            |
+| 5   | Versionar `rls-expected.json` e `rls-matrix.json`                    | Concluído (exceção de ignore)       |
+| 6   | Refinar heurística anon (granular por tabela)                        | Pendente                            |
+| 7   | Reativar `tests/rls.crud.test.ts` (modo real)                        | Parcial (simulação + real opcional) |
+| 8   | Script `rls:report` com Markdown                                     | Concluído                           |
+| 9   | Flag `RLS_CRUD_REAL` para execução real                              | Concluído                           |
+| 10  | Coluna `allowedReal` e divergências EXPECT\_\*                       | Concluído                           |
+| 11  | Fail em CI por divergências críticas                                 | Concluído (flags configuráveis)     |
+| 12  | Métricas (latência média, contadores success/fail)                   | Concluído                           |
+| 13  | Workflow GitHub Actions auditoria diária                             | Concluído                           |
+| 14  | Fail modes configuráveis (ANY / REAL / NONE)                         | Concluído                           |
+
+Itens novos sugeridos: 15. Exportar série temporal de variação de políticas (snapshot diário).  
+16. Validar cardinalidade de políticas por tabela (alertar se reduzir sem justificativa).  
+17. Adicionar modo "DRY-RUN" para simular merge sem alterar `rls-expected.json`.
 
 ### Execução Real Controlada
 
@@ -87,26 +96,70 @@ Próximas fases da execução real:
 
 Script inicial (`npm run rls:report`) compara somente expectativas `allowed=true` contra presença de operação na matriz. Futuro: incluir execução real e gerar status:
 
-| Tipo                       | Significado                                                   |
-| -------------------------- | ------------------------------------------------------------- |
-| MISSING_POLICY_FOR_ALLOWED | Esperado acesso mas não há policy/operation derivada          |
-| EXPECT_TRUE_BUT_DENIED     | (futuro) Execução real negou acesso esperado                  |
-| EXPECT_FALSE_BUT_ALLOWED   | (futuro) Execução real permitiu acesso que deveria ser negado |
+| Tipo                       | Significado                                          |
+| -------------------------- | ---------------------------------------------------- |
+| MISSING_POLICY_FOR_ALLOWED | Esperado acesso mas não há policy/operation derivada |
+| EXPECT_TRUE_BUT_DENIED     | Execução real negou acesso esperado                  |
+| EXPECT_FALSE_BUT_ALLOWED   | Execução real permitiu acesso que deveria ser negado |
+
+Fail Modes (ordem de severidade):
+
+- `ANY` (default) – falha se existir qualquer divergência (inclui heurística / ausência de policy).
+- `REAL` – falha somente se houver divergência baseada em execução real (`EXPECT_*`).
+- `NONE` – nunca falha (modo somente observação / auditoria passiva).
+
+Configuração:
+
+```
+npm run rls:report -- --fail-on=REAL
+# ou
+RLS_REPORT_FAIL_ON=real npm run rls:report
+```
 
 Exit code ≠ 0 quando existir pelo menos uma divergência listada para facilitar bloqueio em CI.
 
-### Execuções Reais e allowedReal
+### Execuções Reais, Métricas e `allowedReal`
 
-Pipeline experimental:
+Pipeline:
 
 1. Rodar testes CRUD em modo real: `RLS_CRUD_REAL=1 npm run rls:crud:test` (necessário `DATABASE_URL`).
-2. Cada tentativa gera linha em `coverage/rls-exec-log.jsonl`.
-3. Consolidar resultados no expected: `npm run rls:exec:merge` (preenche/atualiza campo `allowedReal`).
-4. Gerar relatório: `npm run rls:report` (produz `coverage/rls-report.json` e `coverage/rls-report.md`).
+2. Cada tentativa gera linha JSONL em `coverage/rls-exec-log.jsonl` com campos:
 
-Heurística de merge: se qualquer execução registrou sucesso para combinação, `allowedReal=true`, caso contrário `false`.
+- `success`, `error`, `durationMs`, `impersonated`, `impersonationError`.
 
-Próximo aprimoramento: armazenar contagens (success/fail) e latência média para cada combinação.
+3. Consolidar resultados: `npm run rls:exec:merge` – atualiza `allowedReal` e adiciona bloco `realStats`:
+
+```json
+{
+  "successCount": 3,
+  "failureCount": 1,
+  "avgDurationMs": 12.5,
+  "lastMergedAt": "2025-08-28T03:00:00.000Z"
+}
+```
+
+4. Gerar relatório: `npm run rls:report` (gera JSON + Markdown) com contagem de divergências reais.
+5. (Opcional) Ciclo encadeado: `npm run rls:real:cycle` ou `npm run rls:real:cycle:imp` (com impersonação).
+
+Heurística de merge: se qualquer execução registrou `success=true` para a combinação, `allowedReal=true`, senão `false`. Estatísticas agregadas são mantidas em `realStats` (não resetar manualmente para preservar histórico incremental — o merge sobrescreve sempre com agregados recalculados do log atual).
+
+Impersonação opcional: defina `RLS_CRUD_IMPERSONATE=1` para tentar `SET LOCAL ROLE <role>`. Falhas são registradas em `impersonationError` sem abortar a tentativa.
+
+Fail após ciclo real (considerando apenas divergência real):
+
+```
+npm run rls:real:cycle               # fail-on REAL aplicado no script
+RLS_REPORT_FAIL_ON=none npm run rls:real:cycle  # apenas coleta sem falhar
+```
+
+Workflow GitHub Actions (`.github/workflows/rls-real-audit.yml`) executa diariamente:
+
+1. Instala dependências.
+2. Executa ciclo real com impersonação.
+3. Publica artefatos `rls-exec-log.jsonl`, `rls-expected.json`, `rls-report.(json|md)`.
+4. Commita mudanças em `allowedReal` se houver.
+
+Segredo necessário: `RLS_AUDIT_DATABASE_URL` (apenas leitura recomendada / ambiente isolado).
 
 ## Troubleshooting
 
