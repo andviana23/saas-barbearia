@@ -1,0 +1,50 @@
+name: RLS Real Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *' # diário 03:00 UTC
+
+jobs:
+  rls-real-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+      - name: Real RLS cycle
+        env:
+          DATABASE_URL: ${{ secrets.RLS_AUDIT_DATABASE_URL }}
+          RLS_CRUD_REAL: '1'
+          RLS_CRUD_IMPERSONATE: '1'
+          RLS_REPORT_FAIL_ON: 'REAL'
+        run: npm run rls:real:cycle:imp || true
+      - name: Publicar artefatos
+        uses: actions/upload-artifact@v4
+        with:
+          name: rls-audit-artifacts
+          path: |
+            coverage/rls-exec-log.jsonl
+            coverage/rls-expected.json
+            coverage/rls-report.json
+            coverage/rls-report.md
+      - name: Commit allowedReal updates
+        if: success()
+        run: |
+          git config user.name 'github-actions'
+          git config user.email 'actions@users.noreply.github.com'
+          if git diff --quiet --exit-code coverage/rls-expected.json; then
+            echo 'Sem mudanças em rls-expected.json'
+          else
+            git add coverage/rls-expected.json
+            git commit -m 'chore(rls): atualização allowedReal automática'
+            git push || echo 'Push falhou (branch protegida?)'
+          fi

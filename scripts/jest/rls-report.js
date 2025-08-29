@@ -39,6 +39,7 @@ for (const t of matrix.tables || []) {
 }
 
 const divergencias = [];
+let realDivergences = 0;
 for (const e of expected) {
   if (e.allowed === null) continue; // ignorar indecisos
   const key = `${e.table}|${e.role}|${e.operation}`;
@@ -50,9 +51,11 @@ for (const e of expected) {
   if (Object.prototype.hasOwnProperty.call(e, 'allowedReal') && e.allowedReal !== null) {
     if (e.allowed === true && e.allowedReal === false) {
       divergencias.push({ type: 'EXPECT_TRUE_BUT_DENIED', ...e });
+      realDivergences++;
     }
     if (e.allowed === false && e.allowedReal === true) {
       divergencias.push({ type: 'EXPECT_FALSE_BUT_ALLOWED', ...e });
+      realDivergences++;
     }
   }
 }
@@ -60,8 +63,10 @@ for (const e of expected) {
 console.log('=== RLS REPORT (fase heurística) ===');
 const decided = expected.filter((e) => e.allowed !== null).length;
 const withReal = expected.filter((e) => e.allowedReal !== undefined).length;
+const withRealStats = expected.filter((e) => e.realStats).length;
 console.log('Total expected decididas:', decided);
 console.log('Entradas com campo allowedReal presente:', withReal);
+console.log('Entradas com métricas realStats:', withRealStats);
 console.log('Divergências encontradas:', divergencias.length);
 // Geração de artefatos (JSON + Markdown)
 try {
@@ -73,11 +78,13 @@ try {
     generatedAt: new Date().toISOString(),
     decided,
     withReal,
+    withRealStats,
     divergences: divergencias,
+    realDivergences,
   };
   fs.writeFileSync(path.join(dir, 'rls-report.json'), JSON.stringify(reportData, null, 2));
   // Markdown
-  let md = `# RLS Report\n\nGerado em: ${reportData.generatedAt}  \nEntradas decididas: ${decided}  \nCom allowedReal: ${withReal}  \nDivergências: ${divergencias.length}\n\n`;
+  let md = `# RLS Report\n\nGerado em: ${reportData.generatedAt}  \nEntradas decididas: ${decided}  \nCom allowedReal: ${withReal}  \nCom métricas realStats: ${withRealStats}  \nTotal divergências: ${divergencias.length}  \nDivergências reais: ${realDivergences}\n\n`;
   if (divergencias.length) {
     md += `## Divergências\n\n| Tipo | Tabela | Role | Operação | allowed | allowedReal |\n|------|--------|------|----------|---------|------------|\n`;
     for (const d of divergencias) {
@@ -97,13 +104,29 @@ try {
   // não falha se não conseguir gerar artefatos
 }
 
+// Política de falha configurável
+// Flags (via args ou env):
+//   --fail-on ANY|REAL|NONE  (default ANY)
+//   RLS_REPORT_FAIL_ON=any|real|none
+const argvFlag = process.argv.find((a) => a.startsWith('--fail-on='));
+let failMode = (process.env.RLS_REPORT_FAIL_ON || '').toUpperCase();
+if (argvFlag) failMode = argvFlag.split('=')[1].toUpperCase();
+if (!['ANY', 'REAL', 'NONE'].includes(failMode)) failMode = 'ANY';
+
+let shouldFail = false;
+if (failMode === 'ANY' && divergencias.length) shouldFail = true;
+if (failMode === 'REAL' && realDivergences > 0) shouldFail = true;
+if (failMode === 'NONE') shouldFail = false;
+
 if (divergencias.length) {
   console.log('\nTipo, Tabela, Role, Operação');
   for (const d of divergencias) {
     console.log(`${d.type}, ${d.table}, ${d.role}, ${d.operation}`);
   }
   console.log('\nRelatórios salvos em coverage/rls-report.(json|md)');
-  process.exitCode = 1; // falha em divergência
 } else {
-  console.log('Nenhuma divergência detectada nesta fase. Relatórios salvos.');
+  console.log('Nenhuma divergência detectada. Relatórios salvos.');
 }
+
+console.log(`Modo de falha: ${failMode}. Divergências reais: ${realDivergences}.`);
+if (shouldFail) process.exitCode = 1;

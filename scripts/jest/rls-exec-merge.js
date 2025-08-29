@@ -27,11 +27,24 @@ for (const line of lines) {
   try {
     const rec = JSON.parse(line);
     const key = `${rec.table}|${rec.role}|${rec.operation}`;
-    const cur = agg.get(key) || { anySuccess: false, anyFailure: false };
+    const cur = agg.get(key) || {
+      anySuccess: false,
+      anyFailure: false,
+      successCount: 0,
+      failureCount: 0,
+      totalDuration: 0,
+      samples: 0,
+    };
+    if (rec.success) cur.anySuccess = true;
+    else cur.anyFailure = true;
     if (rec.success) {
-      cur.anySuccess = true;
+      cur.successCount++;
     } else {
-      cur.anyFailure = true;
+      cur.failureCount++;
+    }
+    if (typeof rec.durationMs === 'number') {
+      cur.totalDuration += rec.durationMs;
+      cur.samples++;
     }
     agg.set(key, cur);
   } catch (e) {
@@ -39,6 +52,7 @@ for (const line of lines) {
   }
 }
 let updated = 0;
+let enriched = 0;
 for (const e of expected) {
   const key = `${e.table}|${e.role}|${e.operation}`;
   if (agg.has(key)) {
@@ -48,7 +62,20 @@ for (const e of expected) {
       e.allowedReal = newVal;
       updated++;
     }
+    const avg = summary.samples ? summary.totalDuration / summary.samples : null;
+    e.realStats = {
+      successCount: summary.successCount,
+      failureCount: summary.failureCount,
+      avgDurationMs: avg,
+      lastMergedAt: new Date().toISOString(),
+    };
+    enriched++;
   }
 }
 fs.writeFileSync(expectedPath, JSON.stringify(expected, null, 2));
-console.log('[rls:exec:merge] Atualizações em allowedReal:', updated);
+console.log(
+  '[rls:exec:merge] Atualizações em allowedReal:',
+  updated,
+  'Entradas enriquecidas:',
+  enriched,
+);

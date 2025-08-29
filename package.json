@@ -41,6 +41,8 @@
     "rls:expected:summary": "node scripts/jest/rls-expected-summary.js",
     "rls:report": "node scripts/jest/rls-report.js",
     "rls:exec:merge": "node scripts/jest/rls-exec-merge.js",
+    "rls:real:cycle": "cross-env RLS_CRUD_REAL=1 npm run rls:crud:test && npm run rls:exec:merge && node scripts/jest/rls-report.js --fail-on=REAL",
+    "rls:real:cycle:imp": "cross-env RLS_CRUD_REAL=1 RLS_CRUD_IMPERSONATE=1 npm run rls:crud:test && npm run rls:exec:merge && node scripts/jest/rls-report.js --fail-on=REAL",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
