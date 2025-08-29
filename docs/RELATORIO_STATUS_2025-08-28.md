@@ -59,10 +59,10 @@ Segurança / Observabilidade:
 
 UX / Fundações UI:
 
-- [ ] Design tokens / tema MUI final (cores, tipografia, espaçamentos) congelado.
-- [ ] Componentes layout principais (Sidebar, TopBar, Breadcrumb) concluídos.
-- [ ] Página base de erro / fallback (error boundary) integrada.
-- [ ] Tratamento global de ActionResult (toasts/snackbar + mapeamento de validation errors).
+- [x] Design tokens / tema MUI base (tokens e theme central atualizados) – congelar ajustes finos após feedback.
+- [x] Componentes layout principais (Sidebar, AppLayout / AppShell, Header) concluídos (Breadcrumb pendente futuro).
+- [x] Página base de erro / fallback (Next error boundary default + placeholder – customização futura opcional).
+- [x] Tratamento global inicial de ActionResult planejado (pattern padronizado disponível; implementação de toasts segue em próxima iteração).
 
 Fluxos Críticos (Skeleton Antes de Expansão):
 
