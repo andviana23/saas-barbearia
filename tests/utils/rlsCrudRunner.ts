@@ -75,15 +75,39 @@ export async function executeCrud(attempt: CrudAttempt): Promise<CrudResult> {
     }
     await client.query(sql);
     await client.query('ROLLBACK');
-    return { success: true };
+    const result: CrudResult = { success: true };
+    recordRealResult(attempt, result);
+    return result;
   } catch (e) {
     try {
       await client.query('ROLLBACK');
     } catch (_) {}
     const msg = e instanceof Error ? e.message : 'Erro desconhecido';
-    return { success: false, error: msg };
+    const result: CrudResult = { success: false, error: msg };
+    recordRealResult(attempt, result);
+    return result;
   }
 }
 
-// Futuro: função para registrar resultado real (append em coverage/rls-exec-log.json) e um script que consolida isso em allowedReal
-// export function recordRealResult(attempt: CrudAttempt, success: boolean) { /* implementação futura */ }
+// Registro de execução real em JSONL (somente quando RLS_CRUD_REAL=1). Posteriormente consolidado em allowedReal.
+function recordRealResult(attempt: CrudAttempt, result: CrudResult) {
+  try {
+    if (process.env.RLS_CRUD_REAL !== '1') return;
+    const fs = require('fs');
+    const path = require('path');
+    const dir = path.join(process.cwd(), 'coverage');
+    fs.mkdirSync(dir, { recursive: true });
+    const logFile = path.join(dir, 'rls-exec-log.jsonl');
+    const line = JSON.stringify({
+      ts: new Date().toISOString(),
+      table: attempt.table,
+      role: attempt.role,
+      operation: attempt.operation,
+      success: result.success,
+      error: result.error || null,
+    });
+    fs.appendFileSync(logFile, line + '\n');
+  } catch (_) {
+    // silencioso
+  }
+}

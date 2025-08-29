@@ -40,6 +40,7 @@
     "rls:expected:check": "cross-env RLS_EXPECTED_STRICT=1 jest tests/rls.expected.test.ts --runInBand",
     "rls:expected:summary": "node scripts/jest/rls-expected-summary.js",
     "rls:report": "node scripts/jest/rls-report.js",
+    "rls:exec:merge": "node scripts/jest/rls-exec-merge.js",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
