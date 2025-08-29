@@ -161,6 +161,17 @@ Workflow GitHub Actions (`.github/workflows/rls-real-audit.yml`) executa diariam
 
 Segredo necessário: `RLS_AUDIT_DATABASE_URL` (apenas leitura recomendada / ambiente isolado).
 
+### Modo Dry-Run do Merge
+
+Para inspecionar o impacto de novas execuções sem alterar `rls-expected.json`:
+
+```
+npm run rls:exec:merge -- --dry-run
+RLS_EXEC_MERGE_DRY=1 npm run rls:exec:merge
+```
+
+Mostra contagem de atualizações e até 10 diferenças de `allowedReal` previstas.
+
 ## Troubleshooting
 
 | Sintoma                      | Causa Provável                                  | Ação                                              |

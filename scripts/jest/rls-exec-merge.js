@@ -20,7 +20,9 @@ if (!fs.existsSync(logPath)) {
   process.exit(1);
 }
 
-const expected = JSON.parse(fs.readFileSync(expectedPath, 'utf-8'));
+const expectedOriginal = JSON.parse(fs.readFileSync(expectedPath, 'utf-8'));
+// Clonar para permitir dry-run sem mutar array original
+const expected = JSON.parse(JSON.stringify(expectedOriginal));
 const lines = fs.readFileSync(logPath, 'utf-8').trim().split(/\n+/).filter(Boolean);
 const agg = new Map();
 for (const line of lines) {
@@ -72,10 +74,35 @@ for (const e of expected) {
     enriched++;
   }
 }
-fs.writeFileSync(expectedPath, JSON.stringify(expected, null, 2));
+const argvDry = process.argv.includes('--dry-run');
+const dryEnv = (process.env.RLS_EXEC_MERGE_DRY || '').toLowerCase() === '1';
+const isDry = argvDry || dryEnv;
+if (isDry) {
+  console.log('[rls:exec:merge] DRY-RUN: nenhuma escrita em arquivo. Resumo:');
+} else {
+  fs.writeFileSync(expectedPath, JSON.stringify(expected, null, 2));
+}
 console.log(
   '[rls:exec:merge] Atualizações em allowedReal:',
   updated,
   'Entradas enriquecidas:',
   enriched,
+  isDry ? '(dry-run)' : '',
 );
+if (isDry && updated) {
+  // Mostrar primeiras diferenças para inspeção
+  let shown = 0;
+  for (let i = 0; i < expected.length && shown < 10; i++) {
+    const after = expected[i];
+    const before = expectedOriginal.find(
+      (b) => b.table === after.table && b.role === after.role && b.operation === after.operation,
+    );
+    if (!before) continue;
+    if (before.allowedReal !== after.allowedReal) {
+      console.log(
+        `diff ${after.table} ${after.role} ${after.operation}: ${before.allowedReal} -> ${after.allowedReal}`,
+      );
+      shown++;
+    }
+  }
+}
