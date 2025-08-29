@@ -35,6 +35,49 @@ _Documento organizado para análise eficiente dos progressos_
 
 Observação: valores arredondados para inteiros. Segurança & Multi-tenancy encontra-se em fase inicial (priorizar criação de testes automatizados RLS e auditoria de permissões por papel).
 
+## ✅ Checklist Fundamental Pré-Frontend (Temporário)
+
+Esta seção é temporária e deve ser removida quando todos os itens estiverem concluídos ou migrados para issues formais.
+
+Infra / Backing Data:
+
+- [ ] Seeds base mínimas (clientes, profissionais, serviços, planos) populadas para navegação real.
+- [ ] Seed de roles/perfis padrão (admin, manager, staff, read-only) confirmada e documentada.
+- [x] Migrações estáveis (nenhuma refatoração estrutural de alto risco pendente imediata).
+
+Contracts & Acesso:
+
+- [x] Padrão ActionResult consolidado (inputs/outputs estáveis).
+- [ ] Definir enum / tipo central de Roles exportado para frontend (`src/types/roles.ts`).
+- [ ] Guards de menu / rotas (layout) baseados em role + unidade prontos (skeleton).
+- [ ] RLS expected baseline: garantir `coverage/rls-expected.json` sem `allowed=null` (strict) antes de telas sensíveis.
+
+Segurança / Observabilidade:
+
+- [ ] Script smoke RLS real (pelo menos SELECT cross-unit negado) automatizado em CI.
+- [ ] Logging padronizado de falhas em actions sensíveis com Sentry (campos scrub).
+
+UX / Fundações UI:
+
+- [ ] Design tokens / tema MUI final (cores, tipografia, espaçamentos) congelado.
+- [ ] Componentes layout principais (Sidebar, TopBar, Breadcrumb) concluídos.
+- [ ] Página base de erro / fallback (error boundary) integrada.
+- [ ] Tratamento global de ActionResult (toasts/snackbar + mapeamento de validation errors).
+
+Fluxos Críticos (Skeleton Antes de Expansão):
+
+- [ ] Dashboard inicial com dados mock/seed.
+- [ ] Lista + formulário Clientes.
+- [ ] Lista + formulário Profissionais.
+- [ ] Lista + formulário Serviços.
+
+Qualidade:
+
+- [ ] Teste e2e smoke para autenticação e navegação principal.
+- [ ] Teste unitário para hook de auth / unidade atual (garante shape estável).
+
+Remover esta seção quando 100% concluída ou migrada para issues.
+
 ## 🏆 Principais Conquistas
 
 ### ✅ 1. Sistema de Testes Robusto
