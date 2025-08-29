@@ -1,16 +1,13 @@
-import { test, expect } from '@playwright/test';
-import { createTestData, cleanupTestData } from '../fixtures';
+import { test, expect } from '../fixtures';
 
 test.describe('Configurações', () => {
-  let testData: any;
-
-  test.beforeEach(async ({ page }) => {
-    testData = await createTestData();
+  test.beforeEach(async ({ createTestData, page }) => {
+    await createTestData();
     await page.goto('/configuracoes');
   });
 
-  test.afterEach(async () => {
-    await cleanupTestData(testData);
+  test.afterEach(async ({ cleanupTestData }) => {
+    await cleanupTestData();
   });
 
   test('deve carregar painel de configurações', async ({ page }) => {

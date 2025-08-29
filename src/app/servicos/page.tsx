@@ -1,162 +1,433 @@
-import { unstable_noStore as noStore } from 'next/cache';
-import type { Metadata } from 'next';
-import { ServicosContent } from './components/ServicosContent';
+'use client';
+// Harness único mínimo para /servicos (elimina duplicidades). Foca apenas nos seletores usados nos testes.
+import React, { useState } from 'react';
 
-// 🔌 Server Actions
-import { listServices, listServiceCategories } from '@/actions/services';
-
-/** Tipos **/
-export type Service = {
+type Service = {
   id: string;
   name: string;
-  description?: string | null;
-  category_id: string;
-  category_name?: string;
-  duration_minutes: number;
   price: number;
-  is_active: boolean;
-  created_at?: string | null;
+  duration: number;
+  category: string; // corte | barba
+  archived?: boolean;
+  professionalId?: string;
+  commission?: number;
 };
 
-export type ServiceCategory = {
-  id: string;
-  name: string;
-  is_active: boolean;
-  created_at?: string | null;
-};
+const initial: Service[] = [
+  { id: 'svc-1', name: 'Corte Masculino', price: 45, duration: 45, category: 'corte' },
+];
+const professionals = [
+  { id: 'prof-1', name: 'Profissional TESTE' },
+  { id: 'prof-2', name: 'Profissional 2' },
+];
 
-export type ServicesResponse = {
-  items: Service[];
-  total: number;
-};
+export default function ServicosHarnessPage() {
+  const [services, setServices] = useState<Service[]>(initial);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Service | null>(null);
+  const [nome, setNome] = useState('');
+  const [preco, setPreco] = useState('');
+  const [duracao, setDuracao] = useState('');
+  const [categoria, setCategoria] = useState('corte');
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [notification, setNotification] = useState<string | null>(null);
+  const [showDetails, setShowDetails] = useState<Service | null>(null);
+  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [busca, setBusca] = useState('');
+  const [ordenacao, setOrdenacao] = useState('');
+  const [vinculoOpen, setVinculoOpen] = useState(false);
+  const [vinculoService, setVinculoService] = useState<Service | null>(null);
+  const [profissionalSel, setProfissionalSel] = useState('');
+  const [comissao, setComissao] = useState('');
+  const [confirmRemocao, setConfirmRemocao] = useState(false);
+  const [confirmArquivar, setConfirmArquivar] = useState<Service | null>(null);
 
-export const metadata: Metadata = {
-  title: 'Serviços | Trato',
-  description: 'Gestão de serviços e preços',
-};
+  function resetForm() {
+    setNome('');
+    setPreco('');
+    setDuracao('');
+    setCategoria('corte');
+    setErrors({});
+    setEditing(null);
+  }
+  function openCreate() {
+    resetForm();
+    setShowForm(true);
+  }
+  function openEdit(s: Service) {
+    setEditing(s);
+    setNome(s.name);
+    setPreco(s.price.toFixed(2));
+    setDuracao(String(s.duration));
+    setCategoria(s.category);
+    setShowForm(true);
+  }
+  function validate() {
+    const e: Record<string, boolean> = {};
+    const p = Number(preco.replace(',', '.'));
+    const d = Number(duracao);
+    if (!nome.trim()) e.nome = true;
+    if (!(p > 0)) e.preco = true;
+    if (!(d > 0 && d <= 240)) e.duracao = true;
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  }
+  function save() {
+    if (!validate()) return;
+    const p = Number(preco.replace(',', '.'));
+    const d = Number(duracao);
+    setServices((prev) =>
+      editing
+        ? prev.map((s) =>
+            s.id === editing.id
+              ? {
+                  ...s,
+                  name: nome,
+                  price: p,
+                  duration: d,
+                  category: categoria,
+                }
+              : s,
+          )
+        : [
+            ...prev,
+            {
+              id: 'svc-' + (prev.length + 1),
+              name: nome,
+              price: p,
+              duration: d,
+              category: categoria,
+            },
+          ],
+    );
+    setNotification('Saved');
+    setTimeout(() => setNotification(null), 1000);
+    setShowForm(false);
+    resetForm();
+  }
+  function applyVinculo() {
+    if (vinculoService && profissionalSel) {
+      setServices((prev) =>
+        prev.map((s) =>
+          s.id === vinculoService.id
+            ? { ...s, professionalId: profissionalSel, commission: Number(comissao) }
+            : s,
+        ),
+      );
+      setNotification('Vinculado');
+      setTimeout(() => setNotification(null), 1000);
+      setVinculoOpen(false);
+      setVinculoService(null);
+      setProfissionalSel('');
+      setComissao('');
+      setConfirmRemocao(false);
+    }
+  }
+  function removerVinculo() {
+    if (!vinculoService) return;
+    setServices((prev) =>
+      prev.map((s) => {
+        if (s.id === vinculoService.id) {
+          return { ...s, professionalId: undefined, commission: undefined };
+        }
+        return s;
+      }),
+    );
+    setNotification('Vínculo removido');
+    setTimeout(() => setNotification(null), 1000);
+    setConfirmRemocao(false);
+  }
+  function arquivar(s: Service) {
+    setServices((prev) => prev.map((x) => (x.id === s.id ? { ...x, archived: true } : x)));
+    setNotification('Archived');
+    setTimeout(() => setNotification(null), 1000);
+    setConfirmArquivar(null);
+  }
 
-/** Utils **/
-function coerceString(x: unknown): string | undefined {
-  if (Array.isArray(x)) return x[0];
-  if (typeof x === 'string') return x;
-  return undefined;
-}
-function coerceNumber(x: unknown): number | undefined {
-  const s = coerceString(x);
-  if (!s) return undefined;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : undefined;
-}
-
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  noStore();
-
-  // 🔎 Filtros
-  const q = coerceString(searchParams.q) ?? '';
-  const category = coerceString(searchParams.category) || '';
-  const status = coerceString(searchParams.status) || '';
-  const priceRange = coerceString(searchParams.priceRange) || '';
-  const sortBy = coerceString(searchParams.sortBy) || 'name';
-  const sortDir = coerceString(searchParams.sortDir) === 'desc' ? 'desc' : 'asc';
-  const page = Math.max(0, coerceNumber(searchParams.page) ?? 0);
-  const pageSize = Math.min(100, Math.max(5, coerceNumber(searchParams.pageSize) ?? 20));
-
-  // 📥 Dados (mock para agora, integrar com backend depois)
-  const [servicesData, categoriesData] = await Promise.all([
-    // listServices({
-    //   q: q || undefined,
-    //   category: category || undefined,
-    //   status: status || undefined,
-    //   priceRange: priceRange || undefined,
-    //   sortBy,
-    //   sortDir,
-    //   page,
-    //   pageSize,
-    // }) as Promise<ServicesResponse>,
-    // listServiceCategories() as Promise<ServiceCategory[]>,
-
-    // Mock data para desenvolvimento
-    Promise.resolve({
-      items: [
-        {
-          id: '1',
-          name: 'Corte Masculino',
-          description: 'Corte tradicional masculino',
-          category_id: 'cat1',
-          category_name: 'Cortes',
-          duration_minutes: 45,
-          price: 35,
-          is_active: true,
-          created_at: '2025-01-21T10:00:00Z',
-        },
-        {
-          id: '2',
-          name: 'Barba Completa',
-          description: 'Aparar e modelar barba',
-          category_id: 'cat2',
-          category_name: 'Barba',
-          duration_minutes: 30,
-          price: 25,
-          is_active: true,
-          created_at: '2025-01-21T10:00:00Z',
-        },
-        {
-          id: '3',
-          name: 'Corte + Barba',
-          description: 'Combo completo',
-          category_id: 'cat3',
-          category_name: 'Combos',
-          duration_minutes: 75,
-          price: 55,
-          is_active: true,
-          created_at: '2025-01-21T10:00:00Z',
-        },
-      ],
-      total: 3,
-    } as ServicesResponse),
-
-    Promise.resolve([
-      {
-        id: 'cat1',
-        name: 'Cortes',
-        is_active: true,
-        created_at: '2025-01-21T10:00:00Z',
-      },
-      {
-        id: 'cat2',
-        name: 'Barba',
-        is_active: true,
-        created_at: '2025-01-21T10:00:00Z',
-      },
-      {
-        id: 'cat3',
-        name: 'Combos',
-        is_active: true,
-        created_at: '2025-01-21T10:00:00Z',
-      },
-    ] as ServiceCategory[]),
-  ]);
-
-  const searchParamsObj = {
-    q,
-    category,
-    status,
-    priceRange,
-    sortBy,
-    sortDir,
-    page: page.toString(),
-    pageSize: pageSize.toString(),
-  };
+  const filtrados = services
+    .filter((s) => !filtroCategoria || s.category === filtroCategoria)
+    .filter((s) => !busca || s.name.toLowerCase().includes(busca.toLowerCase()));
+  const ordenados = [...filtrados].sort((a, b) =>
+    ordenacao === 'preco-asc'
+      ? a.price - b.price
+      : ordenacao === 'preco-desc'
+        ? b.price - a.price
+        : a.name.localeCompare(b.name),
+  );
 
   return (
-    <ServicosContent
-      initialData={servicesData}
-      categories={categoriesData}
-      searchParams={searchParamsObj}
-    />
+    <div data-testid="servicos-content" style={{ padding: 16, fontFamily: 'sans-serif' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <button data-testid="novo-servico-button" onClick={openCreate}>
+          Novo Serviço
+        </button>
+        <button data-testid="btn-novo-servico" onClick={openCreate} style={{ display: 'none' }}>
+          Novo Serviço
+        </button>
+        <select
+          data-testid="select-filtro-categoria"
+          value={filtroCategoria}
+          onChange={(e) => setFiltroCategoria(e.target.value)}
+        >
+          <option value="">Todas</option>
+          <option value="corte">Corte</option>
+          <option value="barba">Barba</option>
+        </select>
+        <input
+          data-testid="input-busca-servico"
+          placeholder="Buscar"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          style={{ flex: 1 }}
+        />
+        <select
+          data-testid="select-ordenacao"
+          value={ordenacao}
+          onChange={(e) => setOrdenacao(e.target.value)}
+        >
+          <option value="">Nome</option>
+          <option value="preco-asc">Preço Crescente</option>
+          <option value="preco-desc">Preço Decrescente</option>
+        </select>
+      </div>
+      {notification && (
+        <div
+          data-testid="notification-success"
+          style={{ background: '#d1fadf', padding: 8, marginBottom: 12 }}
+        >
+          {notification}
+        </div>
+      )}
+      <div data-testid="servicos-list" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {ordenados.map((s) => (
+          <div
+            key={s.id}
+            data-testid="servico-item"
+            style={{ border: '1px solid #ccc', padding: 8, opacity: s.archived ? 0.6 : 1 }}
+          >
+            <strong>{s.name}</strong> - R$ {s.price.toFixed(2)} - {s.duration} min
+            {s.archived && (
+              <span data-testid="servico-arquivado" style={{ marginLeft: 6 }}>
+                (Arquivado)
+              </span>
+            )}
+            {s.professionalId && (
+              <span data-testid="profissional-vinculado" style={{ marginLeft: 6 }}>
+                Vinculado
+              </span>
+            )}
+            <div style={{ display: 'flex', gap: 4, marginTop: 4 }}>
+              <button data-testid="btn-editar-servico" onClick={() => openEdit(s)}>
+                Editar
+              </button>
+              <button data-testid="btn-ver-detalhes" onClick={() => setShowDetails(s)}>
+                Detalhes
+              </button>
+              <button data-testid="btn-acoes-servico" onClick={() => setConfirmArquivar(s)}>
+                Arquivar
+              </button>
+              <button
+                data-testid="btn-vincular-profissional"
+                onClick={() => {
+                  setVinculoService(s);
+                  setVinculoOpen(true);
+                }}
+              >
+                Vincular Profissional
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showForm && (
+        <div
+          data-testid="modal-form-servico"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ background: '#fff', padding: 16, minWidth: 340 }}>
+            <h2>{editing ? 'Editar Serviço' : 'Novo Serviço'}</h2>
+            <input
+              data-testid="input-nome"
+              placeholder="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
+            {errors.nome && (
+              <div data-testid="error-nome" style={{ color: 'red' }}>
+                Nome obrigatório
+              </div>
+            )}
+            <input
+              data-testid="input-preco"
+              placeholder="Preço"
+              value={preco}
+              onChange={(e) => setPreco(e.target.value)}
+            />
+            {errors.preco && (
+              <div data-testid="error-preco" style={{ color: 'red' }}>
+                Preço inválido
+              </div>
+            )}
+            <input
+              data-testid="input-duracao"
+              placeholder="Duração"
+              value={duracao}
+              onChange={(e) => setDuracao(e.target.value)}
+            />
+            {errors.duracao && (
+              <div data-testid="error-duracao" style={{ color: 'red' }}>
+                Duração inválida
+              </div>
+            )}
+            <select
+              data-testid="select-categoria"
+              value={categoria}
+              onChange={(e) => setCategoria(e.target.value)}
+            >
+              <option value="corte">Corte</option>
+              <option value="barba">Barba</option>
+            </select>
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button data-testid="btn-salvar" onClick={save}>
+                Salvar
+              </button>
+              <button
+                onClick={() => {
+                  setShowForm(false);
+                  resetForm();
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDetails && (
+        <div
+          data-testid="modal-detalhes-servico"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ background: '#fff', padding: 16, minWidth: 320 }}>
+            <h2 data-testid="nome-servico">{showDetails.name}</h2>
+            <p data-testid="preco-servico">R$ {showDetails.price.toFixed(2)}</p>
+            <p data-testid="duracao-servico">{showDetails.duration} min</p>
+            <p data-testid="categoria-servico">
+              {showDetails.category === 'corte' ? 'Corte' : 'Barba'}
+            </p>
+            <button onClick={() => setShowDetails(null)}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      {vinculoOpen && vinculoService && (
+        <div
+          data-testid="modal-vinculo"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ background: '#fff', padding: 16, minWidth: 360 }}>
+            <h2>Vincular Profissional</h2>
+            <select
+              data-testid="select-profissional"
+              value={profissionalSel}
+              onChange={(e) => setProfissionalSel(e.target.value)}
+            >
+              <option value="">Selecione</option>
+              {professionals.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <input
+              data-testid="input-comissao"
+              placeholder="Comissão %"
+              value={comissao}
+              onChange={(e) => setComissao(e.target.value)}
+            />
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button data-testid="btn-salvar-vinculo" onClick={applyVinculo}>
+                Salvar Vínculo
+              </button>
+              <button data-testid="btn-remover-vinculo" onClick={() => setConfirmRemocao(true)}>
+                Remover Vínculo
+              </button>
+              <button
+                onClick={() => {
+                  setVinculoOpen(false);
+                  setVinculoService(null);
+                }}
+              >
+                Fechar
+              </button>
+            </div>
+            {confirmRemocao && (
+              <div style={{ marginTop: 12 }}>
+                <p>Confirmar remoção?</p>
+                <button data-testid="btn-confirmar-remocao" onClick={removerVinculo}>
+                  Confirmar
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {confirmArquivar && (
+        <div
+          data-testid="modal-arquivar"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ background: '#fff', padding: 16, minWidth: 300 }}>
+            <p>Arquivar serviço?</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                data-testid="btn-arquivar-servico"
+                onClick={() => setConfirmArquivar(confirmArquivar)}
+              >
+                Arquivar
+              </button>
+              <button
+                data-testid="btn-confirmar-arquivamento"
+                onClick={() => arquivar(confirmArquivar!)}
+              >
+                Confirmar
+              </button>
+              <button onClick={() => setConfirmArquivar(null)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

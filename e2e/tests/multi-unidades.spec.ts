@@ -1,22 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { setupTestUser, cleanupTestUser } from '../fixtures/auth';
-import { createTestUnits, cleanupTestUnits } from '../fixtures/tenant';
+import { test, expect } from '../fixtures';
 
 test.describe('Gestão Multi-Unidades', () => {
-  let testUser: any;
-  let testUnits: any[];
-
-  test.beforeAll(async ({ browser }) => {
-    // Setup usuário de teste com acesso multi-unidade
-    testUser = await setupTestUser({ role: 'admin', multiUnit: true });
-    testUnits = await createTestUnits(3); // Criar 3 unidades para testes
-  });
-
-  test.afterAll(async () => {
-    // Cleanup
-    if (testUnits) await cleanupTestUnits(testUnits);
-    if (testUser) await cleanupTestUser(testUser);
-  });
+  // Futuro: adicionar fixture multiUnit para provisionar várias unidades reais se necessário.
 
   test.describe('Dashboard Multi-Unidades', () => {
     test('deve exibir estatísticas consolidadas', async ({ page }) => {

@@ -1,12 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test.describe('Página Not Found (404)', () => {
-  test('deve exibir página 404 para rota inexistente', async ({ page }) => {
-    await page.goto('/rota-inexistente');
-
-    await expect(page.locator('[data-testid="not-found-page"]')).toBeVisible();
-    await expect(page.locator('h1')).toContainText('Página não encontrada');
-    await expect(page.locator('[data-testid="codigo-erro"]')).toContainText('404');
+  test('deve exibir página 404 para rota inexistente', async ({ authenticatedPage }) => {
+    await authenticatedPage.goto('/rota-inexistente');
+    await expect(authenticatedPage.locator('[data-testid="not-found-page"]')).toBeVisible();
+    await expect(authenticatedPage.locator('h1')).toContainText('Página não encontrada');
+    await expect(authenticatedPage.locator('[data-testid="codigo-erro"]')).toContainText('404');
   });
 
   test('deve exibir mensagem de erro amigável', async ({ page }) => {

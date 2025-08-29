@@ -1,16 +1,14 @@
-import { test, expect } from '@playwright/test';
-import { createTestData, cleanupTestData } from '../fixtures';
+// Usar fixtures estendidas (inclui supabase, authenticatedPage, createTestData, cleanupTestData)
+import { test, expect } from '../fixtures';
 
 test.describe('Serviços', () => {
-  let testData: any;
-
-  test.beforeEach(async ({ page }) => {
-    testData = await createTestData();
+  test.beforeEach(async ({ createTestData, page }) => {
+    await createTestData();
     await page.goto('/servicos');
   });
 
-  test.afterEach(async () => {
-    await cleanupTestData(testData);
+  test.afterEach(async ({ cleanupTestData }) => {
+    await cleanupTestData();
   });
 
   test('deve carregar catálogo de serviços', async ({ page }) => {
@@ -60,8 +58,12 @@ test.describe('Serviços', () => {
 
   test('deve vincular serviço a profissional', async ({ page }) => {
     await page.click('[data-testid="btn-vincular-profissional"]');
-
-    await page.selectOption('[data-testid="select-profissional"]', testData.profissional.id);
+    // Selecionar primeiro profissional disponível (dados criados no createTestData)
+    const firstProf = await page.locator('[data-testid="select-profissional"] option').nth(1); // pular placeholder
+    const value = await firstProf.getAttribute('value');
+    if (value) {
+      await page.selectOption('[data-testid="select-profissional"]', value);
+    }
     await page.fill('[data-testid="input-comissao"]', '15');
 
     await page.click('[data-testid="btn-salvar-vinculo"]');
@@ -73,7 +75,11 @@ test.describe('Serviços', () => {
   test('deve remover vínculo com profissional', async ({ page }) => {
     // Primeiro criar o vínculo
     await page.click('[data-testid="btn-vincular-profissional"]');
-    await page.selectOption('[data-testid="select-profissional"]', testData.profissional.id);
+    const firstProf = await page.locator('[data-testid="select-profissional"] option').nth(1);
+    const value = await firstProf.getAttribute('value');
+    if (value) {
+      await page.selectOption('[data-testid="select-profissional"]', value);
+    }
     await page.fill('[data-testid="input-comissao"]', '15');
     await page.click('[data-testid="btn-salvar-vinculo"]');
 

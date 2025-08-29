@@ -1,33 +1,34 @@
-import { test as base, expect } from '@playwright/test';
-import { createClient } from '@supabase/supabase-js';
+import { test as base, expect, type Page } from '@playwright/test';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Fixtures principais para testes E2E
  * Combina autenticação, tenant e dados de teste
  */
+interface TestUserData {
+  email: string;
+  password: string;
+  unidadeId: string;
+}
+
+interface TenantData {
+  unidadeId: string;
+  clienteTeste: Record<string, unknown>;
+  profissionalTeste: Record<string, unknown>;
+  servicoTeste: Record<string, unknown>;
+}
+
 type TestFixtures = {
-  supabase: ReturnType<typeof createClient>;
-  testUser: {
-    email: string;
-    password: string;
-    unidadeId: string;
-  };
-  authenticatedPage: typeof base extends { Page: infer P } ? P : any;
-  tenantData: {
-    unidadeId: string;
-    clienteTeste: any;
-    profissionalTeste: any;
-    servicoTeste: any;
-  };
+  supabase: SupabaseClient;
+  testUser: TestUserData;
+  authenticatedPage: Page;
+  tenantData: TenantData;
   createTestData: () => Promise<void>;
   cleanupTestData: () => Promise<void>;
 };
 
 // Export functions that were being imported in test files
-export const createTestData = async (
-  supabase: ReturnType<typeof createClient>,
-  tenantData: any,
-) => {
+export const createTestData = async (supabase: SupabaseClient, tenantData: TenantData) => {
   try {
     await supabase.from('clientes').insert({
       ...tenantData.clienteTeste,
@@ -56,10 +57,7 @@ export const createTestData = async (
   }
 };
 
-export const cleanupTestData = async (
-  supabase: ReturnType<typeof createClient>,
-  tenantData: any,
-) => {
+export const cleanupTestData = async (supabase: SupabaseClient, tenantData: TenantData) => {
   try {
     await supabase
       .from('clientes')
@@ -96,32 +94,51 @@ export const test = base.extend<TestFixtures>({
 
   testUser: async ({}, use) => {
     await use({
-      email: process.env.TEST_USER_EMAIL || 'test@trato.com',
+      email: process.env.TEST_USER_EMAIL || 'test-e2e@example.com',
       password: process.env.TEST_USER_PASSWORD || 'test123456',
       unidadeId: process.env.TEST_UNIDADE_ID || 'test-unidade-id',
     });
   },
 
   authenticatedPage: async ({ page, testUser, supabase }, use) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: testUser.email,
-      password: testUser.password,
-    });
+    const attempt = () =>
+      supabase.auth.signInWithPassword({ email: testUser.email, password: testUser.password });
 
-    if (error || !data.session) {
+    let { data, error } = await attempt();
+
+    // Confirmar email dinamicamente se necessário
+    if (error?.message?.includes('Email not confirmed')) {
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      if (serviceRoleKey) {
+        try {
+          const admin = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321',
+            serviceRoleKey,
+          );
+          const list = await admin.auth.admin.listUsers();
+          const target = list.data.users.find((u) => u.email === testUser.email);
+          if (target) {
+            await admin.auth.admin.updateUserById(target.id, { email_confirm: true });
+            ({ data, error } = await attempt());
+            console.log('✅ Email confirmado dinamicamente na fixture');
+          }
+        } catch (e) {
+          console.warn('⚠️ Falha ao confirmar email dinamicamente:', e);
+        }
+      }
+    }
+
+    if (error || !data?.session) {
       throw new Error(`Falha na autenticação: ${error?.message}`);
     }
 
     await page.goto(process.env.E2E_BASE_URL ?? 'http://localhost:3000');
     await page.waitForLoadState('networkidle');
 
-    // opcional: validar que o menu do usuário existe
     try {
-      await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({
-        timeout: 5000,
-      });
+      await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 5000 });
     } catch {
-      console.warn('⚠️ Aviso: user-menu não encontrado, siga mesmo assim.');
+      console.warn('⚠️ Aviso: user-menu não encontrado, prosseguindo.');
     }
 
     await use(page);

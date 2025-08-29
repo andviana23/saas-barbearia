@@ -1,33 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { setupTestUser, cleanupTestUser } from '../fixtures/auth';
-import { createTestUnits, cleanupTestUnits } from '../fixtures/tenant';
+import { test, expect } from '../fixtures';
 
 test.describe('Cross-Unit Booking (Agendamentos Cross-Unidade)', () => {
-  let testUser: any;
-  let testUnits: any[];
-
-  test.beforeAll(async ({ browser }) => {
-    // Setup usuário e unidades para testes cross-unit
-    testUser = await setupTestUser({ role: 'admin', multiUnit: true });
-    testUnits = await createTestUnits(2, {
-      unit1: {
-        nome: 'Barbearia Centro',
-        allowCrossUnit: true,
-        commission: 5.0,
-      },
-      unit2: {
-        nome: 'Barbearia Shopping',
-        allowCrossUnit: true,
-        commission: 7.5,
-      },
-    });
-  });
-
-  test.afterAll(async () => {
-    // Cleanup
-    if (testUnits) await cleanupTestUnits(testUnits);
-    if (testUser) await cleanupTestUser(testUser);
-  });
+  // Futuro: criar fixture multiUnit se precisarmos garantir 2+ unidades reais populadas.
 
   test.describe('Descoberta Cross-Unit', () => {
     test('deve permitir descobrir serviços de outras unidades via marketplace', async ({

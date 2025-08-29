@@ -77,7 +77,9 @@
     "docker:run": "docker run -p 3000:3000 saas-barbearia",
     "docker:prod": "docker-compose -f docker-compose.production.yml up -d",
     "ci": "npm run lint && npm run type-check && npm run test:unit && npm run rls:expected:check",
-    "ci:full": "npm run ci && npm run test:e2e"
+    "ci:full": "npm run ci && npm run test:e2e",
+    "check:fast": "npm run lint && npm run type-check",
+    "e2e:smoke": "playwright test e2e/tests/smoke.spec.ts e2e/tests/servicos.spec.ts e2e/tests/agenda.spec.ts --project=chromium"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

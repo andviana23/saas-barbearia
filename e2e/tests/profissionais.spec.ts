@@ -1,16 +1,13 @@
-import { test, expect } from '@playwright/test';
-import { createTestData, cleanupTestData } from '../fixtures';
+import { test, expect } from '../fixtures';
 
 test.describe('Profissionais e Horários', () => {
-  let testData: any;
-
-  test.beforeEach(async ({ page }) => {
-    testData = await createTestData();
+  test.beforeEach(async ({ createTestData, page }) => {
+    await createTestData();
     await page.goto('/profissionais');
   });
 
-  test.afterEach(async () => {
-    await cleanupTestData(testData);
+  test.afterEach(async ({ cleanupTestData }) => {
+    await cleanupTestData();
   });
 
   test('deve carregar lista de profissionais', async ({ page }) => {
@@ -76,8 +73,13 @@ test.describe('Profissionais e Horários', () => {
     await page.goto('/agenda');
     await page.click('[data-testid="btn-novo-agendamento"]');
 
-    await page.selectOption('[data-testid="select-profissional"]', testData.profissional.id);
-    await page.selectOption('[data-testid="select-servico"]', testData.servico.id);
+    // Selecionar primeiro profissional e serviço disponíveis (ignora placeholder)
+    const profOption = await page.locator('[data-testid="select-profissional"] option').nth(1);
+    const servOption = await page.locator('[data-testid="select-servico"] option').nth(1);
+    const profVal = await profOption.getAttribute('value');
+    const servVal = await servOption.getAttribute('value');
+    if (profVal) await page.selectOption('[data-testid="select-profissional"]', profVal);
+    if (servVal) await page.selectOption('[data-testid="select-servico"]', servVal);
     await page.fill('[data-testid="input-data"]', '2024-01-15');
     await page.fill('[data-testid="input-hora"]', '09:00');
 
@@ -86,8 +88,12 @@ test.describe('Profissionais e Horários', () => {
     // Tentar criar outro agendamento no mesmo horário
     await page.click('[data-testid="btn-novo-agendamento"]');
 
-    await page.selectOption('[data-testid="select-profissional"]', testData.profissional.id);
-    await page.selectOption('[data-testid="select-servico"]', testData.servico.id);
+    const profOption2 = await page.locator('[data-testid="select-profissional"] option').nth(1);
+    const servOption2 = await page.locator('[data-testid="select-servico"] option').nth(1);
+    const profVal2 = await profOption2.getAttribute('value');
+    const servVal2 = await servOption2.getAttribute('value');
+    if (profVal2) await page.selectOption('[data-testid="select-profissional"]', profVal2);
+    if (servVal2) await page.selectOption('[data-testid="select-servico"]', servVal2);
     await page.fill('[data-testid="input-data"]', '2024-01-15');
     await page.fill('[data-testid="input-hora"]', '09:00');
 

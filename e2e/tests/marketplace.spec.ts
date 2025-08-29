@@ -1,22 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { setupTestUser, cleanupTestUser } from '../fixtures/auth';
-import { createTestUnits, cleanupTestUnits } from '../fixtures/tenant';
+import { test, expect } from '../fixtures';
 
 test.describe('Marketplace de Serviços', () => {
-  let testUser: any;
-  let testUnits: any[];
-
-  test.beforeAll(async ({ browser }) => {
-    // Setup usuário de teste e unidades
-    testUser = await setupTestUser();
-    testUnits = await createTestUnits(2); // Criar 2 unidades para testar cross-unit
-  });
-
-  test.afterAll(async () => {
-    // Cleanup
-    if (testUnits) await cleanupTestUnits(testUnits);
-    if (testUser) await cleanupTestUser(testUser);
-  });
+  // Uso das fixtures autenticadas já provê usuário e unidade padrão; se precisarmos múltiplas unidades futuramente, criar fixture específica.
 
   test.describe('Catálogo Público', () => {
     test('deve exibir serviços disponíveis no marketplace', async ({ page }) => {

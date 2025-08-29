@@ -1,16 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { createTestData, cleanupTestData } from '../fixtures';
+import { test, expect } from '../fixtures';
 
 test.describe('Troca de Unidade', () => {
-  let testData: any;
-
-  test.beforeEach(async ({ page }) => {
-    testData = await createTestData();
-    await page.goto('/dashboard');
-  });
-
-  test.afterEach(async () => {
-    await cleanupTestData(testData);
+  test.beforeEach(async ({ authenticatedPage, createTestData }) => {
+    await createTestData();
+    await authenticatedPage.goto('/dashboard');
   });
 
   test('deve exibir seletor de unidade atual', async ({ page }) => {
