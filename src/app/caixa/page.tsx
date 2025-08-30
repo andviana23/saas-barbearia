@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
+import CaixaHarness from './page.harness';
 
 // 🔌 Server Actions (commented out - using mock data for now)
 // import { listCashMovements } from '@/actions/cash'
@@ -84,6 +85,9 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  if (process.env.E2E_MODE === '1') {
+    return <CaixaHarness />;
+  }
   noStore();
 
   // 🔎 Filtros

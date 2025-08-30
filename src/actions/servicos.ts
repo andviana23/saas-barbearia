@@ -3,9 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { createServerSupabase } from '@/lib/supabase/server';
 import { withValidation } from '@/lib/server-actions';
+
+// IMPORTS LEGADOS - Mantidos para compatibilidade
 import {
-  CreateServicoSchema,
-  UpdateServicoSchema,
+  CreateServicoSchema as CreateServicoSchemaLegacy,
+  UpdateServicoSchema as UpdateServicoSchemaLegacy,
   CreateCategoriaServicoSchema,
   UpdateCategoriaServicoSchema,
   CreatePrecoCustomizadoSchema,
@@ -14,13 +16,107 @@ import {
   type CategoriaServicoFilterData,
   type CalculoServicoData,
 } from '@/schemas';
-import type { ActionResult } from '@/types';
+
+// NOVOS IMPORTS - Tipos Centralizados
+import {
+  CreateServicoSchema,
+  UpdateServicoSchema,
+  ServicoFiltersSchema,
+  type CreateServicoDTO,
+  type UpdateServicoDTO,
+  type ServicoFilters,
+  type Servico,
+  type ActionResult,
+} from '@/types';
 
 // Extensão local de filtros aceitando unit_id (novo) além de unidade_id
 type ServicoFilterDataExtended = ServicoFilterData & { unit_id?: string };
 
 // ====================================
-// CRUD SERVIÇOS
+// CRUD SERVIÇOS - VERSÃO NOVA COM TIPOS CENTRALIZADOS
+// ====================================
+
+// Função exemplo usando tipos centralizados
+export async function createServicoV2(data: CreateServicoDTO): Promise<ActionResult<Servico>> {
+  return withValidation(CreateServicoSchema, data, async (validatedData) => {
+    const { data: servico, error } = await createServerSupabase()
+      .from('services')
+      .insert([
+        {
+          nome: validatedData.nome,
+          descricao: validatedData.descricao,
+          preco: validatedData.preco,
+          duracao: validatedData.duracao, // usando campo padrão 'duracao'
+          categoria: validatedData.categoria,
+          ativo: validatedData.ativo,
+          unit_id: validatedData.unidade_id,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao criar serviço: ${error.message}`);
+    }
+
+    revalidatePath('/servicos');
+    return servico;
+  });
+}
+
+// Função para filtrar serviços usando novos tipos
+export async function getServicosV2(
+  filters: ServicoFilters = {},
+): Promise<ActionResult<Servico[]>> {
+  try {
+    const validatedFilters = ServicoFiltersSchema.parse(filters);
+    
+    let query = createServerSupabase().from('services').select('*');
+    
+    if (validatedFilters.nome) {
+      query = query.ilike('nome', `%${validatedFilters.nome}%`);
+    }
+    
+    if (validatedFilters.categoria) {
+      query = query.eq('categoria', validatedFilters.categoria);
+    }
+    
+    if (validatedFilters.ativo !== undefined) {
+      query = query.eq('ativo', validatedFilters.ativo);
+    }
+    
+    if (validatedFilters.unidade_id) {
+      query = query.eq('unit_id', validatedFilters.unidade_id);
+    }
+    
+    if (validatedFilters.preco_min !== undefined) {
+      query = query.gte('preco', validatedFilters.preco_min);
+    }
+    
+    if (validatedFilters.preco_max !== undefined) {
+      query = query.lte('preco', validatedFilters.preco_max);
+    }
+
+    const { data: servicos, error } = await query;
+
+    if (error) {
+      throw new Error(`Erro ao buscar serviços: ${error.message}`);
+    }
+
+    return {
+      success: true,
+      data: servicos || [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro desconhecido',
+    };
+  }
+}
+
+// ====================================
+// CRUD SERVIÇOS - VERSÃO ATUAL (LEGADO)
 // ====================================
 
 // Criar serviço

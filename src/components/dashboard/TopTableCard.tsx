@@ -2,7 +2,6 @@
 
 import { useMemo, useEffect } from 'react';
 import {
-  Card,
   CardContent,
   CardHeader,
   Box,
@@ -15,6 +14,7 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import * as Sentry from '@sentry/nextjs';
+import { Card } from '@/components/ui';
 import {
   TopTableCardAllProps,
   TopTableCardProps,

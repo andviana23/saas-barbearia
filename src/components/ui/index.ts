@@ -28,3 +28,8 @@ export { ErrorBoundary } from './ErrorBoundary';
 export { NotificationProvider, useNotifications } from './NotificationSystem';
 export { ClientOnly } from './ClientOnly';
 export { NoSSR } from './NoSSR';
+
+// —— UX Global Components (Fase 5) ——
+export { default as LoadingScreen } from './LoadingScreen';
+export { default as ErrorView } from './ErrorView';
+export { default as ForbiddenView } from './ForbiddenView';

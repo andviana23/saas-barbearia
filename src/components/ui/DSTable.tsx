@@ -115,7 +115,7 @@ export default function DSTable<T = Record<string, unknown>>({
         sx={{
           p: 4,
           textAlign: 'center',
-          borderRadius: '12px',
+          borderRadius: '4px',
           backgroundColor: 'background.paper',
         }}
       >
@@ -134,7 +134,7 @@ export default function DSTable<T = Record<string, unknown>>({
       <Paper
         sx={{
           p: 4,
-          borderRadius: '12px',
+          borderRadius: '4px',
           backgroundColor: 'background.paper',
         }}
       >
@@ -149,7 +149,7 @@ export default function DSTable<T = Record<string, unknown>>({
   return (
     <Paper
       sx={{
-        borderRadius: '12px',
+        borderRadius: '4px',
         backgroundColor: 'background.paper',
         overflow: 'hidden',
       }}

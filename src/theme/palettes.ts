@@ -1,56 +1,38 @@
 import { PaletteOptions } from '@mui/material/styles';
 
 /**
- * Tokens de marca (hex) — conforme solicitado
- */
-const BRAND = {
-  pageBg: '#080F18', // Fundo da página
-  cardBg: '#040E18', // Cards/Containers/Divs
-  inputBg: '#05070A', // Fundo dos inputs
-  placeholder: '#343E51', // Placeholder
-  button: '#C2C9D6', // Botões
-  sidebarHover: '#73777E', // Hover do sidebar
-};
-
-/**
- * Paleta Light (mantive neutra e clean; podemos afinar depois)
+ * Paleta Light - Design System Atualizado
  */
 export const lightPalette: PaletteOptions = {
   mode: 'light',
   primary: {
-    main: '#1F4D75',
-    light: '#3F6D95',
-    dark: '#103552',
+    main: '#F4A300',
+    light: '#F6B733',
+    dark: '#CC8A00',
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#2E5C8A',
-    light: '#4A77A4',
-    dark: '#1C3D5C',
+    main: '#181818',
+    light: '#333333',
+    dark: '#000000',
     contrastText: '#FFFFFF',
   },
   background: {
-    default: '#F7F9FB',
+    default: '#FFFFFF',
     paper: '#FFFFFF',
   },
-  // TODO: Tipagem customizada para "surface" - comentado para build passar
-  // surface: {
-  //   main: '#FFFFFF',
-  //   light: '#F7F9FB',
-  //   dark: '#E6EDF3',
-  // } as any,
   text: {
-    primary: '#1E293B',
-    secondary: '#64748B',
-    disabled: '#94A3B8',
+    primary: '#181818',
+    secondary: '#6B7280',
+    disabled: '#E5E7EB',
   },
-  divider: '#E2E8F0',
+  divider: '#E5E7EB',
   action: {
-    active: '#1F4D75',
-    hover: 'rgba(15, 23, 42, 0.04)',
-    selected: 'rgba(31, 77, 117, 0.12)',
-    disabled: '#CBD5E1',
-    disabledBackground: '#F1F5F9',
+    active: '#F4A300',
+    hover: 'rgba(244, 163, 0, 0.04)',
+    selected: 'rgba(244, 163, 0, 0.12)',
+    disabled: '#E5E7EB',
+    disabledBackground: '#F9FAFB',
   },
   success: {
     main: '#10B981',
@@ -71,121 +53,101 @@ export const lightPalette: PaletteOptions = {
     contrastText: '#FFFFFF',
   },
   info: {
-    main: '#3B82F6',
+    main: '#2563EB',
     light: '#60A5FA',
-    dark: '#2563EB',
+    dark: '#1D4ED8',
     contrastText: '#FFFFFF',
   },
   grey: {
-    50: '#F8FAFC',
-    100: '#F1F5F9',
-    200: '#E2E8F0',
-    300: '#CBD5E1',
-    400: '#94A3B8',
-    500: '#64748B',
-    600: '#475569',
-    700: '#334155',
-    800: '#1E293B',
-    900: '#0F172A',
+    50: '#F9FAFB',
+    100: '#F3F4F6',
+    200: '#E5E7EB',
+    300: '#D1D5DB',
+    400: '#9CA3AF',
+    500: '#6B7280',
+    600: '#4B5563',
+    700: '#374151',
+    800: '#1F2937',
+    900: '#111827',
   },
 };
 
 /**
- * Paleta Dark — aplicada com seus hex
+ * Paleta Dark - Design System Atualizado
  */
 export const darkPalette: PaletteOptions = {
   mode: 'dark',
 
-  // Botões como "primary" para ganhar consistência nos componentes MUI
   primary: {
-    main: BRAND.button, // #C2C9D6 (botões)
-    light: '#D3D8E2',
-    dark: '#9EA6B3',
-    contrastText: BRAND.cardBg, // contraste escuro
+    main: '#F4A300',
+    light: '#F6B733',
+    dark: '#CC8A00',
+    contrastText: '#181818',
   },
 
-  // Secundária discreta (podemos trocar depois)
   secondary: {
-    main: '#6B7A8F',
-    light: '#8391A3',
-    dark: '#515E70',
-    contrastText: BRAND.cardBg,
+    main: '#FFFFFF',
+    light: '#FFFFFF',
+    dark: '#E5E7EB',
+    contrastText: '#181818',
   },
 
-  // Fundo da aplicação
   background: {
-    default: BRAND.pageBg, // #080F18
-    paper: BRAND.cardBg, // #040E18
+    default: '#181818',
+    paper: '#2D2D2D',
   },
 
-  // TODO: Tipagem customizada para "surface" - comentado para build passar
-  // surface: {
-  //   main: BRAND.cardBg, // cards/containers
-  //   light: '#0A1521',
-  //   dark: BRAND.pageBg,
-  // } as any,
-
-  // Tipografia para bom contraste com fundos escuros
   text: {
-    primary: '#E6EBF2', // texto principal claro
-    secondary: '#B6C0CD', // texto secundário
-    disabled: '#7C8796',
+    primary: '#FFFFFF',
+    secondary: '#9CA3AF',
+    disabled: '#6B7280',
   },
 
-  // Divisórias discretas
-  divider: '#14202D',
+  divider: 'rgba(255,255,255,0.08)',
 
-  // Interações (hover/selected) — mantive genéricas, sidebar hover ajustamos via override
   action: {
-    active: BRAND.button,
-    hover: 'rgba(115, 119, 126, 0.16)', // com base no sidebarHover
-    selected: 'rgba(115, 119, 126, 0.24)',
-    disabled: '#5A6572',
-    disabledBackground: '#0E1722',
+    active: '#F4A300',
+    hover: 'rgba(244, 163, 0, 0.08)',
+    selected: 'rgba(244, 163, 0, 0.16)',
+    disabled: '#6B7280',
+    disabledBackground: '#374151',
   },
 
-  // Estados
   success: {
-    main: '#34D399',
-    light: '#6EE7B7',
-    dark: '#10B981',
-    contrastText: BRAND.cardBg,
+    main: '#22C55E',
+    light: '#4ADE80',
+    dark: '#16A34A',
+    contrastText: '#FFFFFF',
   },
   warning: {
-    main: '#FBBF24',
-    light: '#FCD34D',
-    dark: '#F59E0B',
-    contrastText: BRAND.cardBg,
+    main: '#F59E0B',
+    light: '#FBBF24',
+    dark: '#D97706',
+    contrastText: '#FFFFFF',
   },
   error: {
-    main: '#F87171',
-    light: '#FCA5A5',
-    dark: '#EF4444',
-    contrastText: BRAND.cardBg,
+    main: '#EF4444',
+    light: '#F87171',
+    dark: '#DC2626',
+    contrastText: '#FFFFFF',
   },
   info: {
-    main: '#60A5FA',
-    light: '#93C5FD',
-    dark: '#3B82F6',
-    contrastText: BRAND.cardBg,
+    main: '#22C55E',
+    light: '#4ADE80',
+    dark: '#16A34A',
+    contrastText: '#FFFFFF',
   },
 
-  /**
-   * Grey map alinhado aos seus tons:
-   * - 900/800 para bases escuras
-   * - 500 para hover do sidebar
-   * - 400 para placeholder
-   */
   grey: {
-    50: '#F8FAFC',
-    100: '#E7ECF3',
-    200: '#C9D1DC',
-    300: '#A5B0BE',
-    400: BRAND.placeholder, // #343E51 (placeholder)
-    500: BRAND.sidebarHover, // #73777E (hover sidebar)
-    600: '#8F96A1',
-    700: '#A9B0BA',
-    800: BRAND.pageBg, // #080F18
-    900: BRAND.cardBg, // #040E18
+    50: '#F9FAFB',
+    100: '#F3F4F6',
+    200: '#E5E7EB',
+    300: '#D1D5DB',
+    400: '#9CA3AF',
+    500: '#6B7280',
+    600: '#4B5563',
+    700: '#374151',
+    800: '#2D2D2D',
+    900: '#181818',
   },
 };

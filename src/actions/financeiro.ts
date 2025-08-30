@@ -15,6 +15,10 @@ import {
 } from '@/schemas';
 import { revalidatePath } from 'next/cache';
 
+// Importações dos novos tipos centralizados
+import { Transacao, CreateTransacaoDTO } from '@/types/api';
+import { CreateTransacaoSchema as CreateTransacaoSchemaNew } from '@/schemas/api';
+
 // =====================================================
 // SERVER ACTIONS PARA GESTÃO FINANCEIRA (EP9)
 // =====================================================

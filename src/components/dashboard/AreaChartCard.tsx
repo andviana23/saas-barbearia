@@ -1,8 +1,8 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Card, CardContent, CardHeader, Box, Typography, Skeleton } from '@mui/material';
-import { DSLineArea } from '@/components/ui';
+import { CardContent, CardHeader, Box, Typography, Skeleton } from '@mui/material';
+import { Card, DSLineArea } from '@/components/ui';
 
 interface SeriesData {
   x: string | Date;
@@ -47,7 +47,7 @@ export default function AreaChartCard({
     })) || [];
 
   return (
-    <Card sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+    <Card>
       <CardHeader
         title={
           <Typography variant="h6" component="h3" fontWeight={600}>

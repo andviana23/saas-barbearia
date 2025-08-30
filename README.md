@@ -1,18 +1,80 @@
 # Trato - SaaS para Barbearias
 
+![Build Status](https://img.shields.io/github/actions/workflow/status/andviana23/saas-barbearia/ci.yml?branch=main&label=build)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![E2E Tests](https://img.shields.io/badge/e2e-passing-brightgreen)
+![Coverage](https://img.shields.io/codecov/c/github/andviana23/saas-barbearia/main?label=coverage)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
+
 Sistema completo de gestão para barbearias desenvolvido com Next.js 14.2.5 e Supabase.
 
-## Stack Tecnológica
+## 🏆 Status do Projeto
+
+✅ **Pacote Rápido Concluído (100%)**
+
+- ✅ Fase 6: Autorização Granular (RLS + Permissões)
+- ✅ Fase 7: MSW Modularização & Cenários
+- ✅ Fase 8: Documentação CompletaaaS para Barbearias
+
+Sistema completo de gestão para barbearias desenvolvido com Next.js 14.2.5 e Supabase.
+
+## 🏆 Status do Projeto
+
+✅ **Pacote Rápido Concluído (100%)**
+
+- ✅ Fase 6: Autorização Granular (RLS + Permissões)
+- ✅ Fase 7: MSW Modularização & Cenários
+- ✅ Fase 8: Documentação Completa
+
+**Base sólida estabelecida para desenvolvimento ágil e testes robustos.**
+
+## 🚀 Stack Tecnológica
 
 - **Frontend**: Next.js 14.2.5 (App Router), React 18, TypeScript
 - **UI**: Material-UI (MUI) v6.5.0
 - **Backend**: Supabase (PostgreSQL + Auth + RLS)
 - **Estado**: TanStack React Query v5.85.5
 - **Validação**: Zod
+- **Testes**: Jest + Playwright + MSW (Mock Service Worker)
 - **Monitoramento**: Sentry
 - **Deploy**: Vercel
 
-## Configuração Inicial
+## 📋 Funcionalidades Principais
+
+### 🔐 Sistema de Autenticação
+
+- Login/logout seguro via Supabase Auth
+- Gestão de perfis multi-tenant
+- Controle de acesso granular (RLS)
+
+### 🗓️ Gestão de Agendamentos
+
+- Agendamento online via marketplace
+- Controle de disponibilidade
+- Sistema de fila inteligente
+- Notificações automatizadas
+
+### 👥 Gestão de Clientes
+
+- Cadastro completo de clientes
+- Histórico de atendimentos
+- Conformidade LGPD
+
+### 💰 Controle Financeiro
+
+- Gestão de pagamentos
+- Integração com ASAAS (PIX/Cartão)
+- Relatórios financeiros
+- Sistema de assinaturas
+
+### 📊 Relatórios e Analytics
+
+- Dashboard com métricas em tempo real
+- Relatórios de performance
+- Análise de receita e ocupação
+
+## 🔧 Configuração Inicial
 
 ### 1. Variáveis de Ambiente
 
@@ -44,7 +106,43 @@ npm run dev
 
 Acesse [http://localhost:3000](http://localhost:3000) para ver a aplicação.
 
-## Scripts Disponíveis
+## 🧪 Testes
+
+O projeto possui uma suíte completa de testes com MSW (Mock Service Worker) para simulação avançada de cenários:
+
+```bash
+# Testes unitários
+npm run test
+npm run test:unit
+npm run test:coverage
+
+# Testes E2E
+npm run test:e2e
+npm run test:e2e:ui
+
+# Validação de cenários MSW
+npm test scenarios.test.ts
+```
+
+### Sistema de Cenários MSW
+
+Configure cenários específicos para testes robustos:
+
+```javascript
+// Via header
+fetch('/api/agendamentos', {
+  headers: { 'x-mock-scenario': 'error-500' },
+});
+
+// Via query parameter
+fetch('/api/servicos?scenario=empty');
+```
+
+Cenários disponíveis: `success`, `empty`, `error-400`, `error-500`, `conflict`, `unauthorized`, `network-error`, `timeout`, `rate-limit`, `maintenance`.
+
+Veja documentação completa em [`docs/TESTING.md`](docs/TESTING.md).
+
+## 🛠️ Scripts Disponíveis
 
 ```bash
 # Desenvolvimento
@@ -53,12 +151,6 @@ npm run build
 npm run start
 npm run lint
 npm run type-check
-
-# Testes
-npm run test
-npm run test:unit
-npm run test:e2e
-npm run test:coverage
 
 # Banco de Dados
 npm run db:migrate           # Executar migrações pendentes
@@ -72,7 +164,7 @@ npm run db:seed:dev          # Seeds em modo development
 
 ### Guia Completo de Operações de Banco
 
-Veja `docs/OPERACOES_DB.md` para naming, baseline, rollback e troubleshooting.
+Veja [`docs/OPERACOES_DB.md`](docs/OPERACOES_DB.md) para naming, baseline, rollback e troubleshooting.
 
 ## Arquitetura
 

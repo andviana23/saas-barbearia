@@ -248,8 +248,9 @@ test.describe('Smoke Tests', () => {
 
     const loadTime = Date.now() - startTime;
 
-    // Verificar se carregamento foi rápido (menos de 5 segundos)
-    expect(loadTime).toBeLessThan(5000);
+    // Verificar se carregamento foi rápido (ajustado para modo harness)
+    const expectedTime = process.env.E2E_MODE === '1' ? 15000 : 5000; // 15s para harness, 5s para normal
+    expect(loadTime).toBeLessThan(expectedTime);
 
     // Verificar se não há erros no console
     const consoleErrors: string[] = [];

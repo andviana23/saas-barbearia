@@ -80,7 +80,7 @@ typography: {
 
 ### **Botões (DSButton)**
 
-- Bordas arredondadas (12px) — padronização global de raio
+- Bordas arredondadas (4px) — padronização global de raio mais sutil
 - Variantes: `contained`, `outlined`, `text`
 - Hover com realce de borda / leve brilho
 
@@ -94,7 +94,7 @@ typography: {
 ### **Cartões (DSCard)**
 
 - Fundo: `surfaces.surface1` (ou `background.paper` no primeiro nível)
-- Raio: **12px** (padrão global para cards, modais, botões)
+- Raio: **4px** (padrão global para cards, modais, botões)
 - Borda: `1px solid divider` (reduz dependência de sombras)
 - Hover: borda muda para `primary.main` + leve elevação (shadow suave)
 - Valor: foco visual neutro; variação (trend) em `success.main` ou `error.main`
@@ -131,7 +131,7 @@ Padrão base para todos os modais (inclui o novo "Resumo de Comissão"):
 | Aspecto        | Regra                                                                         |
 | -------------- | ----------------------------------------------------------------------------- |
 | Largura        | `maxWidth="sm"` (ou `xs` para casos simples); nunca full screen em desktop    |
-| Canto          | Borda arredondada 12px (`borderRadius: 1.5`)                                  |
+| Canto          | Borda arredondada 4px (`borderRadius: 0.5`)                                   |
 | Borda          | 1px sólido `divider` (shadow mínima)                                          |
 | Fundo          | `background.paper` sem gradiente                                              |
 | Título         | 16px, weight 600, espaçamento inferior curto                                  |
@@ -285,7 +285,7 @@ Changelog interno desta evolução de UI.
 
 ### Raio / Bordas
 
-- Cards, modais, botões e inputs: 12px (unificação v2.1).
+- Cards, modais, botões e inputs: 4px (unificação v2.1 - design mais sutil).
 
 ### Cartões
 

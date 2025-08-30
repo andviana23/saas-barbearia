@@ -119,7 +119,7 @@ O bloco de agendamento deve ser uma implementação customizada do conceito DSCa
 
 Fundo: backgroundColor: 'background.paper' (cor #1a1c23).
 
-Bordas: borderRadius: '12px'.
+Bordas: borderRadius: '4px'.
 
 Cor Primária: Use palette.primary.main (cor #4f8cff) para destaques, como uma borda lateral.
 
@@ -149,7 +149,7 @@ sx={{
       backgroundColor: 'background.paper', // Cor #1a1c23
       borderLeft: '4px solid',
       borderColor: 'primary.main', // Cor #4f8cff
-      borderRadius: '8px', // Bordas de botão, adaptado para card. DS original sugere 12px para DSCard.
+      borderRadius: '4px', // Bordas de botão padronizadas. DS v2.1 usa 4px globalmente.
       overflow: 'hidden',
     }}
 

@@ -192,7 +192,7 @@ Serviços (N) ←→ (N) Agendamentos (via appointments_servicos)
 
 **Espaçamentos:**
 
-- Radius: xs(6px), sm(8px), md(12px), lg(16px)
+- Radius: xs(2px), sm(4px), md(6px), lg(8px)
 - Shadows: sm, md, lg com opacidades
 - Grid: 4 colunas desktop, responsivo
 

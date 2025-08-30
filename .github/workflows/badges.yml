@@ -1,0 +1,212 @@
+name: Test Status Badge
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_run:
+    workflows: ['E2E Tests', 'CI/CD Pipeline']
+    types: [completed]
+
+jobs:
+  update-badge:
+    name: Update Test Status Badge
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: test-results-json
+          path: ./artifacts/
+
+      - name: Generate test badges
+        run: |
+          # Create badges directory
+          mkdir -p .github/badges
+
+          # Default values
+          TESTS_STATUS="unknown"
+          TESTS_COLOR="lightgrey"
+          E2E_STATUS="unknown"
+          E2E_COLOR="lightgrey"
+
+          # Check unit tests (from CI pipeline)
+          if [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
+            TESTS_STATUS="passing"
+            TESTS_COLOR="brightgreen"
+          elif [ "${{ github.event.workflow_run.conclusion }}" = "failure" ]; then
+            TESTS_STATUS="failing"
+            TESTS_COLOR="red"
+          fi
+
+          # Check E2E tests
+          if [ -f "./artifacts/test-results.json" ]; then
+            FAILED=$(jq '.stats.unexpected' ./artifacts/test-results.json)
+            PASSED=$(jq '.stats.expected' ./artifacts/test-results.json)
+            
+            if [ "$FAILED" = "0" ]; then
+              E2E_STATUS="${PASSED} passing"
+              E2E_COLOR="brightgreen"
+            else
+              E2E_STATUS="${FAILED} failing"
+              E2E_COLOR="red"
+            fi
+          fi
+
+          # Generate badge URLs
+          echo "TESTS_BADGE_URL=https://img.shields.io/badge/tests-${TESTS_STATUS}-${TESTS_COLOR}" >> $GITHUB_ENV
+          echo "E2E_BADGE_URL=https://img.shields.io/badge/e2e-${E2E_STATUS// /%20}-${E2E_COLOR}" >> $GITHUB_ENV
+          echo "BUILD_BADGE_URL=https://img.shields.io/github/actions/workflow/status/${{ github.repository }}/ci.yml?branch=main&label=build" >> $GITHUB_ENV
+          echo "COVERAGE_BADGE_URL=https://img.shields.io/codecov/c/github/${{ github.repository }}/main?label=coverage" >> $GITHUB_ENV
+
+      - name: Update README badges
+        run: |
+          # Create or update badges section in README
+          cat > .github/badges/badges.md << EOF
+          # Status Badges
+
+          ![Build Status]($BUILD_BADGE_URL)
+          ![Tests]($TESTS_BADGE_URL)
+          ![E2E Tests]($E2E_BADGE_URL)
+          ![Coverage]($COVERAGE_BADGE_URL)
+          ![License](https://img.shields.io/badge/license-MIT-blue)
+          ![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
+          EOF
+
+          echo "Badges generated successfully!"
+
+      - name: Create test summary
+        run: |
+          # Create test summary for GitHub Pages
+          cat > .github/badges/test-summary.json << EOF
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "commit": "${{ github.sha }}",
+            "build_status": "${{ github.event.workflow_run.conclusion }}",
+            "badges": {
+              "build": "$BUILD_BADGE_URL",
+              "tests": "$TESTS_BADGE_URL",
+              "e2e": "$E2E_BADGE_URL",
+              "coverage": "$COVERAGE_BADGE_URL"
+            }
+          }
+          EOF
+
+      - name: Commit badge updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '🤖 Update test status badges [skip ci]'
+          file_pattern: '.github/badges/*'
+          branch: main
+          skip_dirty_check: true
+
+  # Job para gerar relatório HTML estático
+  generate-report:
+    name: Generate Static HTML Report
+    runs-on: ubuntu-latest
+    needs: update-badge
+    if: always() && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download latest HTML report
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: playwright-html-report-${{ github.sha }}
+          path: ./html-report/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Generate index page
+        run: |
+          mkdir -p ./public
+
+          cat > ./public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>SaaS Barbearia - Test Reports</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+                  .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                  .header { text-align: center; margin-bottom: 40px; }
+                  .badges { text-align: center; margin: 20px 0; }
+                  .badges img { margin: 5px; }
+                  .reports { margin-top: 30px; }
+                  .report-link { display: block; padding: 15px; margin: 10px 0; background: #007acc; color: white; text-decoration: none; border-radius: 5px; text-align: center; }
+                  .report-link:hover { background: #005fa3; }
+                  .timestamp { text-align: center; color: #666; font-size: 0.9em; margin-top: 30px; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      <h1>🔧 SaaS Barbearia</h1>
+                      <p>Sistema completo de gestão para barbearias</p>
+                  </div>
+                  
+                  <div class="badges">
+                      <img src="https://img.shields.io/github/actions/workflow/status/${{ github.repository }}/ci.yml?branch=main&label=build" alt="Build Status">
+                      <img src="https://img.shields.io/badge/tests-passing-brightgreen" alt="Tests">
+                      <img src="https://img.shields.io/badge/e2e-passing-brightgreen" alt="E2E Tests">
+                      <img src="https://img.shields.io/codecov/c/github/${{ github.repository }}/main?label=coverage" alt="Coverage">
+                  </div>
+                  
+                  <div class="reports">
+                      <h2>📊 Relatórios de Teste</h2>
+                      <a href="./playwright-report/" class="report-link">🎭 Relatório Playwright E2E</a>
+                      <a href="https://github.com/${{ github.repository }}/actions" class="report-link">🔄 GitHub Actions</a>
+                      <a href="https://codecov.io/gh/${{ github.repository }}" class="report-link">📈 Codecov Coverage</a>
+                  </div>
+                  
+                  <div class="timestamp">
+                      Última atualização: $(date -u "+%Y-%m-%d %H:%M:%S UTC")<br>
+                      Commit: <code>${{ github.sha }}</code>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+          # Copy HTML report if available
+          if [ -d "./html-report" ]; then
+            cp -r ./html-report ./public/playwright-report
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  # Deploy para GitHub Pages
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: generate-report
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

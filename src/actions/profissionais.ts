@@ -13,8 +13,93 @@ import {
 } from '@/schemas';
 import type { ActionResult } from '@/types';
 
+// Importações dos novos tipos centralizados
+import { Profissional, CreateProfissionalDTO, ProfissionalFilters } from '@/types/api';
+import {
+  CreateProfissionalSchema as CreateProfissionalSchemaNew,
+  ProfissionalFiltersSchema,
+} from '@/schemas/api';
+
 // ====================================
-// CRUD PROFISSIONAIS
+// CRUD PROFISSIONAIS - VERSÃO NOVA COM TIPOS CENTRALIZADOS
+// ====================================
+
+// Função exemplo usando tipos centralizados
+export async function createProfissionalV2(
+  data: CreateProfissionalDTO,
+): Promise<ActionResult<Profissional>> {
+  return withValidation(CreateProfissionalSchemaNew, data, async (validatedData) => {
+    const { data: profissional, error } = await createServerSupabase()
+      .from('professionals')
+      .insert([
+        {
+          nome: validatedData.nome,
+          email: validatedData.email,
+          telefone: validatedData.telefone,
+          unit_id: validatedData.unidade_id,
+          ativo: validatedData.ativo,
+          especialidades: validatedData.especialidades,
+          comissao_padrao: validatedData.comissao_padrao,
+          user_id: validatedData.user_id,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao criar profissional: ${error.message}`);
+    }
+
+    revalidatePath('/profissionais');
+    return profissional;
+  });
+}
+
+// Função para filtrar profissionais usando novos tipos
+export async function getProfissionaisV2(
+  filters: ProfissionalFilters = {},
+): Promise<ActionResult<Profissional[]>> {
+  try {
+    const validatedFilters = ProfissionalFiltersSchema.parse(filters);
+
+    let query = createServerSupabase().from('professionals').select('*');
+
+    if (validatedFilters.nome) {
+      query = query.ilike('nome', `%${validatedFilters.nome}%`);
+    }
+
+    if (validatedFilters.especialidade) {
+      query = query.contains('especialidades', [validatedFilters.especialidade]);
+    }
+
+    if (validatedFilters.ativo !== undefined) {
+      query = query.eq('ativo', validatedFilters.ativo);
+    }
+
+    if (validatedFilters.unidade_id) {
+      query = query.eq('unit_id', validatedFilters.unidade_id);
+    }
+
+    const { data: profissionais, error } = await query;
+
+    if (error) {
+      throw new Error(`Erro ao buscar profissionais: ${error.message}`);
+    }
+
+    return {
+      success: true,
+      data: profissionais || [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro desconhecido',
+    };
+  }
+}
+
+// ====================================
+// CRUD PROFISSIONAIS - VERSÃO ATUAL (LEGADO)
 // ====================================
 
 // Criar profissional

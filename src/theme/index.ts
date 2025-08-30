@@ -15,11 +15,11 @@ export const designTokens = {
     xxl: 48,
   },
   borderRadius: {
-    sm: 4,
-    md: 8,
-    lg: 12,
-    xl: 16,
-    xxl: 24,
+    sm: 2,
+    md: 4, // Novo padrão DS v2.0.0
+    lg: 8,
+    xl: 12,
+    xxl: 16,
   },
   shadows: {
     sm: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
@@ -36,9 +36,9 @@ export const lightTheme = createTheme({
   components: components(createTheme()),
   shadows,
   shape: {
-    borderRadius: designTokens.borderRadius.md,
+    borderRadius: designTokens.borderRadius.md, // 4px como novo padrão DS v2.0.0
   },
-  spacing: (factor: number) => `${designTokens.spacing.md * factor}px`,
+  spacing: (factor: number) => `${designTokens.spacing.xs * factor}px`,
 });
 
 // Tema Dark
@@ -48,13 +48,13 @@ export const darkTheme = createTheme({
   components: components(createTheme()),
   shadows,
   shape: {
-    borderRadius: designTokens.borderRadius.md,
+    borderRadius: designTokens.borderRadius.md, // 4px como novo padrão DS v2.0.0
   },
-  spacing: (factor: number) => `${designTokens.spacing.md * factor}px`,
+  spacing: (factor: number) => `${designTokens.spacing.xs * factor}px`,
 });
 
-// Tema padrão (será sobrescrito pelo ThemeProvider)
-export const theme = lightTheme;
+// Tema padrão (dark-first como especificado)
+export const theme = darkTheme;
 
 // Tipos para o tema
 export type AppTheme = typeof lightTheme;

@@ -3,12 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Box,
   Card,
   CardContent,
-  TextField,
-  Button,
   Typography,
   Alert,
   CircularProgress,
@@ -16,6 +15,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { DSButton, DSTextField } from '@/components/ui';
 import { useAuth } from '@/hooks/use-auth';
 
 export default function LoginForm() {
@@ -54,9 +54,10 @@ export default function LoginForm() {
       }
 
       await signInWithPassword(emailValue, passwordValue);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[login] erro:', err);
-      setError(err?.message || 'Email ou senha inválidos');
+      const errorMessage = err instanceof Error ? err.message : 'Email ou senha inválidos';
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false); // nunca deixe o botão travado
     }
@@ -75,18 +76,38 @@ export default function LoginForm() {
     >
       <Card
         elevation={0}
-        sx={(t) => ({
+        sx={(theme) => ({
           maxWidth: 420,
           width: '100%',
-          borderRadius: 1.5,
-          bgcolor: 'rgba(4, 14, 24, 0.60)',
-          border: `1px solid ${t.palette.divider}`,
-          backdropFilter: 'blur(10px)',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.35)',
+          borderRadius: `${4}px`, // radius.md do design system
+          bgcolor:
+            theme.palette.mode === 'dark'
+              ? 'rgba(45, 45, 45, 0.95)' // background.paper dark com transparência
+              : 'rgba(255, 255, 255, 0.95)', // background.paper light com transparência
+          border: `1px solid ${theme.palette.divider}`,
+          backdropFilter: 'blur(16px)',
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0 12px 40px rgba(0,0,0,0.6)'
+              : '0 8px 24px rgba(0,0,0,0.12)',
         })}
       >
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
+            {/* Logo da Empresa */}
+            <Box sx={{ mb: 3 }}>
+              <Image
+                src="/images/logo.png"
+                alt="Trato - Logo"
+                width={120}
+                height={120}
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              />
+            </Box>
+
             <Typography variant="h4" component="h1" gutterBottom>
               Trato
             </Typography>
@@ -96,7 +117,7 @@ export default function LoginForm() {
           </Box>
 
           <form onSubmit={onSubmit} method="post">
-            <TextField
+            <DSTextField
               fullWidth
               label="Email"
               type="email"
@@ -110,7 +131,7 @@ export default function LoginForm() {
               name="email"
             />
 
-            <TextField
+            <DSTextField
               fullWidth
               label="Senha"
               type={showPassword ? 'text' : 'password'}
@@ -142,7 +163,7 @@ export default function LoginForm() {
               </Alert>
             )}
 
-            <Button
+            <DSButton
               type="submit"
               fullWidth
               variant="contained"
@@ -158,17 +179,18 @@ export default function LoginForm() {
               ) : (
                 'Entrar'
               )}
-            </Button>
+            </DSButton>
 
             <Box sx={{ textAlign: 'center' }}>
-              <Button
+              <DSButton
                 onClick={() => router.push('/forgot-password')}
                 color="primary"
+                variant="text"
                 sx={{ textTransform: 'none' }}
                 disabled={isSubmitting}
               >
                 Esqueceu sua senha?
-              </Button>
+              </DSButton>
             </Box>
 
             <Box sx={{ textAlign: 'center', mt: 2 }}>

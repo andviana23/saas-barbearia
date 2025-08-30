@@ -12,6 +12,16 @@ import {
   type HistoricoClienteFilterData,
   type ImportClientCSVData,
 } from '@/schemas';
+
+// NOVOS IMPORTS - Tipos Centralizados para gradual migração
+import {
+  CreateClienteSchema,
+  UpdateClienteSchema,
+  type CreateClienteDTO,
+  type UpdateClienteDTO,
+  type Cliente,
+} from '@/types';
+
 import type { ActionResult } from '@/types';
 
 // Tipos para estatísticas
@@ -29,7 +39,40 @@ type VendaStats = {
 };
 
 // ====================================
-// CRUD CLIENTES
+// CRUD CLIENTES - VERSÃO NOVA COM TIPOS CENTRALIZADOS
+// ====================================
+
+// TODO: Migrar createCliente para usar CreateClienteSchema
+// Exemplo de função com tipos centralizados:
+export async function createClienteV2(data: CreateClienteDTO): Promise<ActionResult<Cliente>> {
+  return withValidation(CreateClienteSchema, data, async (validatedData) => {
+    const { data: cliente, error } = await createServerSupabase()
+      .from('customers') // TODO: Migrar tabela para 'clientes'
+      .insert([
+        {
+          name: validatedData.nome,
+          email: validatedData.email,
+          phone: validatedData.telefone,
+          birth_date: validatedData.data_nascimento,
+          notes: validatedData.observacoes,
+          unit_id: validatedData.unidade_id,
+          active: validatedData.ativo,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao criar cliente: ${error.message}`);
+    }
+
+    revalidatePath('/clientes');
+    return cliente;
+  });
+}
+
+// ====================================
+// CRUD CLIENTES - VERSÃO ATUAL (LEGADO)
 // ====================================
 
 // Criar cliente

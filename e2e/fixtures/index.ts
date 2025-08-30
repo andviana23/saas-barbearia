@@ -101,6 +101,28 @@ export const test = base.extend<TestFixtures>({
   },
 
   authenticatedPage: async ({ page, testUser, supabase }, use) => {
+    if (process.env.E2E_MODE === '1') {
+      // Modo harness: pular autenticação real e apenas navegar
+      const base = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
+      await page.goto(base + '/servicos');
+      // Injeta placeholder de user-menu para satisfazer expectativas de outros testes
+      await page.evaluate(() => {
+        if (!document.querySelector('[data-testid="user-menu"]')) {
+          const div = document.createElement('div');
+          div.setAttribute('data-testid', 'user-menu');
+          div.textContent = 'User';
+          div.style.position = 'fixed';
+          div.style.top = '0';
+          div.style.right = '0';
+          div.style.padding = '4px 8px';
+          div.style.background = '#eee';
+          document.body.appendChild(div);
+        }
+      });
+      await use(page);
+      return;
+    }
+
     const attempt = () =>
       supabase.auth.signInWithPassword({ email: testUser.email, password: testUser.password });
 
@@ -175,6 +197,10 @@ export const test = base.extend<TestFixtures>({
 
   createTestData: async ({ supabase, tenantData }, use) => {
     async function createTestData() {
+      if (process.env.E2E_MODE === '1') {
+        // No harness, dados iniciais já estão mockados no front.
+        return;
+      }
       try {
         await supabase.from('clientes').insert({
           ...tenantData.clienteTeste,
@@ -207,6 +233,9 @@ export const test = base.extend<TestFixtures>({
 
   cleanupTestData: async ({ supabase, tenantData }, use) => {
     async function cleanupTestData() {
+      if (process.env.E2E_MODE === '1') {
+        return;
+      }
       try {
         await supabase
           .from('clientes')

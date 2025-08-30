@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorView creates snapshot for page variant 1`] = `
+<div
+  class="MuiBox-root css-57alq7"
+>
+  <svg
+    aria-hidden="true"
+    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-wja5b4-MuiSvgIcon-root"
+    data-testid="ErrorOutlineIcon"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+    />
+  </svg>
+  <div
+    class="MuiStack-root css-6rg9iv-MuiStack-root"
+  >
+    <h1
+      class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-4p0ogv-MuiTypography-root"
+    >
+      Ops! Algo deu errado
+    </h1>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-gb4bb9-MuiTypography-root"
+    >
+      Ocorreu um erro inesperado. Tente novamente ou entre em contato com o suporte.
+    </p>
+  </div>
+</div>
+`;

@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom';
-// (hooks de ciclo de vida não necessários sem MSW)
+
+// Polyfill para MSW funcionar no Node.js
+// TransformStream polyfill (necessário para MSW)
+if (typeof TransformStream === 'undefined') {
+  // @ts-ignore
+  global.TransformStream = class TransformStream {
+    constructor() {}
+  };
+}
 
 // Polyfill TextEncoder/TextDecoder para libs (pg) em ambiente Node <18 ou jsdom
 if (typeof TextEncoder === 'undefined') {

@@ -199,7 +199,7 @@ export function DSBars({
     <Box
       sx={{
         bgcolor: 'background.paper',
-        borderRadius: 3, // 12px
+        borderRadius: 1, // 4px
         p: 2,
         border: '1px solid',
         borderColor: 'divider',

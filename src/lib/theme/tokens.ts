@@ -1,4 +1,4 @@
-// Radius padronizado (DS v2.1): tudo principal em 12px; mantemos xs para chips/sutilezas
+// Radius padronizado (DS v2.1): padrão universal 4px; xs para chips/sutilezas
 export const radius = {
   xs: 1,
   sm: 2, // pode ser usado em inputs específicos; próximo mas distinto
@@ -13,70 +13,70 @@ export const shadows = {
   lg: '0 8px 24px rgba(0,0,0,0.22)',
 } as const;
 
-// Paleta Dark atualizada (DS v2.1)
+// Paleta Dark atualizada (Design System)
 export const paletteDark = {
   primary: {
-    main: '#4F8CFF', // cor de destaque para ações primárias
-    light: '#76A9FF',
-    dark: '#2E6ED9',
+    main: '#F4A300',
+    light: '#F6B733',
+    dark: '#CC8A00',
   },
   secondary: {
-    main: '#6B7A8F',
-    light: '#8391A3',
-    dark: '#515E70',
+    main: '#FFFFFF',
+    light: '#FFFFFF',
+    dark: '#E5E7EB',
   },
-  success: { main: '#34D399' },
+  success: { main: '#22C55E' },
   warning: { main: '#FBBF24' },
   error: { main: '#F87171' },
-  info: { main: '#60A5FA' },
+  info: { main: '#22C55E' },
   divider: 'rgba(255,255,255,0.08)',
   background: {
-    default: '#0B0E13', // Fundo principal v2.1
-    paper: '#12151D', // Base containers
+    default: '#181818',
+    paper: '#2D2D2D',
   },
-  // Surfaces adicionais para hierarquia (extensão não tipada do MUI)
   // @ts-ignore
   surfaces: {
-    1: '#161A23', // surface-1 (cards primários)
-    2: '#1C202B', // surface-2 (modais / cabeçalhos de tabela / tooltips)
+    1: '#2D2D2D',
+    2: '#404040',
   },
   text: {
-    primary: '#E6EBF2',
-    secondary: '#A0A6B5', // atualizado
-    disabled: '#6E7785',
+    primary: '#FFFFFF',
+    secondary: '#9CA3AF',
+    disabled: '#6B7280',
   },
   action: {
-    hover: 'rgba(255,255,255,0.06)',
-    selected: 'rgba(79,140,255,0.16)',
+    hover: 'rgba(244, 163, 0, 0.08)',
+    selected: 'rgba(244, 163, 0, 0.16)',
     disabledOpacity: 0.38,
   },
-  neutralBorder: 'rgba(255,255,255,0.1)', // border-white/10
+  neutralBorder: 'rgba(255,255,255,0.1)',
   input: {
-    background: '#12151D', // Inputs seguem paper para integração visual
-    placeholder: '#3A4353',
+    background: '#2D2D2D',
+    placeholder: '#6B7280',
   },
 } as const;
 
 export const paletteLight = {
-  primary: { main: '#2563EB' },
+  primary: { main: '#F4A300' },
+  secondary: { main: '#181818' },
   success: { main: '#16A34A' },
   warning: { main: '#D97706' },
   error: { main: '#DC2626' },
-  info: { main: '#0891B2' },
+  info: { main: '#2563EB' },
   divider: '#E5E7EB',
   background: {
-    default: '#F8FAFC',
+    default: '#FFFFFF',
     paper: '#FFFFFF',
   },
   text: {
-    primary: '#0F172A',
-    secondary: '#475569',
-    disabled: 'rgba(15,23,42,0.4)',
+    primary: '#181818',
+    secondary: '#6B7280',
+    disabled: 'rgba(24,24,24,0.4)',
   },
   action: {
-    hover: 'rgba(2,6,23,0.04)',
-    selected: 'rgba(37,99,235,0.10)',
+    hover: 'rgba(244, 163, 0, 0.04)',
+    selected: 'rgba(244, 163, 0, 0.10)',
     disabledOpacity: 0.38,
   },
-  neutralBorder: '#E2E8F0',
+  neutralBorder: '#E5E7EB',
 } as const;

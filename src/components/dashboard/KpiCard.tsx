@@ -1,8 +1,9 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Card, CardContent, Box, Typography, Skeleton, useTheme } from '@mui/material';
+import { CardContent, Box, Typography, Skeleton, useTheme } from '@mui/material';
 import { TrendingUp, TrendingDown } from '@mui/icons-material';
+import { Card } from '@/components/ui';
 
 interface KpiCardProps {
   title: string;
@@ -88,9 +89,9 @@ export default function KpiCard({
                 justifyContent: 'center',
                 width: 40,
                 height: 40,
-                borderRadius: 2,
-                backgroundColor: hasNoData ? 'grey.300' : 'primary.light',
-                color: hasNoData ? 'grey.500' : 'primary.main',
+                borderRadius: 1, // radius.xs para ícones
+                backgroundColor: hasNoData ? 'grey.300' : 'rgba(244, 163, 0, 0.1)', // primary com transparência
+                color: hasNoData ? 'grey.500' : '#F4A300', // cor primária do DS
                 mr: 2,
               }}
             >

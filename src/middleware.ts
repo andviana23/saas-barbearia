@@ -6,6 +6,11 @@ const PUBLIC_FILE = /\.(.*)$/;
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // Bypass completo em ambiente de teste E2E (evita latência/autenticação supabase)
+  if (process.env.E2E_MODE === '1') {
+    return NextResponse.next();
+  }
+
   // Bypass rápido para assets, APIs e arquivos estáticos
   if (
     pathname.startsWith('/_next') ||
@@ -57,9 +62,7 @@ export async function middleware(req: NextRequest) {
   );
 
   // Refrescar sessão se necessário
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  await supabase.auth.getUser(); // mantém refresh de sessão sem usar retorno
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.redirect() or NextResponse.rewrite(),

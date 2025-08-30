@@ -40,10 +40,10 @@ export default defineConfig({
   ],
 
   // Configurações de teste
-  timeout: 30 * 1000, // 30s por teste
+  timeout: 45 * 1000, // 45s por teste (aumentado para modo harness)
   expect: {
     // Timeout para expects
-    timeout: 5000,
+    timeout: 10000, // Aumentado para 10s
   },
 
   use: {

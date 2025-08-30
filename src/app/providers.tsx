@@ -12,6 +12,8 @@ import 'dayjs/locale/pt-br';
 import { ColorModeProvider, useColorMode } from '@/lib/theme/color-mode';
 import { makeTheme } from '@/lib/theme';
 import { ErrorBoundary } from '@/components/ui';
+import { NotificationProvider } from '@/components/ui/NotificationSystem';
+import { AccessibilityProvider } from '@/lib/a11y';
 
 dayjs.locale('pt-br');
 
@@ -42,7 +44,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ColorModeProvider>
         <ThemeWrapper>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+              <AccessibilityProvider>
+                <NotificationProvider>{children}</NotificationProvider>
+              </AccessibilityProvider>
+            </QueryClientProvider>
           </LocalizationProvider>
         </ThemeWrapper>
       </ColorModeProvider>
