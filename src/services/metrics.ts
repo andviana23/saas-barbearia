@@ -26,7 +26,7 @@ interface CashboxTxRecord {
 }
 interface AppointmentServiceRecord {
   service_id?: string | null;
-  price_cents?: number | null;
+  price?: number | null;
   services?: { id?: string; name?: string } | null;
   appointments?: { id?: string; status?: string; unit_id?: string } | null;
 }
@@ -397,7 +397,7 @@ export async function getTopServices(
   try {
     let query: any = supabase.from('appointment_services').select(`
         service_id,
-        price_cents,
+        price,
         appointments!inner (
           id,
           status,
@@ -432,12 +432,12 @@ export async function getTopServices(
 
     validRecords.forEach((item) => {
       const serviceId = item.service_id || '';
-      const priceCents = item.price_cents || 0;
+      const price = item.price || 0;
       const serviceName = item.services?.name || `Serviço ${serviceId}`;
 
       if (serviceId) {
         const current = serviceMap.get(serviceId) || { name: serviceName, revenue: 0, count: 0 };
-        current.revenue += priceCents / 100;
+        current.revenue += price;
         current.count += 1;
         serviceMap.set(serviceId, current);
       }
