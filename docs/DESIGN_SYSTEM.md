@@ -1,320 +1,647 @@
-# 📘 Design System — Trato v2.0.0
+# Design System - SaaS Barbearia
 
-**Base:** Next.js 14 + TypeScript + MUI v6
-**Status:** Em evolução (DS v2 ativo)
-**Modo padrão:** Dark Mode First
+## Visão Geral
 
----
+Este documento descreve o Design System completo do SaaS Barbearia, incluindo componentes, padrões de uso, guidelines e exemplos práticos.
 
-## 1. Introdução
+## 📦 Componentes Disponíveis
 
-O **Design System Trato** é um guia de identidade visual e de componentes de interface criado para assegurar **consistência, acessibilidade e eficiência** no desenvolvimento de produtos digitais.
+### Formulários
 
-Ele organiza cores, tipografia, componentes, layouts e diretrizes de usabilidade em um **framework unificado**, inspirado nos princípios de **Atomic Design**.
-
-### Objetivos
-
-- Garantir **consistência visual** em todas as interfaces.
-- Promover **eficiência e reutilização** de componentes.
-- Facilitar a **evolução e manutenção** do produto.
-- Assegurar **acessibilidade e usabilidade** como padrão.
-
----
-
-## 2. Filosofia de Design
-
-- **Dark Mode First** → O design é otimizado para ambientes escuros, refletindo sofisticação e modernidade.
-- **Luxury & Tech** → Visual premium, minimalista, com ênfase em credibilidade e densidade de informação.
-- **Mobile-First** → Layouts responsivos, priorizando telas pequenas sem perder clareza no desktop.
-- **Densidade otimizada** → Mais informação visível, sem sobrecarregar a interface.
-
----
-
-## 3. Paleta de Cores
-
-```ts
-palette: {
-  mode: 'dark',
-  primary: { main: '#4f8cff', light: '#7aaaff', dark: '#2c5fd8' },
-  secondary: { main: '#6366f1', light: '#818cf8', dark: '#4f46e5' },
-  background: { default: '#0B0E13', paper: '#12151D' },
-  surfaces: { surface1: '#161A23', surface2: '#1C202B' },
-  text: { primary: '#f9fafb', secondary: '#A0A6B5' },
-  divider: 'rgba(255,255,255,0.08)',
-  success: { main: '#22c55e' },
-  error: { main: '#ef4444' },
-  warning: { main: '#f59e0b' }
-}
-```
-
-- **Primary (azul)** → ações principais, links e destaques.
-- **Secondary (índigo)** → elementos complementares, gráficos e interações secundárias.
-- **Background / Surfaces** → camadas graduais (`default` → `paper` → `surface1` → `surface2`) para hierarquia sem depender de sombras fortes.
-- **Divider** (`rgba(255,255,255,0.08)`) → separações sutis.
-- **Feedback (success, error, warning)** → cores planas e modernas para estados do sistema.
-
----
-
-## 4. Tipografia
-
-```ts
-typography: {
-  fontFamily: '"Inter", "Roboto", "Helvetica", sans-serif',
-  h1: { fontSize: '2rem', fontWeight: 600 },
-  h2: { fontSize: '1.75rem', fontWeight: 600 },
-  h3: { fontSize: '1.5rem', fontWeight: 600 },
-  h4: { fontSize: '1.25rem', fontWeight: 500 },
-  body1: { fontSize: '1rem', fontWeight: 400 },
-  body2: { fontSize: '0.875rem', fontWeight: 400 },
-  button: { fontWeight: 600, textTransform: 'none' }
-}
-```
-
-- **Títulos:** Fortes e densos, priorizando métricas e informações-chave.
-- **Subtítulos:** Textos secundários em cinza neutro.
-- **Texto base:** Branco suave (#f9fafb), garantindo contraste e legibilidade.
-
----
-
-## 5. Componentes Padrão
-
-### **Botões (DSButton)**
-
-- Bordas arredondadas (4px) — padronização global de raio mais sutil
-- Variantes: `contained`, `outlined`, `text`
-- Hover com realce de borda / leve brilho
-
-### **Campos de Texto (DSTextField)**
-
-- Fundo escuro `#1f2230`
-- Borda sutil
-- Foco em azul vibrante
-- `size="small"` como padrão
-
-### **Cartões (DSCard)**
-
-- Fundo: `surfaces.surface1` (ou `background.paper` no primeiro nível)
-- Raio: **4px** (padrão global para cards, modais, botões)
-- Borda: `1px solid divider` (reduz dependência de sombras)
-- Hover: borda muda para `primary.main` + leve elevação (shadow suave)
-- Valor: foco visual neutro; variação (trend) em `success.main` ou `error.main`
-- Densidade: evitar preenchimento vertical excessivo (altura mínima funcional)
-
-### **Tabelas (DSTable)**
-
-- Layout compacto, tipografia 12–13px
-- Cabeçalho: `text.primary` (peso 600) sobre fundo `surfaces.surface2`
-- Linhas alternadas: `surfaces.surface1`
-- Hover row: `rgba(79,140,255,0.08)`
-- Bordas internas: `divider` discreto
-- Alinhamento numérico à direita
-
-### **Gráficos (DSChartWrapper)**
-
-- Suporte: `line`, `area`, `bar` (futuro: `pie`)
-- Gradiente padrão: `#4f8cff → #2c5fd8` (0.25 → 0.05 opacidade)
-- Tooltip: fundo `surfaces.surface2`, borda `divider`, raio 8px
-- Grid: apenas linhas horizontais suaves (<=6% opacidade)
-- Points: ocultar automaticamente se série > 60 pontos
-- Focus/hover: stroke +1px e leve brilho
-
-### **Cabeçalho de Página (PageHeader)**
-
-- Título destacado
-- Subtítulo em `text.secondary`
-- Suporte para ações (botões, filtros)
-
-### **Modais (Padrão DSModal)**
-
-Padrão base para todos os modais (inclui o novo "Resumo de Comissão"):
-
-| Aspecto        | Regra                                                                         |
-| -------------- | ----------------------------------------------------------------------------- |
-| Largura        | `maxWidth="sm"` (ou `xs` para casos simples); nunca full screen em desktop    |
-| Canto          | Borda arredondada 4px (`borderRadius: 0.5`)                                   |
-| Borda          | 1px sólido `divider` (shadow mínima)                                          |
-| Fundo          | `background.paper` sem gradiente                                              |
-| Título         | 16px, weight 600, espaçamento inferior curto                                  |
-| Subtítulo      | `caption`, `text.secondary`, logo abaixo do título                            |
-| Fechar         | `IconButton size="small"` no canto superior direito                           |
-| Conteúdo       | Densidade alta; usar `Stack` e `Divider` para blocos                          |
-| Ações          | Alinhadas à direita; botão primário `contained`, secundário `outlined` neutro |
-| Scroll interno | `DialogContent dividers` separando header/body                                |
-| Acessibilidade | `aria-labelledby` ligado ao título; roles semânticos adequados                |
-
-Tokens de Espaçamento Interno:
-
-```
-Header: pt 16 / pr 56 (área do botão fechar)
-Content: px 20 (desktop), 16 (mobile); py 8–16 por bloco
-Footer: py 16, gap 8–12, alinhado à direita
-```
-
-Chips informativos (ex: "sem valores"):
-
-```
-fontSize 10px; px 6; py 2; borderRadius 4; bgcolor action.hover; color text.secondary; weight 500
-```
-
-Dividers de seção (com texto central):
-
-```
-fontSize 11px; opacity 0.8; uses <Divider textAlign="center">LABEL</Divider>
-```
-
-#### Resumo de Comissão (CommissionResumoModal)
-
-Hierarquia:
-
-1. Header: Título + subtítulo (contexto do período)
-2. ENTRADAS: categorias positivas (verde)
-3. SAÍDAS: deduções (vermelho)
-4. SALDO: linha neutra com label em `text.secondary`
-5. Destaques: cartões RECEBIMENTOS (verde) e DESCONTOS (vermelho) com fundo translúcido + borda
-6. Ações: Exportar (CSV) + Fechar
-
-Regras de Cor:
-
-```
-Entradas: success.main
-Saídas: error.main
-Recebimentos card: bg rgba(success.main, .25) + border success.main
-Descontos card: bg rgba(error.main, .25) + border error.main
-Saldo: valor em primary.main se positivo; error.main se negativo
-```
-
-Tipografia:
-
-```
-Labels: 13–14px / 500
-Valores: 13.5–14px / 600–700
-Seções (ENTRADAS/SAÍDAS): 11px uppercase 600
-```
-
-Exportação CSV: colunas `Tipo,Categoria,Valor` — filename `resumo-comissao.csv`.
-
-Fallback sem dados: renderizar todas as categorias com `R$ 0,00` + chip "sem valores".
-
-Não Fazer:
-
-- Não usar <Table> para este modal.
-- Não adicionar detalhes de itens ou clientes aqui.
-- Não aplicar sombras profundas.
-
----
-
-## 6. Padrões de Layout
-
-### **Dashboard**
-
-- Grid 4 colunas (desktop), 1 (mobile)
-- Cards de métricas no topo
-- Gráfico principal em largura total
-- Tabelas compactas ao lado
-
-### **Formulários**
-
-- Inputs densos (`small`)
-- Labels discretos
-- Botões primários em azul vibrante
-
-### **Navegação**
-
-- Sidebar fixa (desktop)
-- Sidebar colapsável (tablet)
-- Drawer (mobile)
-
----
-
-## 7. Acessibilidade
-
-- Contraste mínimo **4.5:1**
-- Dark mode otimizado para leitores de tela
-- **ARIA labels** em ícones e botões
-- **Focus ring** em azul neon (#4f8cff) para navegação via teclado (outline offset 2px)
-- Ícones com `aria-label` quando ação não estiver em texto
-- Garantir contraste mínimo 4.5:1 incluindo novas surfaces
-
----
-
-## 8. Exemplos de Uso
+#### DSTextField
+Campo de texto padronizado com suporte a máscaras e validação.
 
 ```tsx
-// Card de Métrica
-<DSCard title="Usuários" value="14k" trend="+25%" trendUp />
+import { DSTextField } from '@/components/ui';
 
-// Botão
-<DSButton variant="contained" size="medium">Criar Novo</DSButton>
+// Uso básico
+<DSTextField
+  label="Nome"
+  placeholder="Digite seu nome"
+  required
+/>
 
-// Tabela
-<DSTable columns={[{ id: 'nome', label: 'Nome' }]} data={clientes} loading={isLoading} />
+// Com máscara
+<DSTextField
+  label="Telefone"
+  mask="phone"
+  required
+/>
 
-// PageHeader
-<PageHeader title="Dashboard" subtitle="Visão geral do negócio" />
+// Com validação
+<DSTextField
+  label="Email"
+  type="email"
+  error={!!errors.email}
+  helperText={errors.email?.message}
+/>
 ```
 
+**Máscaras disponíveis:**
+- `phone`: (11) 99999-9999
+- `cpf`: 999.999.999-99
+- `cnpj`: 99.999.999/9999-99
+- `cep`: 99999-999
+- `currency`: R$ 999,99
+
+#### DSSelect
+Componente de seleção padronizado.
+
+```tsx
+import { DSSelect } from '@/components/ui';
+
+<DSSelect
+  label="Status"
+  options={[
+    { value: 'active', label: 'Ativo' },
+    { value: 'inactive', label: 'Inativo' }
+  ]}
+  required
+/>
+```
+
+#### DSCheckbox
+Checkbox padronizado com suporte a estados intermediários.
+
+```tsx
+import { DSCheckbox } from '@/components/ui';
+
+<DSCheckbox
+  label="Aceito os termos"
+  required
+/>
+
+<DSCheckbox
+  label="Selecionar todos"
+  indeterminate={someSelected}
+  checked={allSelected}
+/>
+```
+
+#### DSRadioGroup
+Grupo de radio buttons padronizado.
+
+```tsx
+import { DSRadioGroup } from '@/components/ui';
+
+<DSRadioGroup
+  label="Tipo de serviço"
+  options={[
+    { value: 'corte', label: 'Corte de cabelo' },
+    { value: 'barba', label: 'Barba' },
+    { value: 'combo', label: 'Corte + Barba' }
+  ]}
+  required
+/>
+```
+
+#### DSTextArea
+Área de texto com redimensionamento automático.
+
+```tsx
+import { DSTextArea } from '@/components/ui';
+
+<DSTextArea
+  label="Observações"
+  placeholder="Digite suas observações..."
+  maxLength={500}
+  showCharacterCount
+  autoResize
+/>
+```
+
+#### DSAutocomplete
+Campo de autocomplete com busca.
+
+```tsx
+import { DSAutocomplete } from '@/components/ui';
+
+<DSAutocomplete
+  label="Cliente"
+  options={clientes}
+  getOptionLabel={(option) => option.nome}
+  loading={loading}
+  onInputChange={handleSearch}
+/>
+```
+
+#### DSSwitch
+Switch padronizado com rótulos.
+
+```tsx
+import { DSSwitch } from '@/components/ui';
+
+<DSSwitch
+  label="Notificações"
+  description="Receber notificações por email"
+  checked={notifications}
+  onChange={setNotifications}
+/>
+```
+
+#### DSButton
+Botão padronizado com estados de loading.
+
+```tsx
+import { DSButton } from '@/components/ui';
+
+<DSButton
+  variant="contained"
+  loading={isSubmitting}
+  startIcon={<SaveIcon />}
+  onClick={handleSave}
+>
+  Salvar
+</DSButton>
+```
+
+### Layout e Navegação
+
+#### DSSpacing
+Sistema de espaçamento padronizado.
+
+```tsx
+import { DSStack, DSGrid, DSContainer } from '@/components/ui';
+
+// Stack para elementos verticais
+<DSStack spacing={3}>
+  <Component1 />
+  <Component2 />
+</DSStack>
+
+// Grid responsivo
+<DSGrid container spacing={2}>
+  <DSGrid item xs={12} md={6}>
+    <Card1 />
+  </DSGrid>
+  <DSGrid item xs={12} md={6}>
+    <Card2 />
+  </DSGrid>
+</DSGrid>
+
+// Container com padding padronizado
+<DSContainer maxWidth="lg">
+  <Content />
+</DSContainer>
+```
+
+#### DSBreadcrumbs
+Navegação breadcrumb responsiva.
+
+```tsx
+import { DSBreadcrumbs, DSPageBreadcrumbs } from '@/components/ui';
+
+// Breadcrumbs simples
+<DSBreadcrumbs
+  items={[
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Clientes', href: '/clientes' },
+    { label: 'João Silva', current: true }
+  ]}
+  showBackButton
+/>
+
+// Breadcrumbs de página completa
+<DSPageBreadcrumbs
+  title="Novo Cliente"
+  items={breadcrumbItems}
+  actions={
+    <DSButton variant="contained">
+      Salvar
+    </DSButton>
+  }
+/>
+```
+
+### Tipografia
+
+#### DSTypography
+Sistema de tipografia padronizado.
+
+```tsx
+import { DSHeading, DSDisplay, DSLabel, DSHelper, DSError } from '@/components/ui';
+
+// Títulos
+<DSHeading level={1}>Título Principal</DSHeading>
+<DSHeading level={2} color="primary">Subtítulo</DSHeading>
+
+// Texto de destaque
+<DSDisplay size="large">Valor em destaque</DSDisplay>
+
+// Labels e helpers
+<DSLabel required>Nome do campo</DSLabel>
+<DSHelper>Texto de ajuda</DSHelper>
+<DSError>Mensagem de erro</DSError>
+```
+
+### Ícones
+
+#### DSIcon
+Sistema de ícones padronizado.
+
+```tsx
+import { DSIcon, DSStatusIcon, DSActionIcon, DSNavigationIcon } from '@/components/ui';
+
+// Ícone básico
+<DSIcon name="user" size="medium" />
+
+// Ícones específicos
+<DSStatusIcon status="success" />
+<DSActionIcon action="edit" onClick={handleEdit} />
+<DSNavigationIcon direction="next" />
+```
+
+### Estados de Loading
+
+#### DSLoading
+Componentes de carregamento.
+
+```tsx
+import { 
+  DSLoading, 
+  DSSkeleton, 
+  DSPageLoading, 
+  DSTableLoading 
+} from '@/components/ui';
+
+// Loading overlay
+<DSPageLoading message="Carregando dados..." />
+
+// Skeleton para tabelas
+<DSTableLoading rows={5} />
+
+// Skeleton para cards
+<DSSkeleton variant="card" />
+
+// Loading em botões
+<DSButton loading={isSubmitting}>
+  Salvar
+</DSButton>
+```
+
+### Estados Vazios
+
+#### DSEmptyState
+Estados vazios informativos.
+
+```tsx
+import { 
+  DSEmptyAgendamentos,
+  DSEmptyClientes,
+  DSEmptySearch,
+  DSEmptyFilter 
+} from '@/components/ui';
+
+// Estados específicos
+<DSEmptyAgendamentos 
+  onCreateNew={() => router.push('/agendamentos/novo')}
+/>
+
+<DSEmptyClientes 
+  onCreateNew={() => setShowDialog(true)}
+/>
+
+// Estados de busca/filtro
+<DSEmptySearch
+  searchTerm={searchTerm}
+  onClearSearch={() => setSearchTerm('')}
+  onCreateNew={() => setShowDialog(true)}
+/>
+```
+
+### Tema e Cores
+
+#### DSTheme
+Sistema de tema dark/light.
+
+```tsx
+import { DSThemeProvider, DSThemeToggle, useThemeColors } from '@/components/ui';
+
+// Provider no root da aplicação
+<DSThemeProvider defaultMode="light">
+  <App />
+</DSThemeProvider>
+
+// Toggle de tema
+<DSThemeToggle variant="icon" />
+<DSThemeToggle variant="switch" />
+<DSThemeToggle variant="menu" />
+
+// Hook para acessar cores
+function MyComponent() {
+  const { colors, isLight, isDark } = useThemeColors();
+  
+  return (
+    <Box sx={{ 
+      bgcolor: isLight ? colors.primary[50] : colors.primary[900] 
+    }}>
+      Content
+    </Box>
+  );
+}
+```
+
+### Feedback e Notificações
+
+#### DSFeedback
+Sistema de notificações e feedback.
+
+```tsx
+import { 
+  DSNotificationProvider, 
+  useFeedback, 
+  DSProgressFeedback 
+} from '@/components/ui';
+
+// Provider no root
+<DSNotificationProvider>
+  <App />
+</DSNotificationProvider>
+
+// Hook para notificações
+function MyComponent() {
+  const { showSuccess, showError, showWarning } = useFeedback();
+  
+  const handleSave = async () => {
+    try {
+      await saveData();
+      showSuccess('Dados salvos com sucesso!');
+    } catch (error) {
+      showError('Erro ao salvar dados');
+    }
+  };
+}
+
+// Feedback de progresso
+<DSProgressFeedback
+  type="upload"
+  progress={uploadProgress}
+  fileName="documento.pdf"
+  status="processing"
+  onCancel={handleCancel}
+/>
+```
+
+### Validação de Formulários
+
+#### DSFormValidation
+Sistema de validação padronizado.
+
+```tsx
+import { DSFormValidation, useFormValidation } from '@/components/ui';
+
+function MyForm() {
+  const { errors, validateField, validateForm } = useFormValidation({
+    name: { required: true, minLength: 2 },
+    email: { required: true, email: true },
+    phone: { required: true, phone: true }
+  });
+
+  return (
+    <form>
+      <DSTextField
+        label="Nome"
+        error={!!errors.name}
+        helperText={errors.name}
+        onBlur={(e) => validateField('name', e.target.value)}
+      />
+      
+      <DSFormValidation
+        errors={errors}
+        variant="list"
+      />
+    </form>
+  );
+}
+```
+
+## 🎨 Paleta de Cores
+
+### Cores Primárias
+- **Primary**: Azul (#0ea5e9)
+- **Secondary**: Roxo (#d946ef)
+
+### Cores de Status
+- **Success**: Verde (#22c55e)
+- **Warning**: Amarelo (#f59e0b)
+- **Error**: Vermelho (#ef4444)
+- **Info**: Azul (#0ea5e9)
+
+### Cores Neutras
+- **Background Light**: #ffffff
+- **Background Dark**: #0f172a
+- **Text Primary Light**: #1e293b
+- **Text Primary Dark**: #f1f5f9
+
+## 📱 Responsividade
+
+### Breakpoints
+- **xs**: 0px
+- **sm**: 600px
+- **md**: 900px
+- **lg**: 1200px
+- **xl**: 1536px
+
+### Padrões Mobile
+- Usar `variant="mobile"` em breadcrumbs
+- Componentes se adaptam automaticamente
+- Stack vertical em telas pequenas
+- Botões full-width quando necessário
+
+## 🔧 Hooks Utilitários
+
+### useLoading
+```tsx
+const { loading, startLoading, stopLoading, withLoading } = useLoading();
+
+// Uso com async/await
+const handleSubmit = () => withLoading(async () => {
+  await submitForm();
+}, 'Salvando...');
+```
+
+### useSpacing
+```tsx
+const { getSpacing, responsive } = useSpacing();
+
+const spacing = getSpacing(2); // 16px
+const responsiveSpacing = responsive({ xs: 1, md: 2 });
+```
+
+### useIcons
+```tsx
+const { getIcon, getStatusIcon } = useIcons();
+
+const userIcon = getIcon('user');
+const successIcon = getStatusIcon('success');
+```
+
+## 📋 Boas Práticas
+
+### 1. Consistência
+- Sempre use componentes do DS ao invés de MUI diretamente
+- Mantenha padrões de nomenclatura
+- Use as cores e espaçamentos padronizados
+
+### 2. Acessibilidade
+- Todos os componentes incluem labels apropriados
+- Suporte a navegação por teclado
+- Contraste adequado entre cores
+- Textos alternativos em ícones
+
+### 3. Performance
+- Componentes otimizados com React.memo
+- Lazy loading quando apropriado
+- Skeleton loading para melhor UX
+
+### 4. Responsividade
+- Mobile-first approach
+- Breakpoints consistentes
+- Componentes adaptáveis
+
+## 🚀 Exemplos de Uso
+
+### Formulário Completo
+```tsx
+import {
+  DSTextField,
+  DSSelect,
+  DSTextArea,
+  DSButton,
+  DSStack,
+  DSFormValidation,
+  useFeedback
+} from '@/components/ui';
+
+function ClienteForm() {
+  const { showSuccess, showError } = useFeedback();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await saveCliente(data);
+      showSuccess('Cliente salvo com sucesso!');
+    } catch (error) {
+      showError('Erro ao salvar cliente');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <DSStack spacing={3}>
+      <DSTextField
+        label="Nome"
+        required
+        placeholder="Nome completo"
+      />
+      
+      <DSTextField
+        label="Telefone"
+        mask="phone"
+        required
+      />
+      
+      <DSSelect
+        label="Status"
+        options={statusOptions}
+        required
+      />
+      
+      <DSTextArea
+        label="Observações"
+        maxLength={500}
+        showCharacterCount
+      />
+      
+      <DSButton
+        variant="contained"
+        loading={loading}
+        onClick={handleSubmit}
+        fullWidth
+      >
+        Salvar Cliente
+      </DSButton>
+    </DSStack>
+  );
+}
+```
+
+### Página com Breadcrumbs e Estados
+```tsx
+import {
+  DSPageBreadcrumbs,
+  DSEmptyClientes,
+  DSTableLoading,
+  DSButton,
+  DSContainer
+} from '@/components/ui';
+
+function ClientesPage() {
+  const [loading, setLoading] = useState(true);
+  const [clientes, setClientes] = useState([]);
+
+  if (loading) {
+    return (
+      <DSContainer>
+        <DSTableLoading rows={5} />
+      </DSContainer>
+    );
+  }
+
+  if (clientes.length === 0) {
+    return (
+      <DSContainer>
+        <DSEmptyClientes 
+          onCreateNew={() => router.push('/clientes/novo')}
+        />
+      </DSContainer>
+    );
+  }
+
+  return (
+    <DSContainer>
+      <DSPageBreadcrumbs
+        title="Clientes"
+        items={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Clientes', current: true }
+        ]}
+        actions={
+          <DSButton
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => router.push('/clientes/novo')}
+          >
+            Novo Cliente
+          </DSButton>
+        }
+      />
+      
+      {/* Lista de clientes */}
+    </DSContainer>
+  );
+}
+```
+
+## 🔄 Atualizações e Manutenção
+
+### Versionamento
+- Seguir semantic versioning
+- Documentar breaking changes
+- Manter backward compatibility quando possível
+
+### Contribuição
+- Novos componentes devem seguir os padrões estabelecidos
+- Incluir testes e documentação
+- Revisar impacto em componentes existentes
+
+### Monitoramento
+- Acompanhar uso dos componentes
+- Coletar feedback dos desenvolvedores
+- Otimizar componentes mais utilizados
+
 ---
 
-## 9. Recomendações de Uso
-
-- Sempre priorizar o **tema escuro**.
-- Reutilizar os **componentes do DS** para consistência.
-- Respeitar as **hierarquias tipográficas**.
-- Usar gradientes de azul em gráficos para manter identidade visual.
-
----
-
-## 10. Conclusão
-
-O **Trato DS v2** é uma evolução orientada à **modernidade, acessibilidade e densidade informacional**, entregando interfaces consistentes, elegantes e responsivas.
-
-Ele serve como **fundamento visual e técnico** para a expansão do produto, garantindo **eficiência no desenvolvimento** e **coerência na experiência do usuário**.
-
----
-
-## 11. Ajustes DS v2.1
-
-Changelog interno desta evolução de UI.
-
-### Paleta
-
--- Novo background: `#0B0E13` / `#12151D`.
--- Novos tokens: `surfaces.surface1` (`#161A23`), `surfaces.surface2` (`#1C202B`).
--- `text.secondary` agora `#A0A6B5`.
--- `divider` suavizado (`rgba(255,255,255,0.08)`).
-
-### Raio / Bordas
-
-- Cards, modais, botões e inputs: 4px (unificação v2.1 - design mais sutil).
-
-### Cartões
-
-- Fundo `surface1` por padrão, hover com realce de borda primária.
-
-### Modais
-
-- Baseados no padrão do CommissionResumoModal.
-- Header compacto, subtítulo caption.
-
-### Tabelas
-
-- Alternância de linhas e hover azul translúcido.
-
-### Gráficos
-
-- Gradiente primário atualizado e tooltip em `surface2`.
-
-### Chips
-
-- Translúcidos em `action.hover`, tipografia 10px.
-
-### Acessibilidade
-
-- Focus ring padronizado azul neon.
-- Revalidação de contraste nas novas superfícies.
-
-### Modal de Comissão
-
-- Export CSV padronizado: `Tipo,Categoria,Valor`.
-
-Mantida filosofia Dark Mode First / Luxury & Tech / Mobile-First.
+Para dúvidas ou sugestões, consulte a equipe de desenvolvimento ou abra uma issue no repositório.

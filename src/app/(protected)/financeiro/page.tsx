@@ -79,7 +79,7 @@ export default function DashboardFinanceiroPage() {
     <Box>
       <PageHeader
         title="Dashboard Financeiro"
-        subtitle={`Visão geral das finanças - ${currentUnit.nome}`}
+        subtitle={`Visão geral das finanças - ${currentUnit.name}`}
       />
 
       <Box display="flex" justifyContent="flex-end" mb={2}>

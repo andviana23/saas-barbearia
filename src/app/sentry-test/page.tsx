@@ -3,8 +3,13 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import * as Sentry from '@sentry/nextjs';
 import { DSButton } from '@/components/ui';
+import { useState } from 'react';
+import { generateJokeAction } from './actions';
 
 export default function SentryTestPage() {
+  const [joke, setJoke] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const handleThrowError = () => {
     throw new Error('Sentry client test error');
   };
@@ -24,6 +29,14 @@ export default function SentryTestPage() {
     }
   };
 
+  const handleGenerateJoke = async () => {
+    setLoading(true);
+    setJoke('');
+    const newJoke = await generateJokeAction();
+    setJoke(newJoke);
+    setLoading(false);
+  };
+
   return (
     <Container maxWidth="md">
       <Box sx={{ py: 4 }}>
@@ -36,6 +49,17 @@ export default function SentryTestPage() {
         </Typography>
 
         <Stack spacing={3} alignItems="center">
+          <DSButton
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={handleGenerateJoke}
+            disabled={loading}
+            sx={{ minWidth: 300 }}
+          >
+            {loading ? 'Gerando Piada...' : 'Testar Sentry AI - Gerar Piada'}
+          </DSButton>
+
           <DSButton
             variant="contained"
             color="error"
@@ -66,6 +90,15 @@ export default function SentryTestPage() {
             Testar Erro do Servidor
           </DSButton>
         </Stack>
+
+        {joke && (
+          <Box sx={{ mt: 4, p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+            <Typography variant="h6" gutterBottom>
+              Piada Gerada:
+            </Typography>
+            <Typography>{joke}</Typography>
+          </Box>
+        )}
 
         <Typography
           variant="caption"

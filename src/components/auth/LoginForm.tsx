@@ -16,14 +16,14 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { DSButton, DSTextField } from '@/components/ui';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 
 export default function LoginForm() {
   const router = useRouter();
   const sp = useSearchParams();
   const redirectTo = sp?.get('redirectTo') || '/dashboard';
 
-  const { status, authLoading, signInWithPassword } = useAuth();
+  const { status, authLoading, signInWithPassword } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,35 +31,37 @@ export default function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && status === 'SIGNED_IN') {
+    if (!authLoading && status === 'SIGNED_IN' && !error) {
       const safe = redirectTo === '/login' ? '/dashboard' : redirectTo;
+      console.log('[LoginForm] Redirecionando para:', safe);
       setTimeout(() => router.replace(safe), 0);
     }
-  }, [authLoading, status, redirectTo, router]);
+  }, [authLoading, status, redirectTo, router, error]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    // Previne submissão duplicada
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
     setError(null);
 
     try {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      const emailValue = (formData.get('email') as string) || email;
-      const passwordValue = (formData.get('password') as string) || password;
-
-      if (!emailValue || !passwordValue) {
+      if (!email || !password) {
         setError('Email e senha são obrigatórios');
         return;
       }
 
-      await signInWithPassword(emailValue, passwordValue);
+      console.log('[LoginForm] Tentando login com:', email);
+      await signInWithPassword(email, password);
+      console.log('[LoginForm] Login bem-sucedido');
     } catch (err: unknown) {
-      console.error('[login] erro:', err);
+      console.error('[LoginForm] Erro no login:', err);
       const errorMessage = err instanceof Error ? err.message : 'Email ou senha inválidos';
       setError(errorMessage);
     } finally {
-      setIsSubmitting(false); // nunca deixe o botão travado
+      setIsSubmitting(false);
     }
   }
 

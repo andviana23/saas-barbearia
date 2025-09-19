@@ -140,7 +140,7 @@ test.describe('Serviços', () => {
     await page.click('[data-testid="btn-salvar"]');
 
     await page.waitForSelector('[data-testid="notification-success"]');
-  // Reload desnecessário: estado já está em memória no harness
+    // Reload desnecessário: estado já está em memória no harness
 
     // Ordenar por preço crescente
     await page.selectOption('[data-testid="select-ordenacao"]', 'preco-asc');

@@ -72,7 +72,7 @@ describe('API Client', () => {
     it('should make POST request with JSON body', async () => {
       const requestBody = { name: 'New Item' };
       const responseBody = { id: 1, ...requestBody };
-      
+
       mockFetch.mockResolvedValue({
         ok: true,
         status: 201,
@@ -148,7 +148,7 @@ describe('API Client', () => {
       });
 
       await expect(fetchJson('/api/test')).rejects.toThrow(ApiError);
-      
+
       try {
         await fetchJson('/api/test');
       } catch (error) {
@@ -306,7 +306,7 @@ describe('API Client', () => {
   describe('configureAuthRedirect', () => {
     it('should set auth handler correctly', () => {
       const handler = jest.fn();
-      
+
       expect(() => configureAuthRedirect(handler)).not.toThrow();
     });
   });

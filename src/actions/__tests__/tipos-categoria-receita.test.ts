@@ -4,7 +4,7 @@ describe('Tipos Categoria Receita - Validações', () => {
   describe('Validações de estrutura', () => {
     it('deve validar tipos de meta válidos', () => {
       const tiposValidos = ['valor', 'percentual', 'quantidade'];
-      
+
       tiposValidos.forEach((tipo) => {
         expect(['valor', 'percentual', 'quantidade']).toContain(tipo);
       });

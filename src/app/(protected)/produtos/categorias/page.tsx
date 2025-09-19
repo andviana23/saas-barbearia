@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Container,
   Box,
@@ -21,7 +23,7 @@ import {
 } from '@mui/material';
 import { Add, Edit, Delete, Category, Inventory, ColorLens, Visibility } from '@mui/icons-material';
 import { useState } from 'react';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function ProdutosCategoriaPage() {
   const [openModal, setOpenModal] = useState(false);

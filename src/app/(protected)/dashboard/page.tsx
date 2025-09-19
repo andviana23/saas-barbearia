@@ -9,13 +9,25 @@ export default async function DashboardPage() {
       <div data-testid="dashboard-content" style={{ padding: 24 }}>
         <div data-testid="kpi-cards" style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
           <div
-            style={{ width: 200, height: 100, background: '#f3f4f6', borderRadius: 8, padding: 16 }}
+            style={{
+              width: 200,
+              height: 100,
+              background: 'var(--mui-palette-surfaces-surface1)',
+              borderRadius: 8,
+              padding: 16,
+            }}
           >
             <strong>Receita do Mês</strong>
             <div>R$ 12.500,00</div>
           </div>
           <div
-            style={{ width: 200, height: 100, background: '#f3f4f6', borderRadius: 8, padding: 16 }}
+            style={{
+              width: 200,
+              height: 100,
+              background: 'var(--mui-palette-surfaces-surface1)',
+              borderRadius: 8,
+              padding: 16,
+            }}
           >
             <strong>Atendimentos</strong>
             <div>245</div>
@@ -23,7 +35,12 @@ export default async function DashboardPage() {
         </div>
         <div
           data-testid="dashboard-charts"
-          style={{ height: 300, background: '#f9fafb', borderRadius: 8, padding: 16 }}
+          style={{
+            height: 300,
+            background: 'var(--mui-palette-surfaces-surface2)',
+            borderRadius: 8,
+            padding: 16,
+          }}
         >
           <h3>Gráficos Dashboard</h3>
           <div>Chart placeholder</div>

@@ -29,6 +29,36 @@ import {
   useUpdateTemplate,
   useNotificacaoHelpers,
 } from '@/hooks/use-notificacoes';
+
+// Interfaces para tipagem
+interface TemplateNotificacao {
+  id: string;
+  unidadeId: string;
+  canalId: string;
+  codigo: string;
+  nome: string;
+  descricao?: string;
+  titulo?: string;
+  mensagem: string;
+  ativo: boolean;
+  enviarAutomatico: boolean;
+  tempoAntecedencia?: string;
+  variaveis: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CanalNotificacao {
+  id: string;
+  nome: string;
+  codigo: string;
+  descricao?: string;
+  ativo: boolean;
+  configuracao: Record<string, unknown>;
+  ordem: number;
+  createdAt: string;
+  updatedAt: string;
+}
 import { useCurrentUnit } from '@/hooks/use-current-unit';
 import { useNotifications } from '@/components/ui/NotificationSystem';
 
@@ -39,8 +69,8 @@ const TemplateFormSchema = z.object({
   descricao: z.string().optional(),
   titulo: z.string().optional(),
   mensagem: z.string().min(1, 'Mensagem é obrigatória'),
-  ativo: z.boolean().default(true),
-  enviarAutomatico: z.boolean().default(false),
+  ativo: z.boolean(),
+  enviarAutomatico: z.boolean(),
   tempoAntecedencia: z.string().optional(),
 });
 
@@ -49,11 +79,17 @@ type TemplateFormData = z.infer<typeof TemplateFormSchema>;
 interface TemplateFormDialogProps {
   open: boolean;
   onClose: () => void;
-  template?: any;
-  canais: any[];
+  template?: TemplateNotificacao;
+  canais: CanalNotificacao[];
 }
 
-const templatesPadrao = [
+interface TemplatePadrao {
+  codigo: string;
+  nome: string;
+  descricao: string;
+}
+
+const templatesPadrao: TemplatePadrao[] = [
   {
     codigo: 'agendamento_confirmado',
     nome: 'Agendamento Confirmado',
@@ -108,17 +144,17 @@ export default function TemplateFormDialog({
     reset,
     formState: { errors },
   } = useForm<TemplateFormData>({
-    resolver: zodResolver(TemplateFormSchema) as any,
+    resolver: zodResolver(TemplateFormSchema),
     defaultValues: {
-      canalId: template?.canal_id || '',
+      canalId: template?.canalId || '',
       codigo: template?.codigo || '',
       nome: template?.nome || '',
       descricao: template?.descricao || '',
       titulo: template?.titulo || '',
       mensagem: template?.mensagem || '',
       ativo: template?.ativo ?? true,
-      enviarAutomatico: template?.enviar_automatico ?? false,
-      tempoAntecedencia: template?.tempo_antecedencia || '',
+      enviarAutomatico: template?.enviarAutomatico ?? false,
+      tempoAntecedencia: template?.tempoAntecedencia || '',
     },
   });
 
@@ -129,15 +165,15 @@ export default function TemplateFormDialog({
     if (open) {
       if (template) {
         reset({
-          canalId: template.canal_id || '',
+          canalId: template.canalId || '',
           codigo: template.codigo || '',
           nome: template.nome || '',
           descricao: template.descricao || '',
           titulo: template.titulo || '',
           mensagem: template.mensagem || '',
           ativo: template.ativo ?? true,
-          enviarAutomatico: template.enviar_automatico ?? false,
-          tempoAntecedencia: template.tempo_antecedencia || '',
+          enviarAutomatico: template.enviarAutomatico ?? false,
+          tempoAntecedencia: template.tempoAntecedencia || '',
         });
       } else {
         reset({
@@ -155,7 +191,7 @@ export default function TemplateFormDialog({
     }
   }, [open, template, reset]);
 
-  const handleTemplatePadraoSelect = (templatePadrao: any) => {
+  const handleTemplatePadraoSelect = (templatePadrao: TemplatePadrao) => {
     setValue('codigo', templatePadrao.codigo);
     setValue('nome', templatePadrao.nome);
     setValue('descricao', templatePadrao.descricao);
@@ -236,11 +272,14 @@ export default function TemplateFormDialog({
       } else {
         throw new Error(result.error);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       addNotification({
         type: 'error',
         title: 'Erro',
-        message: error.message || `Erro ao ${isEditing ? 'atualizar' : 'criar'} template`,
+        message:
+          error instanceof Error
+            ? error.message
+            : `Erro ao ${isEditing ? 'atualizar' : 'criar'} template`,
       });
     }
   };

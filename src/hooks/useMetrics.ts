@@ -14,10 +14,12 @@ import { useAuth } from '@/hooks/use-auth';
 // Hook para métricas de receita
 export function useRevenueMetrics(range: DateRange | null) {
   const { user } = useAuth();
+  const unidadeId = user?.unidade_default_id;
+
   return useQuery({
-    queryKey: ['revenue', range, user?.unidade_default_id],
-    queryFn: () => getRevenueMetrics(range!, user?.unidade_default_id),
-    enabled: !!range,
+    queryKey: ['revenue', range, unidadeId],
+    queryFn: () => getRevenueMetrics(range!, unidadeId),
+    enabled: !!range && !!unidadeId,
     staleTime: 1000 * 60 * 5, // 5 minutos
     gcTime: 1000 * 60 * 10, // 10 minutos
   });
@@ -26,10 +28,12 @@ export function useRevenueMetrics(range: DateRange | null) {
 // Hook para métricas de assinaturas
 export function useSubscriptionMetrics(range: DateRange | null) {
   const { user } = useAuth();
+  const unidadeId = user?.unidade_default_id;
+
   return useQuery({
-    queryKey: ['subscriptions', range, user?.unidade_default_id],
-    queryFn: () => getSubscriptionMetrics(range!, user?.unidade_default_id),
-    enabled: !!range,
+    queryKey: ['subscriptions', range, unidadeId],
+    queryFn: () => getSubscriptionMetrics(range!, unidadeId),
+    enabled: !!range && !!unidadeId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
   });
@@ -38,10 +42,12 @@ export function useSubscriptionMetrics(range: DateRange | null) {
 // Hook para métricas de agendamentos
 export function useAppointmentMetrics(range: DateRange | null) {
   const { user } = useAuth();
+  const unidadeId = user?.unidade_default_id;
+
   return useQuery({
-    queryKey: ['appointments', range, user?.unidade_default_id],
-    queryFn: () => getAppointmentMetrics(range!, user?.unidade_default_id),
-    enabled: !!range,
+    queryKey: ['appointments', range, unidadeId],
+    queryFn: () => getAppointmentMetrics(range!, unidadeId),
+    enabled: !!range && !!unidadeId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
   });
@@ -50,10 +56,12 @@ export function useAppointmentMetrics(range: DateRange | null) {
 // Hook para métricas de caixa
 export function useCashboxMetrics(range: DateRange | null) {
   const { user } = useAuth();
+  const unidadeId = user?.unidade_default_id;
+
   return useQuery({
-    queryKey: ['cashbox', range, user?.unidade_default_id],
-    queryFn: () => getCashboxMetrics(range!, user?.unidade_default_id),
-    enabled: !!range,
+    queryKey: ['cashbox', range, unidadeId],
+    queryFn: () => getCashboxMetrics(range!, unidadeId),
+    enabled: !!range && !!unidadeId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
   });
@@ -62,10 +70,12 @@ export function useCashboxMetrics(range: DateRange | null) {
 // Hook para top serviços
 export function useTopServices(range: DateRange | null) {
   const { user } = useAuth();
+  const unidadeId = user?.unidade_default_id;
+
   return useQuery({
-    queryKey: ['topServices', range, user?.unidade_default_id],
-    queryFn: () => getTopServices(range!, user?.unidade_default_id),
-    enabled: !!range,
+    queryKey: ['topServices', range, unidadeId],
+    queryFn: () => getTopServices(range!, unidadeId),
+    enabled: !!range && !!unidadeId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
   });

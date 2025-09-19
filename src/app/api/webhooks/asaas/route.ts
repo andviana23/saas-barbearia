@@ -64,3 +64,6 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({ message: 'Webhook ASAAS ativo' }, { status: 200 });
 }
+
+// Forçar uso do Node.js runtime para evitar problemas com Edge Runtime
+export const runtime = 'nodejs';

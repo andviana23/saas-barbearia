@@ -90,8 +90,8 @@ export default function KpiCard({
                 width: 40,
                 height: 40,
                 borderRadius: 1, // radius.xs para ícones
-                backgroundColor: hasNoData ? 'grey.300' : 'rgba(244, 163, 0, 0.1)', // primary com transparência
-                color: hasNoData ? 'grey.500' : '#F4A300', // cor primária do DS
+                backgroundColor: hasNoData ? 'action.disabledBackground' : 'primary.light', // primary com transparência
+                color: hasNoData ? 'text.disabled' : 'primary.main', // cor primária do DS
                 mr: 2,
               }}
             >

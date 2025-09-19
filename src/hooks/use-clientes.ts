@@ -13,6 +13,47 @@ import {
 import type { ClientFilterData, HistoricoClienteFilterData, ImportClientCSVData } from '@/schemas';
 import type { ActionResult } from '@/types';
 
+// Interfaces para tipagem dos dados de clientes
+interface Cliente {
+  id: string;
+  nome: string;
+  telefone: string;
+  email?: string;
+  ativo: boolean;
+  data_nascimento?: string;
+  unidade_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ListClientesResponse {
+  clientes: Cliente[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface EstatisticasCliente {
+  total_agendamentos: number;
+  agendamentos_concluidos: number;
+  agendamentos_cancelados: number;
+  agendamentos_faltou: number;
+  valor_total_servicos: number;
+  total_vendas: number;
+  valor_total_vendas: number;
+  primeiro_agendamento?: string;
+  ultimo_agendamento?: string;
+}
+
+interface ClienteComEstatisticas extends Cliente {
+  estatisticas: EstatisticasCliente | null;
+}
+
+interface TopCliente extends Cliente {
+  valor_total_gasto: number;
+  total_atendimentos: number;
+}
+
 // Query Keys para consistência
 export const CLIENTES_QUERY_KEY = 'clientes';
 export const HISTORICO_CLIENTE_QUERY_KEY = 'historico-cliente';
@@ -24,16 +65,19 @@ export const BUSCAR_CLIENTE_TELEFONE_QUERY_KEY = 'buscar-cliente-telefone';
 // ====================================
 
 // Hook para listar clientes
-export function useClientes(
-  filters: ClientFilterData = {
+export function useClientes(filters: Partial<ClientFilterData> = {}) {
+  const defaultFilters: ClientFilterData = {
+    q: '',
     page: 0,
     limit: 10,
     order: 'desc',
-  },
-) {
+    ativo: true,
+    ...filters,
+  };
+
   return useQuery({
-    queryKey: [CLIENTES_QUERY_KEY, filters],
-    queryFn: () => listClientes(filters),
+    queryKey: [CLIENTES_QUERY_KEY, defaultFilters],
+    queryFn: () => listClientes(defaultFilters),
     staleTime: 1000 * 60 * 5, // 5 minutos
   });
 }
@@ -306,21 +350,24 @@ export function useClientesComEstatisticas(unidadeId?: string) {
 
   const clientesComEstatisticas = useQuery({
     queryKey: [CLIENTES_QUERY_KEY, 'com-estatisticas', unidadeId],
-    queryFn: async () => {
-      if (!clientesQuery.data?.success || !(clientesQuery.data.data as any)?.clientes) {
+    queryFn: async (): Promise<ClienteComEstatisticas[]> => {
+      if (!clientesQuery.data?.success || !clientesQuery.data.data) {
+        return [];
+      }
+
+      const clientesData = clientesQuery.data.data as ListClientesResponse;
+      if (!clientesData.clientes) {
         return [];
       }
 
       const clientesComStats = await Promise.all(
-        (clientesQuery.data.data as any).clientes.map(
-          async (cliente: { id: string; [key: string]: unknown }) => {
-            const statsResult = await getEstatisticasCliente(cliente.id);
-            return {
-              ...cliente,
-              estatisticas: statsResult.success ? statsResult.data : null,
-            };
-          },
-        ),
+        clientesData.clientes.map(async (cliente: Cliente): Promise<ClienteComEstatisticas> => {
+          const statsResult = await getEstatisticasCliente(cliente.id);
+          return {
+            ...cliente,
+            estatisticas: statsResult.success ? (statsResult.data as EstatisticasCliente) : null,
+          };
+        }),
       );
 
       return clientesComStats;
@@ -384,7 +431,7 @@ export function useBuscaInteligentClientes(searchTerm: string, unidadeId?: strin
 export function useTopClientes(unidadeId: string, limit = 10) {
   return useQuery({
     queryKey: [CLIENTES_QUERY_KEY, 'top-clientes', unidadeId, limit],
-    queryFn: async () => {
+    queryFn: async (): Promise<TopCliente[]> => {
       const clientesResult = await listClientes({
         unidade_id: unidadeId,
         ativo: true,
@@ -396,25 +443,27 @@ export function useTopClientes(unidadeId: string, limit = 10) {
         throw new Error(clientesResult.error);
       }
 
+      const clientesData = clientesResult.data as ListClientesResponse;
+      if (!clientesData.clientes) {
+        return [];
+      }
+
       // Buscar estatísticas de cada cliente
       const clientesComValor = await Promise.all(
-        (clientesResult.data as any).clientes.map(
-          async (cliente: { id: string; [key: string]: unknown }) => {
-            const statsResult = await getEstatisticasCliente(cliente.id);
-            const valorTotal = statsResult.success
-              ? ((statsResult.data as any)?.valor_total_servicos || 0) +
-                ((statsResult.data as any)?.valor_total_vendas || 0)
-              : 0;
+        clientesData.clientes.map(async (cliente: Cliente): Promise<TopCliente> => {
+          const statsResult = await getEstatisticasCliente(cliente.id);
+          const stats = statsResult.success ? (statsResult.data as EstatisticasCliente) : null;
 
-            return {
-              ...cliente,
-              valor_total_gasto: valorTotal,
-              total_atendimentos: statsResult.success
-                ? (statsResult.data as any)?.agendamentos_concluidos || 0
-                : 0,
-            };
-          },
-        ),
+          const valorTotal = stats
+            ? (stats.valor_total_servicos || 0) + (stats.valor_total_vendas || 0)
+            : 0;
+
+          return {
+            ...cliente,
+            valor_total_gasto: valorTotal,
+            total_atendimentos: stats?.agendamentos_concluidos || 0,
+          };
+        }),
       );
 
       // Ordenar por valor total e pegar top N

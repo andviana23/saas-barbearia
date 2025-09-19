@@ -34,7 +34,7 @@ export function safeValidate<T>(schema: ZodSchema<T>, data: unknown): Validation
       errors: result.error.errors.map((err) => ({
         field: err.path.join('.'),
         message: err.message,
-        code: (err as any).code, // code não está em todas as issues do Zod, tratamos como opcional
+        code: 'code' in err ? (err.code as string) : undefined, // code não está em todas as issues do Zod, tratamos como opcional
       })),
       message: 'Dados inválidos. Verifique os campos em destaque.',
     };
@@ -59,7 +59,7 @@ export function validateOrThrow<T>(schema: ZodSchema<T>, data: unknown): T {
     const errors: ValidationError[] = result.error.errors.map((err) => ({
       field: err.path.join('.'),
       message: err.message,
-      code: (err as any).code,
+      code: 'code' in err ? (err.code as string) : undefined,
     }));
 
     throw new ValidationException('Dados inválidos', errors);
@@ -136,7 +136,7 @@ export function useFormValidation<Shape extends ZodRawShape>(schema: ZodObject<S
       return {
         field,
         message: first?.message ?? 'Campo inválido',
-        code: (first as any)?.code,
+        code: first && 'code' in first ? (first.code as string) : undefined,
       };
     } catch (e) {
       return {

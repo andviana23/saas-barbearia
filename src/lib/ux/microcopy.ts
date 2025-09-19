@@ -246,7 +246,7 @@ export function useMicrocopy(config?: MicrocopyConfig) {
   const microcopyConfig = config || DEFAULT_MICROCOPY_CONFIG;
 
   const getText = (key: string, category: keyof typeof formMicrocopy) => {
-    const categoryData = formMicrocopy[category] as any;
+    const categoryData = formMicrocopy[category] as Record<string, string>;
     const text = categoryData[key] || key;
     return applyMicrocopyConfig(text, microcopyConfig);
   };

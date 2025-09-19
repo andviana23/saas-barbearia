@@ -28,7 +28,7 @@ import {
   Assessment,
   ContactSupport,
 } from '@mui/icons-material';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function AjudaPage() {
   // Categorias de ajuda

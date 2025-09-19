@@ -1,8 +1,7 @@
 import React from 'react';
 // Mock simples para evitar cálculos de layout das transições em JSDOM
 jest.mock('react-transition-group', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Noop = (props: { in?: boolean; children?: any }) =>
+  const Noop = (props: { in?: boolean; children?: React.ReactNode }) =>
     props.in === false ? null : props.children;
   return { Transition: Noop, CSSTransition: Noop };
 });

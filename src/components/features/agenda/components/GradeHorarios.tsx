@@ -1,6 +1,6 @@
 'use client';
 import { Box, Paper, Typography } from '@mui/material';
-import type { Appointment, Professional } from '@/app/agenda/page';
+import type { Appointment, Professional } from '@/app/(protected)/agenda/page';
 import { BlocoAgendamento } from './blocos/BlocoAgendamento';
 import { PIXELS_PER_MINUTE } from './Agenda';
 

@@ -19,6 +19,12 @@ import type {
   RelatorioFinanceiroData,
 } from '@/schemas';
 
+// Interfaces para tipagem dos dados financeiros
+interface EstatisticasFinanceirasResponse {
+  origens_receita?: Record<string, number>;
+  [key: string]: unknown;
+}
+
 // Query keys para o sistema financeiro
 export const FINANCEIRO_QUERY_KEY = 'financeiro';
 export const MOVIMENTACOES_QUERY_KEY = 'movimentacoes';
@@ -374,7 +380,9 @@ export function useTopOrigensReceita(
       estatisticas.data?.success && estatisticas.data.data
         ? {
             ...estatisticas.data.data,
-            top_origens: Object.entries((estatisticas.data.data as any).origens_receita || {})
+            top_origens: Object.entries(
+              (estatisticas.data.data as EstatisticasFinanceirasResponse).origens_receita || {},
+            )
               .sort(([, a], [, b]) => (b as number) - (a as number))
               .slice(0, 5),
           }

@@ -141,10 +141,14 @@ export interface ClienteFilters {
   nome?: string;
   email?: string;
   telefone?: string;
-  ativo?: boolean;
+  ativo: boolean;
   unidade_id?: string;
   data_nascimento_inicio?: string;
   data_nascimento_fim?: string;
+  q: string;
+  page: number;
+  limit: number;
+  order?: 'asc' | 'desc';
 }
 
 // =====================================================

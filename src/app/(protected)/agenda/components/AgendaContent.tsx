@@ -174,242 +174,240 @@ export function AgendaContent({
   };
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ py: 3 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-          <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
-            Agenda
-          </Typography>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={handleToday}>
-              Hoje
-            </Button>
-            <Button variant="contained" startIcon={<AddIcon />} href="/agenda/novo">
-              Novo Agendamento
-            </Button>
-          </Stack>
+    <Box sx={{ p: 3 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+        <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
+          Agenda
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Button variant="outlined" onClick={handleToday}>
+            Hoje
+          </Button>
+          <Button variant="contained" startIcon={<AddIcon />} href="/agenda/novo">
+            Novo Agendamento
+          </Button>
         </Stack>
+      </Stack>
 
-        {/* Controles de navegação e visualização */}
-        <Paper variant="outlined" sx={{ p: 2, mb: 3, borderRadius: 3 }}>
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={2}
-            alignItems={{ xs: 'stretch', md: 'center' }}
-          >
-            {/* Navegação de data */}
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <IconButton onClick={handlePrevious}>
-                <NavigateBeforeIcon />
-              </IconButton>
+      {/* Controles de navegação e visualização */}
+      <Paper variant="outlined" sx={{ p: 2, mb: 3, borderRadius: 2 }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={2}
+          alignItems={{ xs: 'stretch', md: 'center' }}
+        >
+          {/* Navegação de data */}
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <IconButton onClick={handlePrevious}>
+              <NavigateBeforeIcon />
+            </IconButton>
 
-              <Typography variant="h6" sx={{ minWidth: 200, textAlign: 'center' }}>
-                {view === 'day' && formatDate(currentDate)}
-                {view === 'week' && `Semana de ${formatDate(currentDate)}`}
-                {view === 'month' &&
-                  new Date(currentDate).toLocaleDateString('pt-BR', {
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-              </Typography>
-
-              <IconButton onClick={handleNext}>
-                <NavigateNextIcon />
-              </IconButton>
-            </Stack>
-
-            {/* Seletor de visualização */}
-            <FormControl sx={{ minWidth: 140 }}>
-              <InputLabel>Visualização</InputLabel>
-              <Select
-                value={view}
-                onChange={(e) => setView(e.target.value as 'day' | 'week' | 'month')}
-                label="Visualização"
-              >
-                <MenuItem value="day">Dia</MenuItem>
-                <MenuItem value="week">Semana</MenuItem>
-                <MenuItem value="month">Mês</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Filtros */}
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Profissional</InputLabel>
-              <Select defaultValue={searchParams.professionalId || ''} label="Profissional">
-                <MenuItem value="">
-                  <em>Todos</em>
-                </MenuItem>
-                {professionals.map((professional) => (
-                  <MenuItem key={professional.id} value={professional.id}>
-                    {professional.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl sx={{ minWidth: 180 }}>
-              <InputLabel>Status</InputLabel>
-              <Select defaultValue={searchParams.status || ''} label="Status">
-                <MenuItem value="">
-                  <em>Todos</em>
-                </MenuItem>
-                <MenuItem value="scheduled">Agendado</MenuItem>
-                <MenuItem value="confirmed">Confirmado</MenuItem>
-                <MenuItem value="completed">Concluído</MenuItem>
-                <MenuItem value="canceled">Cancelado</MenuItem>
-                <MenuItem value="no_show">No-show</MenuItem>
-              </Select>
-            </FormControl>
-          </Stack>
-        </Paper>
-
-        {/* Estatísticas do período */}
-        <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={3}>
-            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Total de Agendamentos
-              </Typography>
-              <Typography variant="h4" color="primary.main">
-                {stats.total}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Confirmados
-              </Typography>
-              <Typography variant="h4" color="success.main">
-                {stats.confirmed}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Concluídos
-              </Typography>
-              <Typography variant="h4" color="info.main">
-                {stats.completed}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Paper variant="outlined" sx={{ p: 2, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Receita
-              </Typography>
-              <Typography variant="h4" color="warning.main">
-                {formatCurrency(stats.revenue)}
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-
-        {/* Lista de agendamentos */}
-        <Paper variant="outlined" sx={{ borderRadius: 3 }}>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Agendamentos
+            <Typography variant="h6" sx={{ minWidth: 200, textAlign: 'center' }}>
+              {view === 'day' && formatDate(currentDate)}
+              {view === 'week' && `Semana de ${formatDate(currentDate)}`}
+              {view === 'month' &&
+                new Date(currentDate).toLocaleDateString('pt-BR', {
+                  month: 'long',
+                  year: 'numeric',
+                })}
             </Typography>
 
-            {appointments.items.length === 0 ? (
-              <Alert severity="info" sx={{ mt: 2 }}>
-                Nenhum agendamento encontrado para o período selecionado.
-              </Alert>
-            ) : (
-              <Grid container spacing={2} sx={{ mt: 1 }}>
-                {appointments.items.map((appointment) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={appointment.id}>
-                    <Card variant="outlined" sx={{ borderRadius: 2 }}>
-                      <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                        <Stack spacing={1}>
-                          {/* Header com horário e status */}
-                          <Stack direction="row" justifyContent="space-between" alignItems="center">
-                            <Stack direction="row" alignItems="center" spacing={1}>
-                              <ScheduleIcon fontSize="small" color="action" />
-                              <Typography variant="body2" fontWeight={600}>
-                                {formatTime(appointment.start_time)} -{' '}
-                                {formatTime(appointment.end_time)}
-                              </Typography>
-                            </Stack>
-                            <Chip
-                              label={statusLabel(appointment.status)}
-                              color={statusColor(appointment.status)}
-                              size="small"
-                            />
-                          </Stack>
+            <IconButton onClick={handleNext}>
+              <NavigateNextIcon />
+            </IconButton>
+          </Stack>
 
-                          {/* Cliente */}
-                          <Stack direction="row" alignItems="center" spacing={1}>
-                            <PersonIcon fontSize="small" color="action" />
-                            <Typography variant="body1" fontWeight={600}>
-                              {appointment.customer_name}
-                            </Typography>
-                          </Stack>
+          {/* Seletor de visualização */}
+          <FormControl sx={{ minWidth: 140 }}>
+            <InputLabel>Visualização</InputLabel>
+            <Select
+              value={view}
+              onChange={(e) => setView(e.target.value as 'day' | 'week' | 'month')}
+              label="Visualização"
+            >
+              <MenuItem value="day">Dia</MenuItem>
+              <MenuItem value="week">Semana</MenuItem>
+              <MenuItem value="month">Mês</MenuItem>
+            </Select>
+          </FormControl>
 
-                          {/* Serviço */}
-                          <Typography variant="body2" color="text.secondary">
-                            {appointment.service_name}
-                          </Typography>
+          {/* Filtros */}
+          <FormControl sx={{ minWidth: 200 }}>
+            <InputLabel>Profissional</InputLabel>
+            <Select defaultValue={searchParams.professionalId || ''} label="Profissional">
+              <MenuItem value="">
+                <em>Todos</em>
+              </MenuItem>
+              {professionals.map((professional) => (
+                <MenuItem key={professional.id} value={professional.id}>
+                  {professional.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-                          {/* Profissional */}
-                          <Typography variant="body2" color="text.secondary">
-                            {appointment.professional_name}
-                          </Typography>
+          <FormControl sx={{ minWidth: 180 }}>
+            <InputLabel>Status</InputLabel>
+            <Select defaultValue={searchParams.status || ''} label="Status">
+              <MenuItem value="">
+                <em>Todos</em>
+              </MenuItem>
+              <MenuItem value="scheduled">Agendado</MenuItem>
+              <MenuItem value="confirmed">Confirmado</MenuItem>
+              <MenuItem value="completed">Concluído</MenuItem>
+              <MenuItem value="canceled">Cancelado</MenuItem>
+              <MenuItem value="no_show">No-show</MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
+      </Paper>
 
-                          {/* Preço */}
-                          {appointment.price && (
-                            <Typography variant="body2" fontWeight={600} color="success.main">
-                              {formatCurrency(appointment.price)}
-                            </Typography>
-                          )}
+      {/* Estatísticas do período */}
+      <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={3}>
+          <Paper variant="outlined" sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Total de Agendamentos
+            </Typography>
+            <Typography variant="h4" color="primary.main">
+              {stats.total}
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper variant="outlined" sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Confirmados
+            </Typography>
+            <Typography variant="h4" color="success.main">
+              {stats.confirmed}
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper variant="outlined" sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Concluídos
+            </Typography>
+            <Typography variant="h4" color="info.main">
+              {stats.completed}
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper variant="outlined" sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Receita
+            </Typography>
+            <Typography variant="h4" color="warning.main">
+              {formatCurrency(stats.revenue)}
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
 
-                          {/* Observações */}
-                          {appointment.notes && (
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{ fontStyle: 'italic' }}
-                            >
-                              &quot;{appointment.notes}&quot;
-                            </Typography>
-                          )}
-
-                          <Divider />
-
-                          {/* Ações */}
-                          <Stack direction="row" spacing={1} justifyContent="flex-end">
-                            <Tooltip title="Editar">
-                              <IconButton size="small" href={`/agenda/${appointment.id}`}>
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Excluir">
-                              <IconButton size="small" color="error">
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Stack>
-                        </Stack>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-          </Box>
-        </Paper>
-
-        {/* Legenda */}
-        <Alert severity="info" sx={{ mt: 3 }}>
-          <Typography variant="body2">
-            <strong>Dica:</strong> Confirme agendamentos na véspera e use reagendamento quando
-            necessário. Clique em um agendamento para editar ou visualizar detalhes.
+      {/* Lista de agendamentos */}
+      <Paper variant="outlined" sx={{ borderRadius: 2 }}>
+        <Box sx={{ p: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Agendamentos
           </Typography>
-        </Alert>
-      </Box>
-    </Container>
+
+          {appointments.items.length === 0 ? (
+            <Alert severity="info" sx={{ mt: 2 }}>
+              Nenhum agendamento encontrado para o período selecionado.
+            </Alert>
+          ) : (
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              {appointments.items.map((appointment) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={appointment.id}>
+                  <Card variant="outlined" sx={{ borderRadius: 1 }}>
+                    <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                      <Stack spacing={1}>
+                        {/* Header com horário e status */}
+                        <Stack direction="row" justifyContent="space-between" alignItems="center">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <ScheduleIcon fontSize="small" color="action" />
+                            <Typography variant="body2" fontWeight={600}>
+                              {formatTime(appointment.start_time)} -{' '}
+                              {formatTime(appointment.end_time)}
+                            </Typography>
+                          </Stack>
+                          <Chip
+                            label={statusLabel(appointment.status)}
+                            color={statusColor(appointment.status)}
+                            size="small"
+                          />
+                        </Stack>
+
+                        {/* Cliente */}
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <PersonIcon fontSize="small" color="action" />
+                          <Typography variant="body1" fontWeight={600}>
+                            {appointment.customer_name}
+                          </Typography>
+                        </Stack>
+
+                        {/* Serviço */}
+                        <Typography variant="body2" color="text.secondary">
+                          {appointment.service_name}
+                        </Typography>
+
+                        {/* Profissional */}
+                        <Typography variant="body2" color="text.secondary">
+                          {appointment.professional_name}
+                        </Typography>
+
+                        {/* Preço */}
+                        {appointment.price && (
+                          <Typography variant="body2" fontWeight={600} color="success.main">
+                            {formatCurrency(appointment.price)}
+                          </Typography>
+                        )}
+
+                        {/* Observações */}
+                        {appointment.notes && (
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontStyle: 'italic' }}
+                          >
+                            &quot;{appointment.notes}&quot;
+                          </Typography>
+                        )}
+
+                        <Divider />
+
+                        {/* Ações */}
+                        <Stack direction="row" spacing={1} justifyContent="flex-end">
+                          <Tooltip title="Editar">
+                            <IconButton size="small" href={`/agenda/${appointment.id}`}>
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Excluir">
+                            <IconButton size="small" color="error">
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </Box>
+      </Paper>
+
+      {/* Legenda */}
+      <Alert severity="info" sx={{ mt: 3 }}>
+        <Typography variant="body2">
+          <strong>Dica:</strong> Confirme agendamentos na véspera e use reagendamento quando
+          necessário. Clique em um agendamento para editar ou visualizar detalhes.
+        </Typography>
+      </Alert>
+    </Box>
   );
 }

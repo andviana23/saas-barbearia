@@ -12,7 +12,7 @@ function getScenario(request: Request): ServicosScenario {
   const url = new URL(request.url);
   const headerScenario = request.headers.get('x-mock-scenario');
   const queryScenario = url.searchParams.get('scenario');
-  
+
   return (headerScenario || queryScenario || 'success') as ServicosScenario;
 }
 
@@ -71,7 +71,7 @@ export const servicosHandlers = [
   // GET /api/servicos - Listar serviços
   http.get('/api/servicos', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'empty':
         return HttpResponse.json({
@@ -84,7 +84,7 @@ export const servicosHandlers = [
             total_pages: 0,
           },
         });
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -94,7 +94,7 @@ export const servicosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -104,24 +104,24 @@ export const servicosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const url = new URL(request.url);
         const categoria = url.searchParams.get('categoria');
         const ativo = url.searchParams.get('ativo');
-        
+
         let filteredServicos = mockServicos;
-        
+
         if (categoria) {
           filteredServicos = filteredServicos.filter((s) => s.categoria === categoria);
         }
-        
+
         if (ativo !== null) {
           const isAtivo = ativo === 'true';
           filteredServicos = filteredServicos.filter((s) => s.ativo === isAtivo);
         }
-        
+
         return HttpResponse.json({
           success: true,
           data: filteredServicos,
@@ -138,18 +138,18 @@ export const servicosHandlers = [
   // POST /api/servicos - Criar serviço
   http.post('/api/servicos', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'error-400':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Validation error',
+            error: 'Dados inválidos',
             details: 'Dados de serviço inválidos',
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -159,7 +159,7 @@ export const servicosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -170,7 +170,7 @@ export const servicosHandlers = [
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json(
           {
             success: true,
@@ -185,7 +185,7 @@ export const servicosHandlers = [
   http.put('/api/servicos/:id', async ({ request, params }) => {
     const scenario = getScenario(request);
     const { id } = params;
-    
+
     switch (scenario) {
       case 'error-400':
         return HttpResponse.json(
@@ -196,7 +196,7 @@ export const servicosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -206,7 +206,7 @@ export const servicosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -216,7 +216,7 @@ export const servicosHandlers = [
           id: id as string,
           updated_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json({
           success: true,
           data: updatedServico,
@@ -228,7 +228,7 @@ export const servicosHandlers = [
   http.delete('/api/servicos/:id', ({ request, params }) => {
     const scenario = getScenario(request);
     const { id } = params;
-    
+
     switch (scenario) {
       case 'error-400':
         return HttpResponse.json(
@@ -239,7 +239,7 @@ export const servicosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -249,7 +249,7 @@ export const servicosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -266,14 +266,14 @@ export const servicosHandlers = [
   // GET /api/servicos/categorias - Listar categorias
   http.get('/api/servicos/categorias', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'empty':
         return HttpResponse.json({
           success: true,
           data: [],
         });
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -283,7 +283,7 @@ export const servicosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({

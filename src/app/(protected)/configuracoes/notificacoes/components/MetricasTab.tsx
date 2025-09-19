@@ -29,6 +29,34 @@ import {
 
 import { useMetricasNotificacoes } from '@/hooks/use-notificacoes';
 
+// Interfaces para tipagem das métricas
+interface MetricaCanal {
+  nome: string;
+  total: number;
+  enviadas: number;
+  erros: number;
+}
+
+interface MetricaTemplate {
+  nome: string;
+  total: number;
+  enviadas: number;
+}
+
+interface ResumoMetricas {
+  total: number;
+  enviadas: number;
+  pendentes: number;
+  erros: number;
+  taxaSuccesso: number;
+}
+
+interface MetricasNotificacoes {
+  resumo: ResumoMetricas;
+  porCanal: MetricaCanal[];
+  porTemplate: MetricaTemplate[];
+}
+
 export default function MetricasTab() {
   const [periodo, setPeriodo] = useState({
     dataInicio: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 dias atrás
@@ -220,7 +248,7 @@ export default function MetricasTab() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {metricas?.data?.porCanal?.map((canal: any) => (
+                        {metricas?.data?.porCanal?.map((canal: MetricaCanal) => (
                           <TableRow key={canal.nome}>
                             <TableCell>
                               <Chip label={canal.nome} size="small" variant="outlined" />
@@ -260,7 +288,7 @@ export default function MetricasTab() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {metricas?.data?.porTemplate?.map((template: any) => (
+                        {metricas?.data?.porTemplate?.map((template: MetricaTemplate) => (
                           <TableRow key={template.nome}>
                             <TableCell>
                               <Typography variant="body2" noWrap>

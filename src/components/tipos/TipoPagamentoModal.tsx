@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { z } from 'zod';
 import {
   Dialog,
   DialogTitle,
@@ -35,19 +36,21 @@ interface TipoPagamentoModalProps {
   tipoPagamento?: TipoPagamento | null;
 }
 
-type FormData = {
-  nome: string;
-  descricao?: string;
-  codigo: string;
-  taxa_percentual: number;
-  taxa_fixa: number;
-  aceita_parcelamento: boolean;
-  max_parcelas: number;
-  requer_autorizacao: boolean;
-  ativo: boolean;
-  icon?: string;
-  cor?: string;
-};
+const formSchema = z.object({
+  nome: z.string().min(1, 'Nome é obrigatório'),
+  descricao: z.string().optional(),
+  codigo: z.string().min(1, 'Código é obrigatório'),
+  taxa_percentual: z.number().min(0, 'Taxa não pode ser negativa'),
+  taxa_fixa: z.number().min(0, 'Taxa fixa não pode ser negativa'),
+  aceita_parcelamento: z.boolean(),
+  max_parcelas: z.number().int().min(1, 'Mínimo 1 parcela'),
+  requer_autorizacao: z.boolean(),
+  ativo: z.boolean(),
+  icon: z.string().optional(),
+  cor: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const iconsOptions = [
   { value: 'CreditCard', label: 'Cartão de Crédito', icon: <CreditCard size={16} /> },
@@ -66,7 +69,6 @@ export default function TipoPagamentoModal({
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const isEditing = !!tipoPagamento;
-  const schema = isEditing ? updateTipoPagamentoSchema : createTipoPagamentoSchema;
 
   const {
     control,
@@ -76,7 +78,7 @@ export default function TipoPagamentoModal({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       nome: tipoPagamento?.nome || '',
       descricao: tipoPagamento?.descricao || '',
@@ -384,7 +386,7 @@ export default function TipoPagamentoModal({
                       content: '""',
                       width: 16,
                       height: 16,
-                      backgroundColor: corAtual || '#1976d2',
+                      backgroundColor: corAtual || '#4f8cff',
                       borderRadius: 1,
                       marginRight: 1,
                     },

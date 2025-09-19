@@ -44,7 +44,7 @@ export default function Page() {
           Click the button below, and view the sample error on the Sentry{' '}
           <a
             target="_blank"
-            href="https://saas-barbearia.sentry.io/issues/?project=4509906187517952"
+            href="https://saas-barbearia.sentry.io/issues/?project=4510032659349504"
           >
             Issues Page
           </a>

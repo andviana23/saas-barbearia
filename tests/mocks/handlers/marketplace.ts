@@ -12,7 +12,7 @@ function getScenario(request: Request): MarketplaceScenario {
   const url = new URL(request.url);
   const headerScenario = request.headers.get('x-mock-scenario');
   const queryScenario = url.searchParams.get('scenario');
-  
+
   return (headerScenario || queryScenario || 'success') as MarketplaceScenario;
 }
 
@@ -80,7 +80,7 @@ export const marketplaceHandlers = [
   // GET /api/marketplace/servicos - Listar serviços públicos
   http.get('/api/marketplace/servicos', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'empty':
         return HttpResponse.json({
@@ -93,7 +93,7 @@ export const marketplaceHandlers = [
             total_pages: 0,
           },
         });
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -103,7 +103,7 @@ export const marketplaceHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -113,18 +113,18 @@ export const marketplaceHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const url = new URL(request.url);
         const destaque = url.searchParams.get('destaque');
-        
+
         let filteredServicos = mockMarketplaceServicos;
-        
+
         if (destaque === 'true') {
           filteredServicos = filteredServicos.filter((s) => s.destaque);
         }
-        
+
         return HttpResponse.json({
           success: true,
           data: filteredServicos,
@@ -141,7 +141,7 @@ export const marketplaceHandlers = [
   // POST /api/marketplace/reservas - Criar reserva
   http.post('/api/marketplace/reservas', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'unauthorized':
         return HttpResponse.json(
@@ -152,7 +152,7 @@ export const marketplaceHandlers = [
           },
           { status: 401 },
         );
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -162,7 +162,7 @@ export const marketplaceHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -172,7 +172,7 @@ export const marketplaceHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -182,7 +182,7 @@ export const marketplaceHandlers = [
           status: 'pendente',
           created_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json(
           {
             success: true,
@@ -197,7 +197,7 @@ export const marketplaceHandlers = [
   // GET /api/marketplace/reservas - Listar reservas (admin)
   http.get('/api/marketplace/reservas', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'unauthorized':
         return HttpResponse.json(
@@ -208,7 +208,7 @@ export const marketplaceHandlers = [
           },
           { status: 403 },
         );
-      
+
       case 'empty':
         return HttpResponse.json({
           success: true,
@@ -220,7 +220,7 @@ export const marketplaceHandlers = [
             total_pages: 0,
           },
         });
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -230,7 +230,7 @@ export const marketplaceHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -250,7 +250,7 @@ export const marketplaceHandlers = [
   http.put('/api/marketplace/reservas/:id', async ({ request, params }) => {
     const scenario = getScenario(request);
     const { id } = params;
-    
+
     switch (scenario) {
       case 'unauthorized':
         return HttpResponse.json(
@@ -261,7 +261,7 @@ export const marketplaceHandlers = [
           },
           { status: 403 },
         );
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -271,7 +271,7 @@ export const marketplaceHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -281,7 +281,7 @@ export const marketplaceHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -291,7 +291,7 @@ export const marketplaceHandlers = [
           id: id as string,
           updated_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json({
           success: true,
           data: updatedReserva,
@@ -299,10 +299,53 @@ export const marketplaceHandlers = [
     }
   }),
 
+  // GET /api/marketplace/admin/stats - Estatísticas administrativas
+  http.get('/api/marketplace/admin/stats', ({ request }) => {
+    const scenario = getScenario(request);
+
+    switch (scenario) {
+      case 'unauthorized':
+        return HttpResponse.json(
+          {
+            success: false,
+            error: 'Acesso negado',
+            details: 'Unauthorized',
+          },
+          { status: 403 },
+        );
+
+      case 'error-500':
+        return HttpResponse.json(
+          {
+            success: false,
+            error: 'Internal server error',
+            details: 'Erro interno do servidor',
+          },
+          { status: 500 },
+        );
+
+      case 'success':
+      default:
+        return HttpResponse.json({
+          success: true,
+          data: {
+            total_servicos: 2,
+            total_reservas: 1,
+            reservas_pendentes: 0,
+            reservas_confirmadas: 1,
+            receita_total: 45.0,
+            avaliacao_media: 4.65,
+            usuarios_ativos: 15,
+            conversao_rate: 0.23,
+          },
+        });
+    }
+  }),
+
   // GET /api/marketplace/stats - Estatísticas do marketplace
   http.get('/api/marketplace/stats', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'unauthorized':
         return HttpResponse.json(
@@ -313,7 +356,7 @@ export const marketplaceHandlers = [
           },
           { status: 403 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -323,7 +366,7 @@ export const marketplaceHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({

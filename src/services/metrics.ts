@@ -1,5 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createBrowserSupabase } from '@/lib/supabase/client';
+
+// Interface para o cliente Supabase simplificado
+interface SupabaseQuery {
+  select: (columns: string) => SupabaseQuery;
+  eq: (column: string, value: string) => SupabaseQuery;
+  gte: (column: string, value: string) => SupabaseQuery;
+  lte: (column: string, value: string) => SupabaseQuery;
+  then: (
+    callback: (result: { data: unknown; error: unknown }) => void,
+  ) => Promise<{ data: unknown; error: unknown }>;
+}
+
+interface SupabaseClient {
+  from: (table: string) => SupabaseQuery;
+}
 
 // Tipos mínimos locais para evitar propagação de any e explosão de tipos do supabase
 interface FinancialTxRecord {
@@ -76,23 +90,21 @@ export async function getRevenueMetrics(
   unidadeId?: string,
 ): Promise<RevenueMetrics> {
   // Usamos casting pontual para evitar TS2589 mantendo superfície tipada mínima
-  const supabase = createBrowserSupabase() as unknown as {
-    from: (table: string) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  };
+  const supabase = createBrowserSupabase() as unknown as SupabaseClient;
 
   try {
     // Separar declaração para evitar profundidade de tipo excessiva no encadeamento
-    let query: any = supabase
+    let query = supabase
       .from('financial_transactions')
       .select('amount_cents, type, created_at, unit_id');
 
-    // Cast para any para evitar problemas de tipagem do Supabase
-    query = query.eq('type' as any, 'income' as any);
-    query = query.gte('created_at' as any, range.from.toISOString());
-    query = query.lte('created_at' as any, range.to.toISOString());
+    // Aplicar filtros
+    query = query.eq('type', 'income');
+    query = query.gte('created_at', range.from.toISOString());
+    query = query.lte('created_at', range.to.toISOString());
 
     if (unidadeId) {
-      query = query.eq('unit_id' as any, unidadeId as any);
+      query = query.eq('unit_id', unidadeId);
     }
 
     const { data, error } = await query;
@@ -147,16 +159,16 @@ export async function getRevenueMetrics(
     prevTo.setTime(prevFrom.getTime() - 1);
     prevFrom.setTime(prevFrom.getTime() - diffMs);
 
-    let prevQuery: any = supabase
+    let prevQuery = supabase
       .from('financial_transactions')
       .select('amount_cents, type, created_at, unit_id');
 
-    prevQuery = prevQuery.eq('type' as any, 'income' as any);
-    prevQuery = prevQuery.gte('created_at' as any, prevFrom.toISOString());
-    prevQuery = prevQuery.lte('created_at' as any, prevTo.toISOString());
+    prevQuery = prevQuery.eq('type', 'income');
+    prevQuery = prevQuery.gte('created_at', prevFrom.toISOString());
+    prevQuery = prevQuery.lte('created_at', prevTo.toISOString());
 
     if (unidadeId) {
-      prevQuery = prevQuery.eq('unit_id' as any, unidadeId as any);
+      prevQuery = prevQuery.eq('unit_id', unidadeId);
     }
 
     const { data: prevData } = await prevQuery;
@@ -178,16 +190,16 @@ export async function getSubscriptionMetrics(
   range: DateRange,
   unidadeId?: string,
 ): Promise<SubscriptionMetrics> {
-  const supabase = createBrowserSupabase() as unknown as { from: (t: string) => any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const supabase = createBrowserSupabase() as unknown as SupabaseClient;
 
   try {
-    let query: any = supabase.from('subscriptions').select('status, created_at, unit_id');
+    let query = supabase.from('subscriptions').select('status, created_at, unit_id');
 
-    query = query.gte('created_at' as any, range.from.toISOString());
-    query = query.lte('created_at' as any, range.to.toISOString());
+    query = query.gte('created_at', range.from.toISOString());
+    query = query.lte('created_at', range.to.toISOString());
 
     if (unidadeId) {
-      query = query.eq('unit_id' as any, unidadeId as any);
+      query = query.eq('unit_id', unidadeId);
     }
 
     const { data, error } = await query;
@@ -214,13 +226,13 @@ export async function getSubscriptionMetrics(
     prevTo.setTime(prevFrom.getTime() - 1);
     prevFrom.setTime(prevFrom.getTime() - diffMs);
 
-    let prevQuery: any = supabase.from('subscriptions').select('status, created_at, unit_id');
+    let prevQuery = supabase.from('subscriptions').select('status, created_at, unit_id');
 
-    prevQuery = prevQuery.gte('created_at' as any, prevFrom.toISOString());
-    prevQuery = prevQuery.lte('created_at' as any, prevTo.toISOString());
+    prevQuery = prevQuery.gte('created_at', prevFrom.toISOString());
+    prevQuery = prevQuery.lte('created_at', prevTo.toISOString());
 
     if (unidadeId) {
-      prevQuery = prevQuery.eq('unit_id' as any, unidadeId as any);
+      prevQuery = prevQuery.eq('unit_id', unidadeId);
     }
 
     const { data: prevData } = await prevQuery;
@@ -246,16 +258,16 @@ export async function getAppointmentMetrics(
   range: DateRange,
   unidadeId?: string,
 ): Promise<AppointmentMetrics> {
-  const supabase = createBrowserSupabase() as unknown as { from: (t: string) => any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const supabase = createBrowserSupabase() as unknown as SupabaseClient;
 
   try {
-    let query: any = supabase.from('appointments').select('status, created_at, unit_id');
+    let query = supabase.from('appointments').select('status, created_at, unit_id');
 
-    query = query.gte('created_at' as any, range.from.toISOString());
-    query = query.lte('created_at' as any, range.to.toISOString());
+    query = query.gte('created_at', range.from.toISOString());
+    query = query.lte('created_at', range.to.toISOString());
 
     if (unidadeId) {
-      query = query.eq('unit_id' as any, unidadeId as any);
+      query = query.eq('unit_id', unidadeId);
     }
 
     const { data, error } = await query;
@@ -279,13 +291,13 @@ export async function getAppointmentMetrics(
     prevTo.setTime(prevFrom.getTime() - 1);
     prevFrom.setTime(prevFrom.getTime() - diffMs);
 
-    let prevQuery: any = supabase.from('appointments').select('status, created_at, unit_id');
+    let prevQuery = supabase.from('appointments').select('status, created_at, unit_id');
 
-    prevQuery = prevQuery.gte('created_at' as any, prevFrom.toISOString());
-    prevQuery = prevQuery.lte('created_at' as any, prevTo.toISOString());
+    prevQuery = prevQuery.gte('created_at', prevFrom.toISOString());
+    prevQuery = prevQuery.lte('created_at', prevTo.toISOString());
 
     if (unidadeId) {
-      prevQuery = prevQuery.eq('unit_id' as any, unidadeId as any);
+      prevQuery = prevQuery.eq('unit_id', unidadeId);
     }
 
     const { data: prevApts } = await prevQuery;
@@ -307,18 +319,16 @@ export async function getCashboxMetrics(
   range: DateRange,
   unidadeId?: string,
 ): Promise<CashboxMetrics> {
-  const supabase = createBrowserSupabase() as unknown as { from: (t: string) => any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const supabase = createBrowserSupabase() as unknown as SupabaseClient;
 
   try {
-    let query: any = supabase
-      .from('cashbox_transactions')
-      .select('amount_cents, type, created_at, unit_id');
+    let query = supabase.from('cashbox_transactions').select('amount, type, created_at, unit_id');
 
-    query = query.gte('created_at' as any, range.from.toISOString());
-    query = query.lte('created_at' as any, range.to.toISOString());
+    query = query.gte('created_at', range.from.toISOString());
+    query = query.lte('created_at', range.to.toISOString());
 
     if (unidadeId) {
-      query = query.eq('unit_id' as any, unidadeId as any);
+      query = query.eq('unit_id', unidadeId);
     }
 
     const { data, error } = await query;
@@ -331,15 +341,13 @@ export async function getCashboxMetrics(
     const records: CashboxTxRecord[] = Array.isArray(data) ? data : [];
     const validRecords = records.filter((item): item is CashboxTxRecord => !!item);
 
-    const inflow =
-      validRecords
-        .filter((item) => item.type === 'income')
-        .reduce((sum, item) => sum + (item.amount_cents || 0), 0) / 100;
+    const inflow = validRecords
+      .filter((item) => item.type === 'income')
+      .reduce((sum, item) => sum + (item.amount_cents || 0), 0);
 
-    const outflow =
-      validRecords
-        .filter((item) => item.type === 'expense')
-        .reduce((sum, item) => sum + (item.amount_cents || 0), 0) / 100;
+    const outflow = validRecords
+      .filter((item) => item.type === 'expense')
+      .reduce((sum, item) => sum + (item.amount_cents || 0), 0);
 
     const balance = inflow - outflow;
 
@@ -350,15 +358,15 @@ export async function getCashboxMetrics(
     prevTo.setTime(prevFrom.getTime() - 1);
     prevFrom.setTime(prevFrom.getTime() - diffMs);
 
-    let prevQuery: any = supabase
+    let prevQuery = supabase
       .from('cashbox_transactions')
-      .select('amount_cents, type, created_at, unit_id');
+      .select('amount, type, created_at, unit_id');
 
-    prevQuery = prevQuery.gte('created_at' as any, prevFrom.toISOString());
-    prevQuery = prevQuery.lte('created_at' as any, prevTo.toISOString());
+    prevQuery = prevQuery.gte('created_at', prevFrom.toISOString());
+    prevQuery = prevQuery.lte('created_at', prevTo.toISOString());
 
     if (unidadeId) {
-      prevQuery = prevQuery.eq('unit_id' as any, unidadeId as any);
+      prevQuery = prevQuery.eq('unit_id', unidadeId);
     }
 
     const { data: prevData } = await prevQuery;
@@ -366,15 +374,13 @@ export async function getCashboxMetrics(
       (item): item is CashboxTxRecord => !!item,
     );
 
-    const prevInflow =
-      prevRecords
-        .filter((item) => item.type === 'income')
-        .reduce((sum, item) => sum + (item.amount_cents || 0), 0) / 100;
+    const prevInflow = prevRecords
+      .filter((item) => item.type === 'income')
+      .reduce((sum, item) => sum + (item.amount_cents || 0), 0);
 
-    const prevOutflow =
-      prevRecords
-        .filter((item) => item.type === 'expense')
-        .reduce((sum, item) => sum + (item.amount_cents || 0), 0) / 100;
+    const prevOutflow = prevRecords
+      .filter((item) => item.type === 'expense')
+      .reduce((sum, item) => sum + (item.amount_cents || 0), 0);
 
     const prevBalance = prevInflow - prevOutflow;
     const deltaPct =
@@ -392,10 +398,10 @@ export async function getTopServices(
   unidadeId?: string,
   limit = 5,
 ): Promise<TopService[]> {
-  const supabase = createBrowserSupabase() as unknown as { from: (t: string) => any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const supabase = createBrowserSupabase() as unknown as SupabaseClient;
 
   try {
-    let query: any = supabase.from('appointment_services').select(`
+    let query = supabase.from('appointment_services').select(`
         service_id,
         price,
         appointments!inner (
@@ -409,12 +415,12 @@ export async function getTopServices(
         )
       `);
 
-    query = query.eq('appointments.status' as any, 'confirmado' as any);
-    query = query.gte('appointments.created_at' as any, range.from.toISOString());
-    query = query.lte('appointments.created_at' as any, range.to.toISOString());
+    query = query.eq('appointments.status', 'confirmado');
+    query = query.gte('appointments.created_at', range.from.toISOString());
+    query = query.lte('appointments.created_at', range.to.toISOString());
 
     if (unidadeId) {
-      query = query.eq('appointments.unit_id' as any, unidadeId as any);
+      query = query.eq('appointments.unit_id', unidadeId);
     }
 
     const { data, error } = await query;

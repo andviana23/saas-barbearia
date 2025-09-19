@@ -31,7 +31,7 @@ export const LGPDConsentimentoBase = z.object({
   revogado: z.boolean().default(false),
   data_revogacao: z.string().optional(),
   origem: z.enum(['web', 'mobile', 'api']).default('web'),
-  dados_adicionais: z.record(z.any()).optional(),
+  dados_adicionais: z.record(z.string(), z.unknown()).optional(),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
 });
@@ -92,7 +92,7 @@ export const LGPDSolicitacaoBase = z.object({
   tipo_solicitacao: TipoSolicitacaoLGPDSchema,
   status: StatusSolicitacaoSchema.default('pendente'),
   motivo: z.string().optional(),
-  dados_solicitados: z.record(z.any()).optional(),
+  dados_solicitados: z.record(z.string(), z.unknown()).optional(),
   resposta: z.string().optional(),
   arquivo_resposta_url: z.string().url().optional(),
   data_solicitacao: z.string().optional(),
@@ -115,6 +115,7 @@ export const CreateLGPDSolicitacaoSchema = LGPDSolicitacaoBase.omit({
   data_solicitacao: true,
   data_resposta: true,
   protocolo: true,
+  prazo_limite: true,
   status: true,
   created_at: true,
   updated_at: true,
@@ -152,7 +153,7 @@ export const LGPDExclusaoSchema = z.object({
   tabela: z.string().min(1),
   registro_id: z.string().uuid(),
   tipo_exclusao: TipoExclusaoSchema.default('soft'),
-  dados_excluidos: z.record(z.any()),
+  dados_excluidos: z.record(z.string(), z.unknown()),
   data_exclusao: z.string().optional(),
   motivo_exclusao: MotivoExclusaoSchema.default('solicitacao_titular'),
   executado_por: z.string().uuid().optional(),
@@ -181,7 +182,7 @@ export const LGPDTermoBase = z.object({
   data_expiracao: z.string().optional(),
   ativo: z.boolean().default(true),
   obrigatorio: z.boolean().default(true),
-  aplicavel_a: z.record(z.any()).optional(),
+  aplicavel_a: z.record(z.string(), z.unknown()).optional(),
   idioma: z.string().default('pt-BR'),
   checksum: z.string(),
   aprovado_por: z.string().uuid().optional(),
@@ -392,7 +393,7 @@ export const RelatorioConformidadeSchema = z.object({
 export const AuditoriaLGPDSchema = z.object({
   entidade: z.string(), // tabela ou processo auditado
   evento: z.string(), // tipo de evento auditado
-  detalhes: z.record(z.any()),
+  detalhes: z.record(z.string(), z.unknown()),
   conformidade: z.boolean(),
   observacoes: z.string().optional(),
   recomendacoes: z.array(z.string()).optional(),
@@ -411,7 +412,7 @@ export const ConfiguracaoLGPDSchema = z.object({
   auto_aprovacao_acesso: z.boolean().default(false),
   retenao_logs_dias: z.number().int().min(30).max(2555).default(1095), // 3 anos
   backup_dados_excluidos: z.boolean().default(true),
-  configuracoes_adicionais: z.record(z.any()).optional(),
+  configuracoes_adicionais: z.record(z.string(), z.unknown()).optional(),
 });
 
 // =====================================================

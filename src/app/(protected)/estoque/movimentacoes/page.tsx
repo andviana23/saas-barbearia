@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Container,
   Box,
@@ -33,7 +35,7 @@ import {
   FilterList,
 } from '@mui/icons-material';
 import { useState } from 'react';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function EstoqueMovimentacoesPage() {
   const [filtroTipo, setFiltroTipo] = useState('todos');
@@ -281,13 +283,13 @@ export default function EstoqueMovimentacoesPage() {
             <Table>
               <TableHead>
                 <TableRow sx={{ bgcolor: 'grey.50' }}>
-                  <TableCell fontWeight="bold">Data/Hora</TableCell>
-                  <TableCell fontWeight="bold">Produto</TableCell>
-                  <TableCell fontWeight="bold">Tipo</TableCell>
-                  <TableCell fontWeight="bold">Quantidade</TableCell>
-                  <TableCell fontWeight="bold">Estoque</TableCell>
-                  <TableCell fontWeight="bold">Motivo</TableCell>
-                  <TableCell fontWeight="bold">Usuário</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Data/Hora</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Produto</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Tipo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Quantidade</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Estoque</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Motivo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Usuário</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

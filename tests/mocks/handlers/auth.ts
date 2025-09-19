@@ -12,7 +12,7 @@ function getScenario(request: Request): AuthScenario {
   const url = new URL(request.url);
   const headerScenario = request.headers.get('x-mock-scenario');
   const queryScenario = url.searchParams.get('scenario');
-  
+
   return (headerScenario || queryScenario || 'success') as AuthScenario;
 }
 
@@ -55,28 +55,28 @@ export const authHandlers = [
   // POST /api/auth/signin - Login
   http.post('/api/auth/signin', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'invalid-credentials':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Invalid credentials',
+            error: 'Credenciais inválidas',
             details: 'Email ou senha incorretos',
           },
           { status: 401 },
         );
-      
+
       case 'user-not-found':
         return HttpResponse.json(
           {
             success: false,
-            error: 'User not found',
-            details: 'Usuário não encontrado',
+            error: 'Usuário não encontrado',
+            details: 'User not found',
           },
           { status: 404 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -86,12 +86,12 @@ export const authHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as { email: string; password: string };
         const user = mockUsers[body.email as keyof typeof mockUsers];
-        
+
         if (!user) {
           return HttpResponse.json(
             {
@@ -102,7 +102,7 @@ export const authHandlers = [
             { status: 404 },
           );
         }
-        
+
         return HttpResponse.json({
           success: true,
           data: {
@@ -126,7 +126,7 @@ export const authHandlers = [
   // POST /api/auth/signout - Logout
   http.post('/api/auth/signout', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'error-500':
         return HttpResponse.json(
@@ -137,7 +137,7 @@ export const authHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -150,7 +150,7 @@ export const authHandlers = [
   // POST /api/auth/reset-password - Redefinir senha
   http.post('/api/auth/reset-password', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'user-not-found':
         return HttpResponse.json(
@@ -161,7 +161,7 @@ export const authHandlers = [
           },
           { status: 404 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -171,7 +171,7 @@ export const authHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -185,7 +185,7 @@ export const authHandlers = [
   http.get('/api/auth/me', ({ request }) => {
     const scenario = getScenario(request);
     const authHeader = request.headers.get('Authorization');
-    
+
     switch (scenario) {
       case 'invalid-credentials':
         return HttpResponse.json(
@@ -196,7 +196,7 @@ export const authHandlers = [
           },
           { status: 401 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -206,7 +206,7 @@ export const authHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -219,11 +219,11 @@ export const authHandlers = [
             { status: 401 },
           );
         }
-        
+
         // Simula usuário baseado no token
         const isAdminToken = authHeader.includes('user-admin');
         const user = isAdminToken ? mockUsers['admin@test.com'] : mockUsers['funcionario@test.com'];
-        
+
         return HttpResponse.json({
           success: true,
           data: {
@@ -243,7 +243,7 @@ export const authHandlers = [
   // POST /api/auth/refresh - Renovar token
   http.post('/api/auth/refresh', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'invalid-credentials':
         return HttpResponse.json(
@@ -254,7 +254,7 @@ export const authHandlers = [
           },
           { status: 401 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -264,13 +264,13 @@ export const authHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as { refresh_token: string };
         const isAdminToken = body.refresh_token.includes('user-admin');
         const userId = isAdminToken ? 'user-admin' : 'user-func';
-        
+
         return HttpResponse.json({
           success: true,
           data: {

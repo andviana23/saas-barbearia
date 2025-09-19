@@ -16,6 +16,7 @@ export class AsaasClient {
   private headers() {
     return {
       'Content-Type': 'application/json',
+      'User-Agent': 'Trato-SaaS-Barbearia/1.0',
       access_token: this.apiKey,
     };
   }

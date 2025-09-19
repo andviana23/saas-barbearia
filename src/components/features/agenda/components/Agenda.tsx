@@ -19,7 +19,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { SidebarFiltros } from './SidebarFiltros';
 import { GradeHorarios } from './GradeHorarios';
 import { StatsCards } from './StatsCards';
-import type { Appointment, Professional, Service } from '@/app/agenda/page';
+import type { Appointment, Professional, Service } from '@/app/(protected)/agenda/page';
 
 export const PIXELS_PER_MINUTE = 2; // escala vertical
 

@@ -128,10 +128,10 @@ export const queryKeys = {
 export const invalidatePatterns = {
   // Invalida tudo de uma entidade
   entity: (queryClient: QueryClientType, entity: keyof typeof queryKeys) => {
-    const entityKeys = queryKeys[entity] as any;
-    if (entityKeys && entityKeys.all) {
+    const entityKeys = queryKeys[entity] as Record<string, unknown>;
+    if (entityKeys && entityKeys.all && Array.isArray(entityKeys.all)) {
       return queryClient.invalidateQueries({
-        queryKey: entityKeys.all,
+        queryKey: entityKeys.all as readonly unknown[],
       });
     }
     return Promise.resolve();
@@ -158,10 +158,10 @@ export const invalidatePatterns = {
   // Invalida múltiplas entidades (para relacionamentos)
   multiple: (queryClient: QueryClientType, entities: Array<keyof typeof queryKeys>) => {
     entities.forEach((entity) => {
-      const entityKeys = queryKeys[entity] as any;
-      if (entityKeys && entityKeys.all) {
+      const entityKeys = queryKeys[entity] as Record<string, unknown>;
+      if (entityKeys && entityKeys.all && Array.isArray(entityKeys.all)) {
         queryClient.invalidateQueries({
-          queryKey: entityKeys.all,
+          queryKey: entityKeys.all as readonly unknown[],
         });
       }
     });

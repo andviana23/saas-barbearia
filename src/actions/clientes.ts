@@ -279,12 +279,7 @@ export async function listClientes(filters: Partial<ClientFilterData> = {}): Pro
 
     let query = createServerSupabase()
       .from('customers')
-      .select(
-        `
-        *,
-        unidade:unidades(id, nome)
-      `,
-      )
+      .select('*')
       .order(defaultFilters.sort || 'created_at', {
         ascending: defaultFilters.order === 'asc',
       });
@@ -293,24 +288,40 @@ export async function listClientes(filters: Partial<ClientFilterData> = {}): Pro
     if (filters.q) {
       // Busca por nome, telefone ou email
       query = query.or(
-        `nome.ilike.%${filters.q}%,telefone.ilike.%${filters.q}%,email.ilike.%${filters.q}%`,
+        `name.ilike.%${filters.q}%,phone.ilike.%${filters.q}%,email.ilike.%${filters.q}%`,
       );
     }
 
     if (filters.ativo !== undefined) {
-      query = query.eq('ativo', filters.ativo);
+      query = query.eq('is_active', filters.ativo);
     }
 
     if (filters.unidade_id) {
-      query = query.eq('unit_id', filters.unidade_id);
+      // Verificar se é um UUID válido antes de aplicar o filtro
+      const uuidRegex =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (uuidRegex.test(filters.unidade_id)) {
+        query = query.eq('unit_id', filters.unidade_id);
+      } else {
+        // Retornar lista vazia para unidade_id inválido
+        return {
+          success: true,
+          data: {
+            clientes: [],
+            total: 0,
+            page: defaultFilters.page,
+            limit: defaultFilters.limit,
+          },
+        };
+      }
     }
 
     if (filters.data_nascimento_inicio) {
-      query = query.gte('data_nascimento', filters.data_nascimento_inicio);
+      query = query.gte('birth_date', filters.data_nascimento_inicio);
     }
 
     if (filters.data_nascimento_fim) {
-      query = query.lte('data_nascimento', filters.data_nascimento_fim);
+      query = query.lte('birth_date', filters.data_nascimento_fim);
     }
 
     if (filters.tem_email !== undefined) {
@@ -327,14 +338,32 @@ export async function listClientes(filters: Partial<ClientFilterData> = {}): Pro
 
     const { data: clientes, error, count } = await query;
 
+    console.log('🐛 Debug listClientes:', {
+      filters,
+      clientesCount: clientes?.length || 0,
+      totalCount: count,
+      error,
+      primeiroCliente: clientes?.[0],
+    });
+
     if (error) {
       throw new Error(`Erro ao listar clientes: ${error.message}`);
     }
 
+    // Mapear os campos do banco para os nomes esperados pelo frontend
+    const clientesMapeados = (clientes || []).map((cliente: any) => ({
+      ...cliente,
+      nome: cliente.name,
+      telefone: cliente.phone,
+      ativo: cliente.is_active,
+      data_nascimento: cliente.birth_date,
+      unidade_id: cliente.unit_id,
+    }));
+
     return {
       success: true,
       data: {
-        clientes: clientes || [],
+        clientes: clientesMapeados,
         total: count || 0,
         page: defaultFilters.page,
         limit: defaultFilters.limit,
@@ -353,12 +382,7 @@ export async function getCliente(id: string): Promise<ActionResult> {
   try {
     const { data: cliente, error } = await createServerSupabase()
       .from('customers')
-      .select(
-        `
-        *,
-        unidade:unidades(id, nome)
-      `,
-      )
+      .select('*')
       .eq('id', id)
       .single();
 
@@ -406,7 +430,7 @@ export async function getHistoricoCliente(
         *,
         profissional:profissionais(id, nome, papel),
         cliente:clientes(id, nome, telefone),
-        unidade:unidades(id, nome),
+
         servicos:appointments_servicos(
           *,
           servico:servicos(id, nome, preco, duracao_min)

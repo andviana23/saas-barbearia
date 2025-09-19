@@ -338,7 +338,7 @@ export function useEnvioRapido() {
         dataHorario: dados.dataHorario,
         nomeProfissional: dados.nomeProfissional,
         nomeServico: dados.nomeServico,
-        nomeUnidade: currentUnit.nome,
+        nomeUnidade: currentUnit.name,
       },
       prioridade: 2, // Alta prioridade para confirmações
     });
@@ -365,7 +365,7 @@ export function useEnvioRapido() {
         nomeCliente: dados.nomeCliente,
         horario: dados.horario,
         nomeProfissional: dados.nomeProfissional,
-        nomeUnidade: currentUnit.nome,
+        nomeUnidade: currentUnit.name,
       },
       prioridade: 3,
     });
@@ -417,7 +417,7 @@ export function useEnvioRapido() {
         nomeCliente: dados.nomeCliente,
         descricaoPromocao: dados.descricaoPromocao,
         dataVencimento: dados.dataVencimento,
-        nomeUnidade: currentUnit.nome,
+        nomeUnidade: currentUnit.name,
       },
       prioridade: 7, // Baixa prioridade para promoções
       agendarPara: dados.agendarPara,

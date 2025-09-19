@@ -56,6 +56,8 @@ export default function TiposPagamentoPage() {
     const result = await getTiposPagamento({
       search: searchTerm || undefined,
       ativo: undefined,
+      limit: 50,
+      offset: 0,
     });
 
     if (result.success) {
@@ -231,7 +233,7 @@ export default function TiposPagamentoPage() {
                           width: 20,
                           height: 20,
                           borderRadius: 1,
-                          backgroundColor: tipo.cor || '#1976d2',
+                          backgroundColor: tipo.cor || '#4f8cff',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',

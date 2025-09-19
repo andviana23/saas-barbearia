@@ -23,10 +23,10 @@ import {
 import { ActionResult } from '@/types';
 
 // Importações dos novos tipos centralizados
-import { 
-  Appointment as AppointmentNew, 
-  CreateAppointmentDTO, 
-  AppointmentFilters 
+import {
+  Appointment as AppointmentNew,
+  CreateAppointmentDTO,
+  AppointmentFilters,
 } from '@/types/api';
 import {
   CreateAppointmentSchema as CreateAppointmentSchemaNew,

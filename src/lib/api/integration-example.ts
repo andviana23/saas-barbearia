@@ -15,10 +15,10 @@ import { configureAuthRedirect, ApiError } from '@/lib/api/client';
 export function setupApiAuth() {
   configureAuthRedirect(async (error: ApiError) => {
     console.warn('Token de autenticação expirado:', error.message);
-    
+
     // Limpar estado de autenticação no cliente
     // await signOut(); // TODO: Implementar quando auth estiver disponível
-    
+
     // Redirecionar para página de login
     window.location.href = '/login';
   });
@@ -46,7 +46,7 @@ export async function exemploUsoAPIClient() {
       name: z.string(),
       email: z.string().email(),
     });
-    
+
     const validatedUser = await fetchJson('/api/user', { schema: userSchema });
     console.log('Usuário validado:', validatedUser);
 
@@ -91,7 +91,7 @@ export async function exemploUsoAPIClient() {
  */
 export function useApiClient() {
   const { fetchJson } = require('@/lib/api/client');
-  
+
   return {
     fetchJson,
     // Wrapper para requisições GET

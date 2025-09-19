@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AsaasWebhookEvent, WebhookProcessResult } from './webhookTypes';
 // Import dinâmico para compatibilizar ambiente Next (bundler) e Jest (node) sem extensão fixa
 import { routeAsaasEventSafely, SupabaseMinimal } from './webhookRouter';
 
 // Tipagem mínima para operações usadas (evita dependência total do client gerado)
-type SupabaseQueryResult = {
-  data?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+type SupabaseQueryResult<T = unknown> = {
+  data?: T;
   error?: { code?: string; message: string };
 };
 
@@ -44,7 +43,9 @@ export async function processAsaasWebhook(
 
     let eventRowId: string | null = null;
     if (!opts.reprocessExisting) {
-      const insertRes: SupabaseQueryResult = await (supabase as any)
+      const insertRes: SupabaseQueryResult<{ id: string; status: string }> = await (
+        supabase as unknown as any
+      )
         .from('asaas_webhook_events')
         .insert({
           event_id: eventId,
@@ -64,7 +65,7 @@ export async function processAsaasWebhook(
       }
       eventRowId = insertRes?.data?.id ?? null;
     } else {
-      const existing: SupabaseQueryResult = await (supabase as any)
+      const existing: SupabaseQueryResult<{ id: string }> = await (supabase as unknown as any)
         .from('asaas_webhook_events')
         .select('id')
         .eq('event_id', eventId)
@@ -78,7 +79,7 @@ export async function processAsaasWebhook(
       const router = deps.router ?? routeAsaasEventSafely;
       await router(eventType, event, supabase);
       const processingTime = Date.now() - started;
-      const updateRes: SupabaseQueryResult = await (supabase as any)
+      const updateRes: SupabaseQueryResult = await (supabase as unknown as any)
         .from('asaas_webhook_events')
         .update({
           status: 'processed',
@@ -91,7 +92,7 @@ export async function processAsaasWebhook(
       return { success: true };
     } catch (routerErr) {
       const processingTime = Date.now() - started;
-      await (supabase as any)
+      await (supabase as unknown as any)
         .from('asaas_webhook_events')
         .update({
           status: 'failed',

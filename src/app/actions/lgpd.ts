@@ -19,6 +19,27 @@ import {
   RelatorioConformidadeSchema,
 } from '@/schemas/lgpd';
 import type { ActionResult } from '@/types';
+import type {
+  CreateLGPDConsentimento,
+  UpdateLGPDConsentimento,
+  CreateLGPDSolicitacao,
+  UpdateLGPDSolicitacao,
+  CreateLGPDTermo,
+  UpdateLGPDTermo,
+  RegistrarAcesso,
+  LGPDFiltros,
+  LGPDPagination,
+  FormularioConsentimento,
+  SolicitacaoPortabilidade,
+  SolicitacaoExclusao,
+  RespostaSolicitacao,
+  RelatorioConformidade,
+  LGPDConsentimento,
+  LGPDSolicitacao,
+  LGPDTermo,
+  LGPDLogAcesso,
+  PaginatedResponse,
+} from '@/schemas/lgpd';
 import crypto from 'crypto';
 
 // =====================================================
@@ -29,7 +50,9 @@ import crypto from 'crypto';
 // 1. GESTÃO DE CONSENTIMENTOS
 // =====================================================
 
-export async function createConsentimento(data: any): Promise<ActionResult<any>> {
+export async function createConsentimento(
+  data: CreateLGPDConsentimento,
+): Promise<ActionResult<LGPDConsentimento>> {
   try {
     const supabase = createServerSupabase();
 
@@ -98,6 +121,8 @@ export async function createConsentimento(data: any): Promise<ActionResult<any>>
       operacao: 'INSERT',
       finalidade: 'Registrar consentimento do titular',
       base_legal: 'consentimento',
+      origem: 'sistema',
+      consentimento_validado: true,
     });
 
     revalidatePath('/lgpd/consentimentos');
@@ -119,7 +144,9 @@ export const criarSolicitacao = createSolicitacaoLGPD;
 export const listarSolicitacoes = getSolicitacoesPendentes;
 export const exportarDados = exportarDadosPessoais;
 
-export async function processarFormularioConsentimento(data: any): Promise<ActionResult<void>> {
+export async function processarFormularioConsentimento(
+  data: FormularioConsentimento,
+): Promise<ActionResult<void>> {
   try {
     const supabase = createServerSupabase();
 
@@ -195,6 +222,8 @@ export async function revogarConsentimento(
       operacao: 'UPDATE',
       finalidade: 'Revogação de consentimento pelo titular',
       base_legal: 'consentimento',
+      origem: 'sistema',
+      consentimento_validado: true,
     });
 
     revalidatePath('/lgpd/consentimentos');
@@ -208,9 +237,9 @@ export async function revogarConsentimento(
 }
 
 export async function getConsentimentosAtivos(
-  filters?: any,
-  pagination?: any,
-): Promise<ActionResult<any>> {
+  filters?: LGPDFiltros,
+  pagination?: LGPDPagination,
+): Promise<ActionResult<PaginatedResponse<LGPDConsentimento>>> {
   try {
     const supabase = createServerSupabase();
 
@@ -280,7 +309,9 @@ export async function getConsentimentosAtivos(
 // 2. SOLICITAÇÕES LGPD
 // =====================================================
 
-export async function createSolicitacaoLGPD(data: any): Promise<ActionResult<any>> {
+export async function createSolicitacaoLGPD(
+  data: CreateLGPDSolicitacao,
+): Promise<ActionResult<LGPDSolicitacao>> {
   try {
     const supabase = createServerSupabase();
 
@@ -327,6 +358,8 @@ export async function createSolicitacaoLGPD(data: any): Promise<ActionResult<any
       operacao: 'INSERT',
       finalidade: 'Exercício de direitos do titular',
       base_legal: 'exercicio_direitos',
+      origem: 'sistema',
+      consentimento_validado: true,
     });
 
     revalidatePath('/lgpd/solicitacoes');
@@ -339,7 +372,9 @@ export async function createSolicitacaoLGPD(data: any): Promise<ActionResult<any
   }
 }
 
-export async function solicitarPortabilidade(data: any): Promise<ActionResult<any>> {
+export async function solicitarPortabilidade(
+  data: SolicitacaoPortabilidade,
+): Promise<ActionResult<LGPDSolicitacao>> {
   try {
     const validatedData = SolicitacaoPortabilidadeSchema.parse(data);
 
@@ -379,7 +414,9 @@ export async function solicitarPortabilidade(data: any): Promise<ActionResult<an
   }
 }
 
-export async function solicitarExclusao(data: any): Promise<ActionResult<any>> {
+export async function solicitarExclusao(
+  data: SolicitacaoExclusao,
+): Promise<ActionResult<LGPDSolicitacao>> {
   try {
     const validatedData = SolicitacaoExclusaoSchema.parse(data);
 
@@ -422,8 +459,8 @@ export async function solicitarExclusao(data: any): Promise<ActionResult<any>> {
 
 export async function responderSolicitacao(
   solicitacaoId: string,
-  data: any,
-): Promise<ActionResult<any>> {
+  data: RespostaSolicitacao,
+): Promise<ActionResult<LGPDSolicitacao>> {
   try {
     const supabase = createServerSupabase();
 
@@ -473,6 +510,8 @@ export async function responderSolicitacao(
       operacao: 'UPDATE',
       finalidade: 'Resposta a solicitação de titular',
       base_legal: 'obrigacao_legal',
+      origem: 'sistema',
+      consentimento_validado: true,
     });
 
     revalidatePath('/lgpd/solicitacoes');
@@ -486,9 +525,9 @@ export async function responderSolicitacao(
 }
 
 export async function getSolicitacoesPendentes(
-  filters?: any,
-  pagination?: any,
-): Promise<ActionResult<any>> {
+  filters?: LGPDFiltros,
+  pagination?: LGPDPagination,
+): Promise<ActionResult<PaginatedResponse<LGPDSolicitacao>>> {
   try {
     const supabase = createServerSupabase();
 
@@ -550,7 +589,7 @@ export async function getSolicitacoesPendentes(
 // 3. TERMOS E POLÍTICAS
 // =====================================================
 
-export async function createTermo(data: any): Promise<ActionResult<any>> {
+export async function createTermo(data: CreateLGPDTermo): Promise<ActionResult<LGPDTermo>> {
   try {
     const supabase = createServerSupabase();
 
@@ -597,7 +636,7 @@ export async function createTermo(data: any): Promise<ActionResult<any>> {
   }
 }
 
-export async function getTermosAtivos(): Promise<ActionResult<any[]>> {
+export async function getTermosAtivos(): Promise<ActionResult<LGPDTermo[]>> {
   try {
     const supabase = createServerSupabase();
 
@@ -625,7 +664,9 @@ export async function getTermosAtivos(): Promise<ActionResult<any[]>> {
 // 4. LOGS E AUDITORIA
 // =====================================================
 
-export async function registrarAcessoDadosPessoais(data: any): Promise<ActionResult<any>> {
+export async function registrarAcessoDadosPessoais(
+  data: RegistrarAcesso,
+): Promise<ActionResult<LGPDLogAcesso>> {
   try {
     const supabase = createServerSupabase();
 
@@ -663,9 +704,9 @@ export async function registrarAcessoDadosPessoais(data: any): Promise<ActionRes
 }
 
 export async function getExclusoesAuditoria(
-  filters?: any,
-  pagination?: any,
-): Promise<ActionResult<any>> {
+  filters?: LGPDFiltros,
+  pagination?: LGPDPagination,
+): Promise<ActionResult<PaginatedResponse<unknown>>> {
   try {
     const supabase = createServerSupabase();
 
@@ -727,14 +768,16 @@ export async function getExclusoesAuditoria(
 // 5. RELATÓRIOS E EXPORTAÇÃO
 // =====================================================
 
-export async function gerarRelatorioConformidade(data: any): Promise<ActionResult<string>> {
+export async function gerarRelatorioConformidade(
+  data: RelatorioConformidade,
+): Promise<ActionResult<string>> {
   try {
     const validatedData = RelatorioConformidadeSchema.parse(data);
 
     const supabase = createServerSupabase();
 
     // Coletar dados para o relatório
-    const reportData: any = {
+    const reportData: Record<string, unknown> = {
       periodo: {
         inicio: validatedData.periodo_inicio,
         fim: validatedData.periodo_fim,
@@ -796,7 +839,7 @@ export async function exportarDadosPessoais(
     const supabase = createServerSupabase();
 
     // Coletar todos os dados pessoais do usuário
-    const dadosExportacao: any = {
+    const dadosExportacao: Record<string, unknown> = {
       exportado_em: new Date().toISOString(),
       formato,
       titular_id: profileId,
@@ -843,6 +886,8 @@ export async function exportarDadosPessoais(
       operacao: 'EXPORT',
       finalidade: 'Portabilidade de dados pessoais',
       base_legal: 'exercicio_direitos',
+      origem: 'sistema',
+      consentimento_validado: true,
     });
 
     // Gerar arquivo para download

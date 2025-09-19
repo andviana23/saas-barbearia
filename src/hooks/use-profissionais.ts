@@ -14,6 +14,45 @@ import {
 import type { ProfissionalFilterData, HorarioProfissionalFilterData } from '@/schemas';
 import type { ActionResult } from '@/types';
 
+// Interfaces para tipagem dos dados de profissionais
+interface Profissional {
+  id: string;
+  nome: string;
+  telefone: string;
+  email?: string;
+  papel: string;
+  ativo: boolean;
+  unidade_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface HorarioProfissional {
+  id: string;
+  profissional_id: string;
+  dia_semana: number;
+  hora_inicio: string;
+  hora_fim: string;
+  ativo: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ListProfissionaisResponse {
+  profissionais: Profissional[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface ProfissionalComHorarios extends Profissional {
+  horarios: HorarioProfissional[];
+}
+
+interface UpdateHorarioResponse {
+  profissional_id: string;
+}
+
 // Query Keys para consistência
 export const PROFISSIONAIS_QUERY_KEY = 'profissionais';
 export const HORARIOS_PROFISSIONAL_QUERY_KEY = 'horarios-profissional';
@@ -236,8 +275,9 @@ export function useUpdateHorarioProfissional() {
       return await updateHorarioProfissional(id, formData);
     },
     onSuccess: (result) => {
-      if (result.success && (result.data as any)?.profissional_id) {
-        const profissionalId = (result.data as any).profissional_id;
+      if (result.success && result.data) {
+        const updateResponse = result.data as UpdateHorarioResponse;
+        const profissionalId = updateResponse.profissional_id;
 
         // Invalidar todas as queries relacionadas ao profissional
         queryClient.invalidateQueries({
@@ -316,17 +356,19 @@ export function useProfissionaisComHorarios(unidadeId?: string) {
 
   const profissionaisComHorarios = useQuery({
     queryKey: [PROFISSIONAIS_QUERY_KEY, 'com-horarios', unidadeId],
-    queryFn: async () => {
-      if (
-        !profissionaisQuery.data?.success ||
-        !(profissionaisQuery.data.data as any).profissionais
-      ) {
+    queryFn: async (): Promise<ProfissionalComHorarios[]> => {
+      if (!profissionaisQuery.data?.success || !profissionaisQuery.data.data) {
+        return [];
+      }
+
+      const profissionaisData = profissionaisQuery.data.data as ListProfissionaisResponse;
+      if (!profissionaisData.profissionais) {
         return [];
       }
 
       const profissionaisComHorarios = await Promise.all(
-        (profissionaisQuery.data.data as any).profissionais.map(
-          async (profissional: { id: string; [key: string]: unknown }) => {
+        profissionaisData.profissionais.map(
+          async (profissional: Profissional): Promise<ProfissionalComHorarios> => {
             const horariosResult = await listHorariosProfissional(profissional.id, {
               page: 1,
               limit: 20,
@@ -335,7 +377,9 @@ export function useProfissionaisComHorarios(unidadeId?: string) {
             });
             return {
               ...profissional,
-              horarios: horariosResult.success ? horariosResult.data : [],
+              horarios: horariosResult.success
+                ? (horariosResult.data as HorarioProfissional[])
+                : [],
             };
           },
         ),

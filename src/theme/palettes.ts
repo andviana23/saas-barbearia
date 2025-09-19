@@ -6,20 +6,25 @@ import { PaletteOptions } from '@mui/material/styles';
 export const lightPalette: PaletteOptions = {
   mode: 'light',
   primary: {
-    main: '#F4A300',
-    light: '#F6B733',
-    dark: '#CC8A00',
+    main: '#4f8cff',
+    light: '#7aaaff',
+    dark: '#2c5fd8',
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#181818',
-    light: '#333333',
-    dark: '#000000',
+    main: '#6366f1',
+    light: '#818cf8',
+    dark: '#4f46e5',
     contrastText: '#FFFFFF',
   },
   background: {
-    default: '#FFFFFF',
+    default: '#F8FAFC',
     paper: '#FFFFFF',
+  },
+  // @ts-ignore surfaces não faz parte do PaletteOptions padrão
+  surfaces: {
+    surface1: '#FFFFFF',
+    surface2: '#F1F5F9',
   },
   text: {
     primary: '#181818',
@@ -28,16 +33,16 @@ export const lightPalette: PaletteOptions = {
   },
   divider: '#E5E7EB',
   action: {
-    active: '#F4A300',
-    hover: 'rgba(244, 163, 0, 0.04)',
-    selected: 'rgba(244, 163, 0, 0.12)',
+    active: '#4f8cff',
+    hover: 'rgba(79, 140, 255, 0.04)',
+    selected: 'rgba(79, 140, 255, 0.10)',
     disabled: '#E5E7EB',
     disabledBackground: '#F9FAFB',
   },
   success: {
-    main: '#10B981',
-    light: '#34D399',
-    dark: '#059669',
+    main: '#22C55E',
+    light: '#4ADE80',
+    dark: '#16A34A',
     contrastText: '#FFFFFF',
   },
   warning: {
@@ -73,46 +78,44 @@ export const lightPalette: PaletteOptions = {
 };
 
 /**
- * Paleta Dark - Design System Atualizado
+ * Paleta Dark - Design System v2.1
  */
 export const darkPalette: PaletteOptions = {
   mode: 'dark',
-
   primary: {
-    main: '#F4A300',
-    light: '#F6B733',
-    dark: '#CC8A00',
-    contrastText: '#181818',
+    main: '#4f8cff',
+    light: '#7aaaff',
+    dark: '#2c5fd8',
+    contrastText: '#FFFFFF',
   },
-
   secondary: {
-    main: '#FFFFFF',
-    light: '#FFFFFF',
-    dark: '#E5E7EB',
-    contrastText: '#181818',
+    main: '#6366f1',
+    light: '#818cf8',
+    dark: '#4f46e5',
+    contrastText: '#FFFFFF',
   },
-
   background: {
-    default: '#181818',
-    paper: '#2D2D2D',
+    default: '#0B0E13',
+    paper: '#12151D',
   },
-
+  // @ts-ignore surfaces não faz parte do PaletteOptions padrão
+  surfaces: {
+    surface1: '#161A23',
+    surface2: '#1C202B',
+  },
   text: {
-    primary: '#FFFFFF',
-    secondary: '#9CA3AF',
+    primary: '#F9FAFB',
+    secondary: '#A0A6B5',
     disabled: '#6B7280',
   },
-
   divider: 'rgba(255,255,255,0.08)',
-
   action: {
-    active: '#F4A300',
-    hover: 'rgba(244, 163, 0, 0.08)',
-    selected: 'rgba(244, 163, 0, 0.16)',
+    active: '#4f8cff',
+    hover: 'rgba(79, 140, 255, 0.08)',
+    selected: 'rgba(79, 140, 255, 0.16)',
     disabled: '#6B7280',
-    disabledBackground: '#374151',
+    disabledBackground: '#1C202B',
   },
-
   success: {
     main: '#22C55E',
     light: '#4ADE80',
@@ -132,12 +135,11 @@ export const darkPalette: PaletteOptions = {
     contrastText: '#FFFFFF',
   },
   info: {
-    main: '#22C55E',
-    light: '#4ADE80',
-    dark: '#16A34A',
+    main: '#2563EB',
+    light: '#60A5FA',
+    dark: '#1D4ED8',
     contrastText: '#FFFFFF',
   },
-
   grey: {
     50: '#F9FAFB',
     100: '#F3F4F6',

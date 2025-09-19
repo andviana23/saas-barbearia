@@ -1,21 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from './use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { supabase } from '@/lib/supabase/client';
 
 export interface Unidade {
   id: string;
-  nome: string;
-  endereco?: string;
-  telefone?: string;
-  email?: string;
-  ativa: boolean;
-  config?: Record<string, string | number | boolean | null>;
+  name: string;
+  slug: string;
+  timezone: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export function useCurrentUnit() {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const [currentUnit, setCurrentUnit] = useState<Unidade | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +36,10 @@ export function useCurrentUnit() {
       setError(null);
 
       const { data, error: fetchError } = await supabase
-        .from('unidades')
+        .from('units')
         .select('*')
         .eq('id', unidadeId)
-        .eq('ativa', true)
+        .eq('status', 'active')
         .single();
 
       if (fetchError) {
@@ -108,10 +108,10 @@ export function useCurrentUnit() {
       if (!user?.id) return [];
 
       const { data, error } = await supabase
-        .from('unidades')
-        .select('id, nome, ativa')
-        .eq('ativa', true)
-        .order('nome');
+        .from('units')
+        .select('id, name, status')
+        .eq('status', 'active')
+        .order('name');
 
       if (error) {
         throw error;

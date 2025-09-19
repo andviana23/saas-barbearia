@@ -25,6 +25,11 @@ import {
   MarketplaceFilters,
   MarketplacePagination,
 } from '@/types/marketplace';
+import {
+  UpdateMarketplaceServico,
+  UpdateReservaMarketplace,
+  UpdateConfiguracaoMarketplace,
+} from '@/schemas/marketplace';
 
 // =====================================================
 // HOOKS PARA MARKETPLACE DE SERVIÇOS
@@ -89,7 +94,8 @@ export function useUpdateMarketplaceServico() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateMarketplaceServico(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateMarketplaceServico }) =>
+      updateMarketplaceServico(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: marketplaceKeys.servico(id) });
       queryClient.invalidateQueries({ queryKey: marketplaceKeys.servicos() });
@@ -170,7 +176,8 @@ export function useUpdateReservaMarketplace() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateReservaMarketplace(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateReservaMarketplace }) =>
+      updateReservaMarketplace(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: marketplaceKeys.reservas() });
     },
@@ -207,7 +214,7 @@ export function useUpdateConfiguracaoMarketplace() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) =>
+    mutationFn: ({ id, data }: { id: string; data: UpdateConfiguracaoMarketplace }) =>
       updateConfiguracaoMarketplace(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({

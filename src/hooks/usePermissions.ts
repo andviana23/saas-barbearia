@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/hooks/use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { can, canAll, canAny, Resource, Action, PermissionContext } from '@/types/permissions';
 import { UserRole } from '@/routes';
 
@@ -8,11 +8,11 @@ import { UserRole } from '@/routes';
  * Hook para verificação de permissões
  */
 export function usePermission(resource: Resource, action: Action, context: PermissionContext = {}) {
-  const { user } = useAuth();
-  
+  const { user } = useAuthContext();
+
   // Extrair role do usuário
   const userRole = (user?.role || 'funcionario') as UserRole;
-  
+
   const isAllowed = can(resource, action, userRole, {
     ...context,
     userId: user?.id,
@@ -48,7 +48,7 @@ export function useMultiplePermissions(
   permissions: Array<{ resource: Resource; action: Action }>,
   context: PermissionContext = {},
 ) {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const userRole = (user?.role || 'funcionario') as UserRole;
 
   const results = permissions.map(({ resource, action }) => ({
@@ -78,7 +78,7 @@ export function useMultiplePermissions(
  * Hook simplificado para verificar acesso a recursos
  */
 export function useResourceAccess(resource: Resource, context: PermissionContext = {}) {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const userRole = (user?.role || 'funcionario') as UserRole;
 
   const ctx = { ...context, userId: user?.id };

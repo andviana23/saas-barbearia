@@ -25,6 +25,7 @@ import {
   EstatisticasMultiUnidade,
   ActionResult,
   PaginatedResponse,
+  RelatorioConsolidadoFilters,
 } from '@/types/multi-unidades';
 
 // =====================================================
@@ -36,7 +37,7 @@ import {
 // =====================================================
 
 export async function createPermissaoHierarquica(
-  data: any,
+  data: CreatePermissaoHierarquica,
 ): Promise<ActionResult<PermissaoHierarquica>> {
   try {
     const supabase = createServerSupabase();
@@ -54,7 +55,7 @@ export async function createPermissaoHierarquica(
     const { data: existingLevel } = await supabase
       .from('permissoes_hierarquicas')
       .select('id')
-      .eq('nivel_hierarquico', (validatedData as any).nivel_hierarquico)
+      .eq('nivel_hierarquico', validatedData.nivel_hierarquico)
       .single();
 
     if (existingLevel) {
@@ -64,7 +65,7 @@ export async function createPermissaoHierarquica(
     // Inserir permissão
     const { data: newPermissao, error } = await supabase
       .from('permissoes_hierarquicas')
-      .insert(validatedData as any)
+      .insert(validatedData)
       .select()
       .single();
 
@@ -86,7 +87,7 @@ export async function createPermissaoHierarquica(
 
 export async function updatePermissaoHierarquica(
   id: string,
-  data: any,
+  data: UpdatePermissaoHierarquica,
 ): Promise<ActionResult<PermissaoHierarquica>> {
   try {
     const supabase = createServerSupabase();
@@ -150,7 +151,7 @@ export async function getPermissoesHierarquicas(): Promise<ActionResult<Permissa
 // =====================================================
 
 export async function createAcessoMultiUnidade(
-  data: any,
+  data: CreateAcessoMultiUnidade,
 ): Promise<ActionResult<AcessoMultiUnidade>> {
   try {
     const supabase = createServerSupabase();
@@ -204,7 +205,7 @@ export async function createAcessoMultiUnidade(
 
 export async function updateAcessoMultiUnidade(
   id: string,
-  data: any,
+  data: UpdateAcessoMultiUnidade,
 ): Promise<ActionResult<AcessoMultiUnidade>> {
   try {
     const supabase = createServerSupabase();
@@ -285,7 +286,7 @@ export async function registrarAuditoria(
   unidadeId: string,
   acao: string,
   recurso: string,
-  dadosConsultados?: Record<string, any>,
+  dadosConsultados?: Record<string, unknown>,
 ): Promise<ActionResult<void>> {
   try {
     const supabase = createServerSupabase();
@@ -376,7 +377,7 @@ export async function getAuditoriaAcessos(
 // =====================================================
 
 export async function getFaturamentoConsolidado(
-  filters?: any,
+  filters?: RelatorioConsolidadoFilters,
 ): Promise<ActionResult<FaturamentoConsolidado[]>> {
   try {
     const supabase = createServerSupabase();
@@ -422,7 +423,7 @@ export async function getFaturamentoConsolidado(
 }
 
 export async function getServicosConsolidado(
-  filters?: any,
+  filters?: RelatorioConsolidadoFilters,
 ): Promise<ActionResult<ServicosConsolidado[]>> {
   try {
     const supabase = createServerSupabase();
@@ -465,7 +466,7 @@ export async function getServicosConsolidado(
 }
 
 export async function getProfissionaisConsolidado(
-  filters?: any,
+  filters?: RelatorioConsolidadoFilters,
 ): Promise<ActionResult<ProfissionaisConsolidado[]>> {
   try {
     const supabase = createServerSupabase();
@@ -511,7 +512,7 @@ export async function getProfissionaisConsolidado(
 }
 
 export async function getRelatoriosConsolidados(
-  filters?: any,
+  filters?: RelatorioConsolidadoFilters,
 ): Promise<ActionResult<RelatoriosConsolidadosResponse>> {
   try {
     // Buscar todos os relatórios consolidados

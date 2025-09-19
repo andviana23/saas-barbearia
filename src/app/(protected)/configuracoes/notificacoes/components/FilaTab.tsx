@@ -47,6 +47,43 @@ import {
 } from '@/hooks/use-notificacoes';
 import { useNotifications } from '@/components/ui/NotificationSystem';
 
+// Interfaces para tipagem
+interface ItemFila {
+  id: string;
+  status: 'pendente' | 'enviado' | 'erro' | 'agendado';
+  canalId: string;
+  templateId: string;
+  destinatario: string;
+  mensagem: string;
+  tentativas: number;
+  dataAgendamento?: string;
+  dataEnvio?: string;
+  erro?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CanalNotificacao {
+  id: string;
+  codigo: string;
+  nome: string;
+  ativo: boolean;
+  configuracao: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface TemplateNotificacao {
+  id: string;
+  codigo: string;
+  nome: string;
+  mensagem: string;
+  ativo: boolean;
+  canalId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function FilaTab() {
   const [filters, setFilters] = useState({
     status: '',
@@ -111,11 +148,11 @@ export default function FilaTab() {
       } else {
         throw new Error(result.error);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       addNotification({
         type: 'error',
         title: 'Erro',
-        message: error.message || 'Erro ao processar fila',
+        message: error instanceof Error ? error.message : 'Erro ao processar fila',
       });
     }
   };
@@ -141,10 +178,10 @@ export default function FilaTab() {
   // Calcular estatísticas da fila
   const stats = {
     total: fila?.data?.length || 0,
-    pendentes: fila?.data?.filter((item: any) => item.status === 'pendente').length || 0,
-    enviadas: fila?.data?.filter((item: any) => item.status === 'enviado').length || 0,
-    erros: fila?.data?.filter((item: any) => item.status === 'erro').length || 0,
-    agendadas: fila?.data?.filter((item: any) => item.status === 'agendado').length || 0,
+    pendentes: fila?.data?.filter((item: ItemFila) => item.status === 'pendente').length || 0,
+    enviadas: fila?.data?.filter((item: ItemFila) => item.status === 'enviado').length || 0,
+    erros: fila?.data?.filter((item: ItemFila) => item.status === 'erro').length || 0,
+    agendadas: fila?.data?.filter((item: ItemFila) => item.status === 'agendado').length || 0,
   };
 
   return (
@@ -264,7 +301,7 @@ export default function FilaTab() {
                   onChange={(e) => handleFilterChange('canalId', e.target.value)}
                 >
                   <MenuItem value="">Todos</MenuItem>
-                  {canais?.data?.map((canal: any) => (
+                  {canais?.data?.map((canal: CanalNotificacao) => (
                     <MenuItem key={canal.id} value={canal.id}>
                       {canal.nome}
                     </MenuItem>
@@ -282,7 +319,7 @@ export default function FilaTab() {
                   onChange={(e) => handleFilterChange('templateId', e.target.value)}
                 >
                   <MenuItem value="">Todos</MenuItem>
-                  {templates?.data?.map((template: any) => (
+                  {templates?.data?.map((template: TemplateNotificacao) => (
                     <MenuItem key={template.id} value={template.id}>
                       {template.nome}
                     </MenuItem>

@@ -19,7 +19,7 @@ export {
   ProdutoSchema,
   AssinaturaSchema,
   NotificacaoSchema,
-  
+
   // Schemas de criação
   CreateUnidadeSchema,
   CreateProfileSchema,
@@ -32,7 +32,7 @@ export {
   CreateProdutoSchema,
   CreateAssinaturaSchema,
   CreateNotificacaoSchema,
-  
+
   // Schemas de atualização
   UpdateUnidadeSchema,
   UpdateProfileSchema,
@@ -45,7 +45,7 @@ export {
   UpdateProdutoSchema,
   UpdateAssinaturaSchema,
   UpdateNotificacaoSchema,
-  
+
   // Schemas de filtros
   UnidadeFiltersSchema,
   ProfileFiltersSchema,
@@ -58,7 +58,7 @@ export {
   ProdutoFiltersSchema,
   AssinaturaFiltersSchema,
   NotificacaoFiltersSchema,
-  
+
   // Schemas utilitários
   EntityIdSchema,
   TimestampSchema,
@@ -67,7 +67,7 @@ export {
   ApiResponseSchema,
   PaginatedResponseSchema,
   ApiErrorSchema,
-  
+
   // Schemas de enum
   PapelUsuarioSchema,
   StatusAgendamentoSchema,
@@ -79,7 +79,7 @@ export {
   TipoAssinaturaSchema,
   TipoNotificacaoSchema,
   StatusNotificacaoSchema,
-  
+
   // Tipos inferidos dos schemas com alias para evitar conflitos
   type UnidadeInput,
   type UnidadeUpdate,

@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Button, Alert } from '@mui/material';
 import { Plus } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Tipos de Conta | Trato',
-  description: 'Gerenciar tipos de conta bancária',
-};
 
 export default function TiposContaPage() {
   return (

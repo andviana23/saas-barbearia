@@ -145,7 +145,7 @@ export default function TipoCategoriasReceitaModal({
           codigo: categoria.codigo || '',
           nome: categoria.nome || '',
           descricao: categoria.descricao || '',
-          cor: categoria.cor || '#4caf50',
+          cor: categoria.cor || '#10b981',
           icon: categoria.icon || '',
           categoria_pai_id: categoria.categoria_pai_id || null,
           meta_mensal: categoria.meta_mensal || null,
@@ -158,7 +158,7 @@ export default function TipoCategoriasReceitaModal({
           codigo: '',
           nome: '',
           descricao: '',
-          cor: '#4caf50',
+          cor: '#10b981',
           icon: '',
           categoria_pai_id: null,
           meta_mensal: null,
@@ -184,7 +184,7 @@ export default function TipoCategoriasReceitaModal({
       formData.append('codigo', data.codigo);
       formData.append('nome', data.nome);
       formData.append('descricao', data.descricao || '');
-      formData.append('cor_primaria', data.cor || '#4caf50');
+      formData.append('cor_primaria', data.cor || '#10b981');
       formData.append('icone', data.icon || '');
       formData.append('parent_id', data.categoria_pai_id || '');
       formData.append('meta_mensal', data.meta_mensal?.toString() || '');

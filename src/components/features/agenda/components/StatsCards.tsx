@@ -1,6 +1,6 @@
 'use client';
 import { Grid, Paper, Typography } from '@mui/material';
-import type { Appointment } from '@/app/agenda/page';
+import type { Appointment } from '@/app/(protected)/agenda/page';
 
 interface Props {
   appointments: Appointment[];

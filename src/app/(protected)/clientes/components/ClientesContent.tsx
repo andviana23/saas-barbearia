@@ -25,8 +25,10 @@ import {
 } from '@mui/icons-material';
 import { PageHeader, DSTable } from '@/components/ui';
 import { useClientes, useUpdateCliente } from '@/hooks/use-clientes';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { safeValidate } from '@/lib/validation';
 import { UpdateClienteSchema } from '@/schemas';
+import { Cliente, ClienteFilters } from '@/types/api';
 import ClientesFilters from './ClientesFilters';
 import ClienteFormDialog from './ClienteFormDialog';
 import ClienteDetailDialog from './ClienteDetailDialog';
@@ -35,25 +37,35 @@ import ImportClientesDialog from './ImportClientesDialog';
 interface ClientesContentProps {}
 
 interface ClientesData {
-  clientes: any[];
+  clientes: Cliente[];
   total: number;
   page: number;
   limit: number;
 }
 
 export default function ClientesContent({}: ClientesContentProps) {
-  const [filters, setFilters] = useState({
+  const { user, authLoading } = useAuthContext();
+
+  const [filters, setFilters] = useState<ClienteFilters>({
     q: '',
     ativo: true,
     page: 0,
     limit: 10,
-    order: 'desc' as const,
+    order: 'desc',
+    unidade_id: user?.unidade_default_id || undefined,
   });
+
+  // Atualizar unidade_id quando o usuário carregar
+  React.useEffect(() => {
+    if (user?.unidade_default_id && filters.unidade_id !== user.unidade_default_id) {
+      setFilters((prev) => ({ ...prev, unidade_id: user.unidade_default_id, page: 0 }));
+    }
+  }, [user, filters.unidade_id]);
 
   const [formDialog, setFormDialog] = useState<{
     open: boolean;
     mode: 'create' | 'edit';
-    cliente?: any;
+    cliente?: Cliente;
   }>({
     open: false,
     mode: 'create',
@@ -61,7 +73,7 @@ export default function ClientesContent({}: ClientesContentProps) {
 
   const [detailDialog, setDetailDialog] = useState<{
     open: boolean;
-    cliente?: any;
+    cliente?: Cliente;
   }>({
     open: false,
   });
@@ -77,12 +89,35 @@ export default function ClientesContent({}: ClientesContentProps) {
     severity: 'success',
   });
 
-  // Queries e mutations
-  const { data: clientesData, isLoading, error } = useClientes(filters);
+  // Queries e mutations - só buscar quando tiver unidade_id válido
+  const {
+    data: clientesData,
+    isLoading,
+    error,
+  } = useClientes(
+    filters.unidade_id && filters.unidade_id !== 'invalid'
+      ? filters
+      : { ...filters, unidade_id: 'invalid' },
+  );
   const updateClienteMutation = useUpdateCliente();
+
+  // Debug log
+  console.log('🐛 Debug ClientesContent:', {
+    user,
+    filters,
+    clientesData,
+    isLoading,
+    error,
+  });
 
   const clientes = (clientesData?.data as ClientesData)?.clientes || [];
   const totalCount = (clientesData?.data as ClientesData)?.total || 0;
+
+  console.log('🐛 Debug clientes finais:', {
+    clientesCount: clientes.length,
+    totalCount,
+    primeiroCliente: clientes[0],
+  });
 
   // Handlers
   const handleCreateCliente = () => {
@@ -92,7 +127,7 @@ export default function ClientesContent({}: ClientesContentProps) {
     });
   };
 
-  const handleEditCliente = (cliente: any) => {
+  const handleEditCliente = (cliente: Cliente) => {
     setFormDialog({
       open: true,
       mode: 'edit',
@@ -100,14 +135,14 @@ export default function ClientesContent({}: ClientesContentProps) {
     });
   };
 
-  const handleViewCliente = (cliente: any) => {
+  const handleViewCliente = (cliente: Cliente) => {
     setDetailDialog({
       open: true,
       cliente,
     });
   };
 
-  const handleToggleStatus = async (cliente: any) => {
+  const handleToggleStatus = async (cliente: Cliente) => {
     try {
       const formData = new FormData();
       formData.append('ativo', (!cliente.ativo).toString());
@@ -135,8 +170,13 @@ export default function ClientesContent({}: ClientesContentProps) {
     }
   };
 
-  const handleFiltersChange = (newFilters: any) => {
-    setFilters((prev) => ({ ...prev, ...newFilters, page: 0 }));
+  const handleFiltersChange = (newFilters: Partial<ClienteFilters>) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+      page: 0,
+      unidade_id: user?.unidade_default_id || undefined,
+    }));
   };
 
   const handlePageChange = (page: number) => {
@@ -166,7 +206,7 @@ export default function ClientesContent({}: ClientesContentProps) {
     {
       key: 'nome',
       label: 'Nome',
-      render: (cliente: any) => (
+      render: (cliente: Cliente) => (
         <Box>
           <Typography variant="body2" fontWeight={500}>
             {cliente.nome}
@@ -182,12 +222,12 @@ export default function ClientesContent({}: ClientesContentProps) {
     {
       key: 'telefone',
       label: 'Telefone',
-      render: (cliente: any) => cliente.telefone || '-',
+      render: (cliente: Cliente) => cliente.telefone || '-',
     },
     {
       key: 'created_at',
       label: 'Cadastrado em',
-      render: (cliente: any) => {
+      render: (cliente: Cliente) => {
         const date = new Date(cliente.created_at);
         return date.toLocaleDateString('pt-BR');
       },
@@ -195,7 +235,7 @@ export default function ClientesContent({}: ClientesContentProps) {
     {
       key: 'ativo',
       label: 'Status',
-      render: (cliente: any) => (
+      render: (cliente: Cliente) => (
         <Chip
           label={cliente.ativo ? 'Ativo' : 'Arquivado'}
           color={cliente.ativo ? 'success' : 'default'}
@@ -206,7 +246,7 @@ export default function ClientesContent({}: ClientesContentProps) {
     {
       key: 'actions',
       label: 'Ações',
-      render: (cliente: any) => (
+      render: (cliente: Cliente) => (
         <Stack direction="row" spacing={0.5}>
           <Tooltip title="Visualizar">
             <IconButton size="small" onClick={() => handleViewCliente(cliente)}>
@@ -238,19 +278,30 @@ export default function ClientesContent({}: ClientesContentProps) {
     },
   ];
 
+  if (authLoading || !user) {
+    return (
+      <Box>
+        <PageHeader title="Clientes" subtitle="Gestão completa de clientes da barbearia" />
+        <Alert severity="info" sx={{ mt: 2 }}>
+          Carregando informações do usuário...
+        </Alert>
+      </Box>
+    );
+  }
+
   if (error) {
     return (
-      <Container maxWidth="xl">
+      <Box>
         <PageHeader title="Clientes" subtitle="Gestão completa de clientes da barbearia" />
         <Alert severity="error" sx={{ mt: 2 }}>
           Erro ao carregar clientes: {error.message}
         </Alert>
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <Container maxWidth="xl">
+    <Box>
       <PageHeader title="Clientes" subtitle="Gestão completa de clientes da barbearia" />
 
       <Stack spacing={3}>
@@ -314,6 +365,7 @@ export default function ClientesContent({}: ClientesContentProps) {
         cliente={detailDialog.cliente}
         onClose={() => setDetailDialog({ open: false })}
         onEdit={handleEditCliente}
+        onToggleStatus={handleToggleStatus}
       />
 
       <ImportClientesDialog
@@ -337,6 +389,6 @@ export default function ClientesContent({}: ClientesContentProps) {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </Box>
   );
 }

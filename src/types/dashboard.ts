@@ -15,14 +15,14 @@ export interface DashboardColumn {
 // Row data interface with required id field
 export interface DashboardRow {
   id: string | number;
-  [key: string]: any;
+  [key: string]: string | number | boolean | null | undefined;
 }
 
 // Loading and error states
 export interface DashboardState {
   loading: boolean;
   error?: string | null;
-  data?: any;
+  data?: DashboardRow[] | Record<string, unknown>;
 }
 
 // Table card props interface - flexible structure
@@ -92,12 +92,25 @@ export function convertLegacyProps(props: TopTableCardLegacyProps): TopTableCard
 }
 
 // Validation schemas using simple validation (can be enhanced with Zod)
-export function validateDashboardRow(row: any): row is DashboardRow {
-  return row && (typeof row.id === 'string' || typeof row.id === 'number');
+export function validateDashboardRow(row: unknown): row is DashboardRow {
+  return (
+    typeof row === 'object' &&
+    row !== null &&
+    'id' in row &&
+    (typeof (row as Record<string, unknown>).id === 'string' ||
+      typeof (row as Record<string, unknown>).id === 'number')
+  );
 }
 
-export function validateDashboardColumn(column: any): column is DashboardColumn {
-  return column && typeof column.field === 'string' && typeof column.headerName === 'string';
+export function validateDashboardColumn(column: unknown): column is DashboardColumn {
+  return (
+    typeof column === 'object' &&
+    column !== null &&
+    'field' in column &&
+    'headerName' in column &&
+    typeof (column as Record<string, unknown>).field === 'string' &&
+    typeof (column as Record<string, unknown>).headerName === 'string'
+  );
 }
 
 // Safe defaults

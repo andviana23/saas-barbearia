@@ -12,7 +12,7 @@ function getScenario(request: Request): AgendamentosScenario {
   const url = new URL(request.url);
   const headerScenario = request.headers.get('x-mock-scenario');
   const queryScenario = url.searchParams.get('scenario');
-  
+
   return (headerScenario || queryScenario || 'success') as AgendamentosScenario;
 }
 
@@ -51,7 +51,7 @@ export const agendamentosHandlers = [
   // GET /api/agendamentos - Listar agendamentos
   http.get('/api/agendamentos', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'empty':
         return HttpResponse.json({
@@ -64,7 +64,7 @@ export const agendamentosHandlers = [
             total_pages: 0,
           },
         });
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -74,17 +74,17 @@ export const agendamentosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Internal server error',
-            details: 'Erro interno do servidor',
+            error: 'Erro interno do servidor',
+            details: 'Internal server error',
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -103,38 +103,38 @@ export const agendamentosHandlers = [
   // POST /api/agendamentos - Criar agendamento
   http.post('/api/agendamentos', async ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'conflict':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Scheduling conflict',
+            error: 'Horário já ocupado',
             details: 'Profissional já possui agendamento neste horário',
           },
           { status: 409 },
         );
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Validation error',
+            error: 'Dados inválidos',
             details: 'Dados de agendamento inválidos',
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Internal server error',
-            details: 'Erro interno do servidor',
+            error: 'Erro interno do servidor',
+            details: 'Internal server error',
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -145,7 +145,7 @@ export const agendamentosHandlers = [
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json(
           {
             success: true,
@@ -160,7 +160,7 @@ export const agendamentosHandlers = [
   http.put('/api/agendamentos/:id', async ({ request, params }) => {
     const scenario = getScenario(request);
     const { id } = params;
-    
+
     switch (scenario) {
       case 'error-400':
         return HttpResponse.json(
@@ -171,7 +171,7 @@ export const agendamentosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -181,7 +181,7 @@ export const agendamentosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         const body = (await request.json()) as Record<string, unknown>;
@@ -191,7 +191,7 @@ export const agendamentosHandlers = [
           id: id as string,
           updated_at: new Date().toISOString(),
         };
-        
+
         return HttpResponse.json({
           success: true,
           data: updatedAgendamento,
@@ -203,7 +203,7 @@ export const agendamentosHandlers = [
   http.delete('/api/agendamentos/:id', ({ request, params }) => {
     const scenario = getScenario(request);
     const { id } = params;
-    
+
     switch (scenario) {
       case 'error-400':
         return HttpResponse.json(
@@ -214,7 +214,7 @@ export const agendamentosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'error-500':
         return HttpResponse.json(
           {
@@ -224,7 +224,7 @@ export const agendamentosHandlers = [
           },
           { status: 500 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({
@@ -241,7 +241,7 @@ export const agendamentosHandlers = [
   // GET /api/agendamentos/disponibilidade - Verificar disponibilidade
   http.get('/api/agendamentos/disponibilidade', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     switch (scenario) {
       case 'empty':
         return HttpResponse.json({
@@ -251,7 +251,7 @@ export const agendamentosHandlers = [
             ocupacao_dia: 100,
           },
         });
-      
+
       case 'error-400':
         return HttpResponse.json(
           {
@@ -261,7 +261,7 @@ export const agendamentosHandlers = [
           },
           { status: 400 },
         );
-      
+
       case 'success':
       default:
         return HttpResponse.json({

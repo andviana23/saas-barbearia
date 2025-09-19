@@ -17,8 +17,7 @@ function createSupabaseMock() {
   const insertSingleMock = jest.fn();
   const existingSingleMock = jest.fn();
   const updateEqMock = jest.fn();
-  const updateMock = jest.fn().mockImplementation((data: any) => ({
-    // eslint-disable-line @typescript-eslint/no-explicit-any
+  const updateMock = jest.fn().mockImplementation((data: Record<string, unknown>) => ({
     eq: () => updateEqMock(data),
   }));
 

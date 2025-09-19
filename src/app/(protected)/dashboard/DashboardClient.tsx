@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { DateRange as MetricsDateRange } from '@/services/metrics';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { PageHeader, Card } from '@/components/ui';
 import KpiCard from '@/components/dashboard/KpiCard';
 import AreaChartCard from '@/components/dashboard/AreaChartCard';
@@ -36,6 +37,10 @@ export default function DashboardClient() {
   const { data: appointmentMetrics, isLoading: appointmentLoading } = useAppointmentMetrics(range);
   const { data: cashboxMetrics, isLoading: cashboxLoading } = useCashboxMetrics(range);
   const { data: topServices, isLoading: topServicesLoading } = useTopServices(range);
+
+  // Verificar se o usuário tem unidade selecionada
+  const { user } = useAuthContext();
+  const hasUnit = !!user?.unidade_default_id;
 
   // Navigation handlers - using useCallback to prevent unnecessary re-renders
   const navigateToFinanceiro = useCallback(() => router.push('/financeiro'), [router]);
@@ -88,8 +93,27 @@ export default function DashboardClient() {
         </Box>
       </Card>
 
+      {/* Alerta quando não há unidade selecionada */}
+      {!hasUnit && (
+        <Alert
+          severity="warning"
+          sx={{
+            mb: 4,
+            borderRadius: 1,
+            backgroundColor: (theme) => theme.palette.warning.main + '14',
+            border: (theme) => `1px solid ${theme.palette.warning.main}33`,
+          }}
+        >
+          <Typography variant="body2">
+            <strong>Sem unidade selecionada!</strong> Para visualizar as métricas do dashboard, você
+            precisa selecionar uma unidade. Use o seletor de unidade no cabeçalho do sistema.
+          </Typography>
+        </Alert>
+      )}
+
       {/* Alerta quando não há dados */}
-      {!hasData &&
+      {hasUnit &&
+        !hasData &&
         !revenueLoading &&
         !subscriptionLoading &&
         !appointmentLoading &&
@@ -98,9 +122,9 @@ export default function DashboardClient() {
             severity="info"
             sx={{
               mb: 4,
-              borderRadius: '4px', // radius.md
-              backgroundColor: 'rgba(244, 163, 0, 0.08)', // primary com transparência
-              border: '1px solid rgba(244, 163, 0, 0.2)',
+              borderRadius: 1, // theme.shape.borderRadius
+              backgroundColor: (theme) => theme.palette.primary.main + '14',
+              border: (theme) => `1px solid ${theme.palette.primary.main}33`,
             }}
           >
             <Typography variant="body2">
@@ -122,19 +146,23 @@ export default function DashboardClient() {
             <KpiCard
               title="Receita"
               value={
-                revenueMetrics?.total && revenueMetrics.total > 0
-                  ? `R$ ${revenueMetrics.total.toLocaleString('pt-BR')}`
-                  : 'Sem dados'
+                !hasUnit
+                  ? 'Selecione uma unidade'
+                  : revenueMetrics?.total && revenueMetrics.total > 0
+                    ? `R$ ${revenueMetrics.total.toLocaleString('pt-BR')}`
+                    : 'Sem dados'
               }
               delta={
-                revenueMetrics?.total && revenueMetrics.total > 0
-                  ? revenueMetrics.deltaPct
-                  : undefined
+                !hasUnit
+                  ? undefined
+                  : revenueMetrics?.total && revenueMetrics.total > 0
+                    ? revenueMetrics.deltaPct
+                    : undefined
               }
               icon={<TrendingUp />}
               subtitle="Últimos 30 dias"
               loading={revenueLoading}
-              onClick={navigateToFinanceiro}
+              onClick={hasUnit ? navigateToFinanceiro : undefined}
             />
           </Grid>
 
@@ -143,19 +171,23 @@ export default function DashboardClient() {
             <KpiCard
               title="Assinaturas"
               value={
-                subscriptionMetrics?.active && subscriptionMetrics.active > 0
-                  ? subscriptionMetrics.active.toString()
-                  : 'Sem dados'
+                !hasUnit
+                  ? 'Selecione uma unidade'
+                  : subscriptionMetrics?.active && subscriptionMetrics.active > 0
+                    ? subscriptionMetrics.active.toString()
+                    : 'Sem dados'
               }
               delta={
-                subscriptionMetrics?.active && subscriptionMetrics.active > 0
-                  ? subscriptionMetrics.deltaPct
-                  : undefined
+                !hasUnit
+                  ? undefined
+                  : subscriptionMetrics?.active && subscriptionMetrics.active > 0
+                    ? subscriptionMetrics.deltaPct
+                    : undefined
               }
               icon={<Subscriptions />}
               subtitle="Ativas"
               loading={subscriptionLoading}
-              onClick={navigateToAssinaturas}
+              onClick={hasUnit ? navigateToAssinaturas : undefined}
             />
           </Grid>
 
@@ -164,19 +196,23 @@ export default function DashboardClient() {
             <KpiCard
               title="Agendamentos"
               value={
-                appointmentMetrics?.confirmed && appointmentMetrics.confirmed > 0
-                  ? appointmentMetrics.confirmed.toString()
-                  : 'Sem dados'
+                !hasUnit
+                  ? 'Selecione uma unidade'
+                  : appointmentMetrics?.confirmed && appointmentMetrics.confirmed > 0
+                    ? appointmentMetrics.confirmed.toString()
+                    : 'Sem dados'
               }
               delta={
-                appointmentMetrics?.confirmed && appointmentMetrics.confirmed > 0
-                  ? appointmentMetrics.deltaPct
-                  : undefined
+                !hasUnit
+                  ? undefined
+                  : appointmentMetrics?.confirmed && appointmentMetrics.confirmed > 0
+                    ? appointmentMetrics.deltaPct
+                    : undefined
               }
               icon={<CalendarToday />}
               subtitle="Confirmados"
               loading={appointmentLoading}
-              onClick={navigateToAgenda}
+              onClick={hasUnit ? navigateToAgenda : undefined}
             />
           </Grid>
 
@@ -185,102 +221,110 @@ export default function DashboardClient() {
             <KpiCard
               title="Caixa"
               value={
-                cashboxMetrics?.balance && cashboxMetrics.balance > 0
-                  ? `R$ ${cashboxMetrics.balance.toLocaleString('pt-BR')}`
-                  : 'Sem dados'
+                !hasUnit
+                  ? 'Selecione uma unidade'
+                  : cashboxMetrics?.balance && cashboxMetrics.balance > 0
+                    ? `R$ ${cashboxMetrics.balance.toLocaleString('pt-BR')}`
+                    : 'Sem dados'
               }
               delta={
-                cashboxMetrics?.balance && cashboxMetrics.balance > 0
-                  ? cashboxMetrics.deltaPct
-                  : undefined
+                !hasUnit
+                  ? undefined
+                  : cashboxMetrics?.balance && cashboxMetrics.balance > 0
+                    ? cashboxMetrics.deltaPct
+                    : undefined
               }
               icon={<AccountBalance />}
               subtitle="Saldo atual"
               loading={cashboxLoading}
-              onClick={navigateToCaixa}
+              onClick={hasUnit ? navigateToCaixa : undefined}
             />
           </Grid>
         </Grid>
       </Box>
 
       {/* Seção de Gráficos */}
-      <Grid container spacing={4} sx={{ mb: 4 }}>
-        {/* Gráfico de Receita Acumulada */}
-        <Grid item xs={12} lg={8}>
-          <DashboardErrorBoundary fallbackTitle="Erro no Gráfico de Receita">
-            <AreaChartCard
-              title="Receita Acumulada"
-              series={[
-                {
-                  name: 'Receita',
-                  data:
-                    revenueMetrics?.seriesDaily && revenueMetrics.seriesDaily.length > 0
-                      ? revenueMetrics.seriesDaily.map((item) => ({
-                          x: item.date,
-                          y: item.value,
-                        }))
-                      : [],
-                },
-              ]}
-              loading={revenueLoading}
-            />
-          </DashboardErrorBoundary>
-        </Grid>
+      {hasUnit && (
+        <Grid container spacing={4} sx={{ mb: 4 }}>
+          {/* Gráfico de Receita Acumulada */}
+          <Grid item xs={12} lg={8}>
+            <DashboardErrorBoundary fallbackTitle="Erro no Gráfico de Receita">
+              <AreaChartCard
+                title="Receita Acumulada"
+                series={[
+                  {
+                    name: 'Receita',
+                    data:
+                      revenueMetrics?.seriesDaily && revenueMetrics.seriesDaily.length > 0
+                        ? revenueMetrics.seriesDaily.map((item) => ({
+                            x: item.date,
+                            y: item.value,
+                          }))
+                        : [],
+                  },
+                ]}
+                loading={revenueLoading}
+              />
+            </DashboardErrorBoundary>
+          </Grid>
 
-        {/* Receita por Categoria */}
-        <Grid item xs={12} lg={4}>
-          <DashboardErrorBoundary fallbackTitle="Erro no Gráfico por Categoria">
-            <BarChartCard
-              title="Receita por Categoria"
-              series={
-                // Dados por categoria podem não estar disponíveis nos tipos atuais
-                []
-              }
-              loading={revenueLoading}
-            />
-          </DashboardErrorBoundary>
+          {/* Receita por Categoria */}
+          <Grid item xs={12} lg={4}>
+            <DashboardErrorBoundary fallbackTitle="Erro no Gráfico por Categoria">
+              <BarChartCard
+                title="Receita por Categoria"
+                series={
+                  // Dados por categoria podem não estar disponíveis nos tipos atuais
+                  []
+                }
+                loading={revenueLoading}
+              />
+            </DashboardErrorBoundary>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
 
       {/* Seção de Tabelas */}
-      <Grid container spacing={4}>
-        {/* Top Serviços */}
-        <Grid item xs={12} lg={6}>
-          <DashboardErrorBoundary fallbackTitle="Erro na Tabela de Serviços">
-            <TopTableCard
-              title="Top Serviços"
-              headers={['Serviço', 'Receita', 'Qtd']}
-              rows={
-                topServices && topServices.length > 0
-                  ? topServices.map((service) => ({
-                      id: service.id,
-                      cells: [
-                        service.name,
-                        `R$ ${service.revenue.toLocaleString('pt-BR')}`,
-                        service.count.toString(),
-                      ],
-                    }))
-                  : []
-              }
-              loading={topServicesLoading}
-              emptyMessage="Nenhum serviço encontrado"
-            />
-          </DashboardErrorBoundary>
-        </Grid>
+      {hasUnit && (
+        <Grid container spacing={4}>
+          {/* Top Serviços */}
+          <Grid item xs={12} lg={6}>
+            <DashboardErrorBoundary fallbackTitle="Erro na Tabela de Serviços">
+              <TopTableCard
+                title="Top Serviços"
+                headers={['Serviço', 'Receita', 'Qtd']}
+                rows={
+                  topServices && topServices.length > 0
+                    ? topServices.map((service) => ({
+                        id: service.id,
+                        cells: [
+                          service.name,
+                          `R$ ${service.revenue.toLocaleString('pt-BR')}`,
+                          service.count.toString(),
+                        ],
+                      }))
+                    : []
+                }
+                loading={topServicesLoading}
+                emptyMessage="Nenhum serviço encontrado"
+              />
+            </DashboardErrorBoundary>
+          </Grid>
 
-        {/* Top Clientes */}
-        <Grid item xs={12} lg={6}>
-          <DashboardErrorBoundary fallbackTitle="Erro na Tabela de Clientes">
-            <TopTableCard
-              title="Top Clientes"
-              headers={['Cliente', 'Receita', 'Visitas']}
-              rows={[]} // Implementar useTopClients se necessário
-              loading={false}
-              emptyMessage="Nenhum cliente encontrado"
-            />
-          </DashboardErrorBoundary>
+          {/* Top Clientes */}
+          <Grid item xs={12} lg={6}>
+            <DashboardErrorBoundary fallbackTitle="Erro na Tabela de Clientes">
+              <TopTableCard
+                title="Top Clientes"
+                headers={['Cliente', 'Receita', 'Visitas']}
+                rows={[]} // Implementar useTopClients se necessário
+                loading={false}
+                emptyMessage="Nenhum cliente encontrado"
+              />
+            </DashboardErrorBoundary>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Box>
   );
 }

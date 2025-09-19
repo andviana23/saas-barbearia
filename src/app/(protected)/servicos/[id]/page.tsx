@@ -305,12 +305,12 @@ export default function ServicoDetalhesPage() {
                 <Table>
                   <TableHead>
                     <TableRow sx={{ bgcolor: 'grey.50' }}>
-                      <TableCell fontWeight="bold">Data</TableCell>
-                      <TableCell fontWeight="bold">Cliente</TableCell>
-                      <TableCell fontWeight="bold">Profissional</TableCell>
-                      <TableCell fontWeight="bold">Duração</TableCell>
-                      <TableCell fontWeight="bold">Avaliação</TableCell>
-                      <TableCell fontWeight="bold">Ações</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Data</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Cliente</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Profissional</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Duração</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Avaliação</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -356,17 +356,17 @@ export default function ServicoDetalhesPage() {
                 <Table>
                   <TableHead>
                     <TableRow sx={{ bgcolor: 'grey.50' }}>
-                      <TableCell fontWeight="bold">Profissional</TableCell>
-                      <TableCell fontWeight="bold">Agendamentos</TableCell>
-                      <TableCell fontWeight="bold">Tempo Médio</TableCell>
-                      <TableCell fontWeight="bold">Avaliação</TableCell>
-                      <TableCell fontWeight="bold">Faturamento</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Profissional</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Agendamentos</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Tempo Médio</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Avaliação</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Faturamento</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {estatisticasProfissionais.map((prof, index) => (
                       <TableRow key={index} hover>
-                        <TableCell fontWeight="bold">{prof.nome}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>{prof.nome}</TableCell>
                         <TableCell>{prof.agendamentos}</TableCell>
                         <TableCell>{prof.tempoMedio} min</TableCell>
                         <TableCell>

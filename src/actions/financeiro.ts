@@ -530,6 +530,59 @@ export async function gerarRelatorioFinanceiro(
 }
 
 /**
+ * Buscar transações financeiras com filtros de data e unidade
+ */
+export async function getFinancialTransactions(
+  params: {
+    unit_id?: string;
+    type?: 'income' | 'expense';
+    start_date?: string;
+    end_date?: string;
+  } = {},
+): Promise<ActionResult> {
+  try {
+    const supabase = createServerSupabase();
+
+    let query = supabase
+      .from('financial_transactions')
+      .select('amount_cents, type, created_at, unit_id')
+      .order('created_at', { ascending: false });
+
+    if (params.unit_id) {
+      query = query.eq('unit_id', params.unit_id);
+    }
+
+    if (params.type) {
+      query = query.eq('type', params.type);
+    }
+
+    if (params.start_date) {
+      query = query.gte('created_at', params.start_date);
+    }
+
+    if (params.end_date) {
+      query = query.lte('created_at', params.end_date);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      throw new Error(`Erro ao buscar transações: ${error.message}`);
+    }
+
+    return {
+      success: true,
+      data: data || [],
+    };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro desconhecido',
+    };
+  }
+}
+
+/**
  * Obter estatísticas financeiras
  */
 export async function getEstatisticasFinanceiras(
@@ -564,30 +617,43 @@ export async function getEstatisticasFinanceiras(
     }
 
     let query = supabase
-      .from('financeiro_mov')
-      .select('tipo, valor, origem, data_mov')
-      .gte('data_mov', dataInicio.toISOString().split('T')[0])
-      .lte('data_mov', dataFim.toISOString().split('T')[0]);
+      .from('financial_transactions')
+      .select('type, amount_cents, source, created_at')
+      .gte('created_at', dataInicio.toISOString().split('T')[0])
+      .lte('created_at', dataFim.toISOString().split('T')[0]);
 
     if (filtros.unidade_id) {
-      query = query.eq('unidade_id', filtros.unidade_id);
+      query = query.eq('unit_id', filtros.unidade_id);
     }
 
-    const { data: movimentacoes, error } = await query;
+    const { data: transactions, error } = await query;
 
     if (error) {
       throw new Error(`Erro ao buscar estatísticas: ${error.message}`);
     }
 
-    // Calcular estatísticas
-    const estatisticas = calcularEstatisticas(movimentacoes || [], {
-      periodo: filtros.periodo || 'mes',
-      incluir_comparativo: filtros.incluir_comparativo,
-    });
+    // Processar dados com os novos nomes de coluna
+    const totalEntradas =
+      transactions
+        ?.filter((t) => t.type === 'income')
+        .reduce((sum, t) => sum + (t.amount_cents || 0), 0) || 0;
+    const totalSaidas =
+      transactions
+        ?.filter((t) => t.type === 'expense')
+        .reduce((sum, t) => sum + (t.amount_cents || 0), 0) || 0;
+    const saldo = totalEntradas - totalSaidas;
 
     return {
       success: true,
-      data: estatisticas,
+      data: {
+        totalEntradas,
+        totalSaidas,
+        saldo,
+        periodo: filtros.periodo,
+        dataInicio: dataInicio.toISOString().split('T')[0],
+        dataFim: dataFim.toISOString().split('T')[0],
+        transactions: transactions || [],
+      },
     };
   });
 }

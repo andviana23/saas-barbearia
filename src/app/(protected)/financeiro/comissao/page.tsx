@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Alert, Grid, Card, CardContent, Button } from '@mui/material';
 import { Percent, Users, Calculator, TrendingUp } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Cálculo de Comissão | Trato',
-  description: 'Gestão e cálculo de comissões dos profissionais',
-};
 
 export default function FinanceiroComissaoPage() {
   return (
@@ -30,7 +26,7 @@ export default function FinanceiroComissaoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <Users size={40} color="#1976d2" style={{ marginBottom: 8 }} />
+              <Users size={40} color="#4f8cff" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Profissionais Ativos
               </Typography>
@@ -43,7 +39,7 @@ export default function FinanceiroComissaoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <Percent size={40} color="#2e7d32" style={{ marginBottom: 8 }} />
+              <Percent size={40} color="#10b981" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Comissão Média
               </Typography>
@@ -56,7 +52,7 @@ export default function FinanceiroComissaoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <TrendingUp size={40} color="#ed6c02" style={{ marginBottom: 8 }} />
+              <TrendingUp size={40} color="#f97316" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Total a Pagar
               </Typography>
@@ -69,7 +65,7 @@ export default function FinanceiroComissaoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <Calculator size={40} color="#9c27b0" style={{ marginBottom: 8 }} />
+              <Calculator size={40} color="#8b5cf6" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Período Atual
               </Typography>

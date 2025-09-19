@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Button, Alert, Grid, Card, CardContent } from '@mui/material';
 import { Plus, CreditCard, TrendingUp, Calendar } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Movimentação de Caixa | Trato',
-  description: 'Controle de entrada e saída do caixa',
-};
 
 export default function FinanceiroCaixaPage() {
   return (

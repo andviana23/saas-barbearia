@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Container,
   Box,
@@ -26,7 +28,7 @@ import {
   CheckCircle,
   Schedule,
 } from '@mui/icons-material';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function MetasPage() {
   // Mock das metas

@@ -12,7 +12,7 @@ function getScenario(request: Request): ErrorScenario | null {
   const url = new URL(request.url);
   const headerScenario = request.headers.get('x-mock-scenario');
   const queryScenario = url.searchParams.get('scenario');
-  
+
   const scenario = headerScenario || queryScenario;
   return ['network-error', 'timeout', 'rate-limit', 'maintenance'].includes(scenario || '')
     ? (scenario as ErrorScenario)
@@ -35,38 +35,61 @@ export const errorHandlers = [
   // Intercepta todas as requisições para simular erros globais
   http.all('*', ({ request }) => {
     const scenario = getScenario(request);
-    
+
+    // Se não há cenário de erro, não intercepta
+    if (!scenario) {
+      return;
+    }
+
     switch (scenario) {
       case 'network-error':
         // Simula erro de rede
-        return HttpResponse.error();
-      
+        return HttpResponse.json(
+          {
+            success: false,
+            error: 'Erro de conectividade',
+            details: 'Network error',
+          },
+          { status: 503 }
+        );
+
       case 'timeout':
-        // Simula timeout
-        return simulateTimeout();
-      
+        // Simula timeout - retorna resposta com delay
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(HttpResponse.json(
+              {
+                success: false,
+                error: 'Timeout na requisição',
+                details: 'Request timeout',
+              },
+              { status: 408 }
+            ));
+          }, 100); // Delay menor para testes
+        });
+
       case 'rate-limit':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Rate limit exceeded',
-            details: 'Muitas requisições. Tente novamente em alguns minutos.',
+            error: 'Muitas tentativas. Tente novamente em alguns minutos.',
+            details: 'Rate limit exceeded',
             retry_after: 60,
           },
           { status: 429 },
         );
-      
+
       case 'maintenance':
         return HttpResponse.json(
           {
             success: false,
-            error: 'Service unavailable',
-            details: 'Sistema em manutenção. Tente novamente mais tarde.',
+            error: 'Sistema em manutenção. Tente novamente mais tarde.',
+            details: 'Service unavailable',
             maintenance_until: new Date(Date.now() + 3600000).toISOString(),
           },
           { status: 503 },
         );
-      
+
       default:
         // Passa para os próximos handlers
         return;
@@ -76,7 +99,7 @@ export const errorHandlers = [
   // Handler específico para testar conectividade
   http.get('/api/health', ({ request }) => {
     const scenario = getScenario(request);
-    
+
     if (scenario) {
       // Se há cenário de erro, aplicar
       switch (scenario) {
@@ -90,7 +113,7 @@ export const errorHandlers = [
           return HttpResponse.json({ error: 'Service unavailable' }, { status: 503 });
       }
     }
-    
+
     return HttpResponse.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -104,7 +127,7 @@ export const errorHandlers = [
   http.get('/api/test/status/:code', ({ params }) => {
     const { code } = params;
     const statusCode = parseInt(code as string, 10);
-    
+
     const messages: Record<number, string> = {
       200: 'OK',
       201: 'Created',
@@ -120,7 +143,7 @@ export const errorHandlers = [
       503: 'Service Unavailable',
       504: 'Gateway Timeout',
     };
-    
+
     return HttpResponse.json(
       {
         status: statusCode,
@@ -134,30 +157,30 @@ export const errorHandlers = [
   // Handler para testar diferentes tipos de resposta
   http.get('/api/test/response/:type', ({ params }) => {
     const { type } = params;
-    
+
     switch (type) {
       case 'empty':
         return HttpResponse.json(null);
-      
+
       case 'large':
         // Simula resposta grande (10MB de dados)
         const largeData = Array(1000000).fill('x').join('');
         return HttpResponse.json({ data: largeData });
-      
+
       case 'invalid-json':
         return new HttpResponse('{ invalid json }', {
           headers: { 'Content-Type': 'application/json' },
         });
-      
+
       case 'no-content':
         return new HttpResponse(null, { status: 204 });
-      
+
       case 'binary':
         const buffer = new ArrayBuffer(8);
         return new HttpResponse(buffer, {
           headers: { 'Content-Type': 'application/octet-stream' },
         });
-      
+
       default:
         return HttpResponse.json({
           type,

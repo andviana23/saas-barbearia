@@ -46,7 +46,7 @@ import type { ActionResult } from '@/types';
 // =====================================================
 
 export async function createMarketplaceServico(
-  data: any,
+  data: CreateMarketplaceServico,
 ): Promise<ActionResult<MarketplaceServico>> {
   try {
     const supabase = createServerSupabase();
@@ -101,7 +101,7 @@ export async function createMarketplaceServico(
 
 export async function updateMarketplaceServico(
   id: string,
-  data: any,
+  data: UpdateMarketplaceServico,
 ): Promise<ActionResult<MarketplaceServico>> {
   try {
     const supabase = createServerSupabase();
@@ -344,7 +344,7 @@ export async function getServicoCatalogo(id: string): Promise<ActionResult<Catal
 // =====================================================
 
 export async function createReservaMarketplace(
-  data: any,
+  data: CreateReservaMarketplace,
 ): Promise<ActionResult<ReservaMarketplace>> {
   try {
     const supabase = createServerSupabase();
@@ -414,7 +414,7 @@ export async function createReservaMarketplace(
 
 export async function updateReservaMarketplace(
   id: string,
-  data: any,
+  data: UpdateReservaMarketplace,
 ): Promise<ActionResult<ReservaMarketplace>> {
   try {
     const supabase = createServerSupabase();
@@ -483,7 +483,7 @@ export async function getReservasMarketplace(
 // =====================================================
 
 export async function createConfiguracaoMarketplace(
-  data: any,
+  data: CreateConfiguracaoMarketplace,
 ): Promise<ActionResult<ConfiguracaoMarketplace>> {
   try {
     const supabase = createServerSupabase();
@@ -525,7 +525,7 @@ export async function createConfiguracaoMarketplace(
 
 export async function updateConfiguracaoMarketplace(
   id: string,
-  data: any,
+  data: UpdateConfiguracaoMarketplace,
 ): Promise<ActionResult<ConfiguracaoMarketplace>> {
   try {
     const supabase = createServerSupabase();

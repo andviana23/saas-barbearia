@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { createClient } from '@/lib/supabase-server';
+import { createServerSupabase } from '@/lib/supabase/server';
 
 export async function getTiposCategoriasDespesa() {
   try {
-    const supabase = createClient();
+    const supabase = createServerSupabase();
 
     const { data, error } = await supabase
       .from('tipos_categoria_despesa')
@@ -31,13 +31,13 @@ export async function getTiposCategoriasDespesa() {
 
 export async function createTipoCategoriasDespesa(formData: FormData) {
   try {
-    const supabase = createClient();
+    const supabase = createServerSupabase();
 
     const data = {
       codigo: formData.get('codigo') as string,
       nome: formData.get('nome') as string,
       descricao: (formData.get('descricao') as string) || null,
-      cor: (formData.get('cor_primaria') as string) || '#1976d2',
+      cor: (formData.get('cor_primaria') as string) || '#4f8cff',
       icon: (formData.get('icone') as string) || null,
       categoria_pai_id: (formData.get('parent_id') as string) || null,
       ordem: parseInt(formData.get('ordem') as string) || 0,
@@ -84,7 +84,7 @@ export async function createTipoCategoriasDespesa(formData: FormData) {
 
 export async function updateTipoCategoriasDespesa(formData: FormData) {
   try {
-    const supabase = createClient();
+    const supabase = createServerSupabase();
 
     const id = formData.get('id') as string;
     if (!id) {
@@ -95,7 +95,7 @@ export async function updateTipoCategoriasDespesa(formData: FormData) {
       codigo: formData.get('codigo') as string,
       nome: formData.get('nome') as string,
       descricao: (formData.get('descricao') as string) || null,
-      cor: (formData.get('cor_primaria') as string) || '#1976d2',
+      cor: (formData.get('cor_primaria') as string) || '#4f8cff',
       icon: (formData.get('icone') as string) || null,
       categoria_pai_id: (formData.get('parent_id') as string) || null,
       ordem: parseInt(formData.get('ordem') as string) || 0,
@@ -156,7 +156,7 @@ export async function updateTipoCategoriasDespesa(formData: FormData) {
 
 export async function deleteTipoCategoriasDespesa(id: string) {
   try {
-    const supabase = createClient();
+    const supabase = createServerSupabase();
 
     // Verificar se existe
     const { data: existing } = await supabase

@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { createBrowserSupabase } from '@/lib/supabase/client';
+import { SupabaseSession, ProfileData, SignInResponse } from '@/types/supabase-auth';
+import { User } from '@supabase/supabase-js';
 
 type AuthStatus = 'INIT' | 'SIGNED_OUT' | 'SIGNED_IN';
 
@@ -15,47 +17,55 @@ export interface AuthUser {
 
 export function useAuth() {
   const supabase = useMemo(() => createBrowserSupabase(), []);
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<SupabaseSession | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [status, setStatus] = useState<AuthStatus>('INIT');
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+    console.log('🔄 AuthProvider: Iniciando verificação de autenticação...');
+    console.log('📊 Estado inicial:', { user, status, authLoading });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_e, s) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange(async (_e, s) => {
       if (cancelled) return;
+      console.log('🔐 Auth state change:', s ? 'SIGNED_IN' : 'SIGNED_OUT');
       setSession(s);
       setStatus(s ? 'SIGNED_IN' : 'SIGNED_OUT');
 
       if (s?.user) {
-        // Buscar perfil em background, sem bloquear
-        fetchUserProfile(s.user).catch((err) =>
-          console.warn('Background profile fetch failed:', err),
-        );
+        console.log('🔐 Usuário autenticado, buscando perfil...');
+        // Buscar perfil antes de liberar o loading
+        await fetchUserProfile(s.user);
       } else {
+        console.log('🔐 Sem usuário autenticado');
         setUser(null);
       }
     });
 
     (async () => {
       try {
+        console.log('🔍 Verificando sessão existente...');
         const { data } = await supabase.auth.getSession();
+        console.log('📋 Sessão encontrada:', !!data.session);
         if (cancelled) return;
 
         setSession(data.session ?? null);
         setStatus(data.session ? 'SIGNED_IN' : 'SIGNED_OUT');
 
         if (data.session?.user) {
-          // Buscar perfil em background, não bloqueia boot
-          fetchUserProfile(data.session.user).catch((err) =>
-            console.warn('Profile fetch failed:', err),
-          );
+          console.log('👤 Usuário na sessão, buscando perfil...');
+          // Buscar perfil antes de liberar o loading
+          await fetchUserProfile(data.session.user);
+        } else {
+          console.log('❌ Nenhuma sessão encontrada');
         }
-      } catch (_) {
+      } catch (error) {
+        console.error('❌ Erro ao verificar sessão:', error);
         if (!cancelled) setStatus('SIGNED_OUT');
       } finally {
-        if (!cancelled) setAuthLoading(false); // sempre solta
+        console.log('✅ Finalizando inicialização do auth');
+        if (!cancelled) setAuthLoading(false); // só libera após o perfil carregar
       }
     })();
 
@@ -66,16 +76,15 @@ export function useAuth() {
   }, [supabase]);
 
   // Função pura para buscar perfil (SEM hooks)
-  // authUser vem do supabase; tipagem mínima para evitar any profundo
-  const fetchUserProfile = async (authUser: { id: string; email?: string | null }) => {
+  const fetchUserProfile = async (authUser: User) => {
     try {
       console.log('🔍 Buscando perfil para usuário:', authUser.id);
 
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('user_id, name, email, phone, unit_default_id, role')
+        .select('*')
         .eq('user_id', authUser.id)
-        .maybeSingle();
+        .single();
 
       if (error) {
         console.error('❌ Erro ao buscar perfil (usando fallback mínimo):', error);
@@ -85,14 +94,15 @@ export function useAuth() {
       }
 
       if (profile) {
-        console.log('✅ Perfil encontrado:', (profile as any).name);
+        const profileData = profile as ProfileData;
+        console.log('✅ Perfil encontrado:', profileData.name);
         setUser({
           id: authUser.id,
           email: authUser.email || '',
-          nome: (profile as any).name,
-          telefone: (profile as any).phone,
-          unidade_default_id: (profile as any).unit_default_id,
-          role: (profile as any).role,
+          nome: profileData.name || undefined,
+          telefone: profileData.phone || undefined,
+          unidade_default_id: profileData.unit_default_id || undefined,
+          role: profileData.role || undefined,
         });
       } else {
         console.log('⚠️ Perfil não encontrado. Usando dados mínimos do auth user:', authUser.id);
@@ -105,10 +115,25 @@ export function useAuth() {
     }
   };
 
-  const signInWithPassword = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    return data;
+  const signInWithPassword = async (email: string, password: string): Promise<SignInResponse> => {
+    try {
+      console.log('[useAuth] Tentando autenticar usuário:', email);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        console.error('[useAuth] Erro na autenticação:', error);
+        throw error;
+      }
+
+      console.log('[useAuth] Autenticação bem-sucedida');
+      return {
+        user: data.user,
+        session: data.session as SupabaseSession,
+      };
+    } catch (error) {
+      console.error('[useAuth] Erro ao fazer login:', error);
+      throw error;
+    }
   };
 
   const signOut = async () => {

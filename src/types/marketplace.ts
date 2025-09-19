@@ -45,8 +45,8 @@ export interface ConfiguracaoMarketplace {
   ativo: boolean;
   comissao_padrao: number;
   permitir_reservas_cross_unit: boolean;
-  horario_funcionamento: Record<string, any> | null;
-  politicas_reserva: Record<string, any> | null;
+  horario_funcionamento: HorarioFuncionamento[] | null;
+  politicas_reserva: PoliticaReserva | null;
   created_at: string;
   updated_at: string;
 }
@@ -281,7 +281,7 @@ export type SortOrder = 'asc' | 'desc';
 // 12. TIPOS DE UTILIDADE
 // =====================================================
 
-export interface ActionResult<T = any> {
+export interface ActionResult<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;

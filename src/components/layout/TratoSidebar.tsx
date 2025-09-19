@@ -18,7 +18,7 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { LucideIcon } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { UserRole, routes as routeMap } from '@/routes';
 import { useActiveFeatureFlags } from '@/featureFlags';
 
@@ -91,7 +91,7 @@ const TratoSidebar: React.FC<TratoSidebarProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const activeFlags = useActiveFeatureFlags();
 
   // Estado dinâmico de expansão

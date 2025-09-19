@@ -10,7 +10,7 @@ export interface PermissaoHierarquica {
   id: string;
   papel: UserRole;
   nivel_hierarquico: number;
-  permissoes: Record<string, any>;
+  permissoes: Record<string, boolean | string[]>;
   descricao: string | null;
   ativo: boolean;
   created_at: string;
@@ -41,7 +41,7 @@ export interface AcessoMultiUnidade {
   profile_id: string;
   unidade_id: string;
   papel_unidade: UserRole;
-  permissoes_especificas: Record<string, any> | null;
+  permissoes_especificas: Record<string, boolean | string[]> | null;
   ativo: boolean;
   created_at: string;
   updated_at: string;
@@ -70,7 +70,7 @@ export interface AuditoriaAcesso {
   unidade_id: string | null;
   acao: string;
   recurso: string;
-  dados_consultados: Record<string, any> | null;
+  dados_consultados: Record<string, unknown> | null;
   ip_address: string | null;
   user_agent: string | null;
   created_at: string;
@@ -308,7 +308,7 @@ export interface MetricasPerformance {
 // 12. TIPOS DE UTILIDADE
 // =====================================================
 
-export interface ActionResult<T = any> {
+export interface ActionResult<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -332,7 +332,7 @@ export interface PaginatedResponse<T> {
 export interface CreatePermissaoHierarquicaForm {
   papel: UserRole;
   nivel_hierarquico: number;
-  permissoes: Record<string, any>;
+  permissoes: Record<string, boolean | string[]>;
   descricao?: string;
   ativo: boolean;
 }
@@ -341,7 +341,7 @@ export interface CreateAcessoMultiUnidadeForm {
   profile_id: string;
   unidade_id: string;
   papel_unidade: UserRole;
-  permissoes_especificas?: Record<string, any>;
+  permissoes_especificas?: Record<string, boolean | string[]>;
   ativo: boolean;
 }
 

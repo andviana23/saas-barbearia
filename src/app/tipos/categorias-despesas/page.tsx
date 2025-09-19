@@ -40,7 +40,7 @@ import { toast } from 'sonner';
 import {
   getTiposCategoriasDespesa,
   deleteTipoCategoriasDespesa,
-} from '@/actions/tipos-categoria-despesa';
+} from '@/actions/tipos-categoria-despesa-simple';
 import TipoCategoriasDespesaModal from '@/components/tipos/TipoCategoriasDespesaModal';
 
 interface Categoria {

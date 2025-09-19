@@ -1,6 +1,6 @@
 'use client';
 import { Paper, Typography, Tooltip } from '@mui/material';
-import type { Appointment } from '@/app/agenda/page';
+import type { Appointment } from '@/app/(protected)/agenda/page';
 import { PIXELS_PER_MINUTE } from '../Agenda';
 
 interface Props {

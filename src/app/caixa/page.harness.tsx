@@ -4,7 +4,12 @@ export default function CaixaHarness() {
     <div data-testid="caixa-content" style={{ padding: 24 }}>
       <div
         data-testid="resumo-financeiro"
-        style={{ marginBottom: 16, background: '#f9fafb', padding: 16, borderRadius: 8 }}
+        style={{
+          marginBottom: 16,
+          background: 'var(--mui-palette-surfaces-surface2)',
+          padding: 16,
+          borderRadius: 8,
+        }}
       >
         <h3>Resumo Financeiro</h3>
         <div>Receita do Dia: R$ 450,00</div>

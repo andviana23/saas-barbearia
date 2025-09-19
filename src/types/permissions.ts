@@ -25,24 +25,24 @@ export enum Resource {
   PROFISSIONAIS = 'profissionais',
   SERVICOS = 'servicos',
   FILA = 'fila',
-  
+
   // Recursos Financeiros
   FINANCEIRO = 'financeiro',
   CAIXA = 'caixa',
   VENDAS = 'vendas',
   COMISSOES = 'comissoes',
-  
+
   // Recursos Avançados
   RELATORIOS = 'relatorios',
   MARKETPLACE = 'marketplace',
   NOTIFICACOES = 'notificacoes',
-  
+
   // Recursos Administrativos
   UNIDADES = 'unidades',
   CONFIGURACOES = 'configuracoes',
   USUARIOS = 'usuarios',
   AUDITORIA = 'auditoria',
-  
+
   // Recursos Especiais
   ASSINATURAS = 'assinaturas',
   INTEGRACAO = 'integracao',
@@ -57,30 +57,30 @@ export enum Action {
   READ = 'read',
   UPDATE = 'update',
   DELETE = 'delete',
-  
+
   // Ações Especiais de Agenda
   SCHEDULE = 'schedule',
   RESCHEDULE = 'reschedule',
   CANCEL = 'cancel',
   CONFIRM = 'confirm',
-  
+
   // Ações Financeiras
   PROCESS_PAYMENT = 'process_payment',
   REFUND = 'refund',
   VIEW_REVENUE = 'view_revenue',
   MANAGE_DISCOUNTS = 'manage_discounts',
-  
+
   // Ações Administrativas
   MANAGE_USERS = 'manage_users',
   EXPORT_DATA = 'export_data',
   IMPORT_DATA = 'import_data',
   BACKUP = 'backup',
-  
+
   // Ações de Relatórios
   VIEW_REPORTS = 'view_reports',
   EXPORT_REPORTS = 'export_reports',
   SCHEDULE_REPORTS = 'schedule_reports',
-  
+
   // Ações de Sistema
   CONFIGURE = 'configure',
   AUDIT = 'audit',
@@ -483,7 +483,7 @@ export function canAccessRoute(
 ): boolean {
   // Primeiro, importar e usar função existente de rotas
   const { canAccessRoute: originalCanAccessRoute } = require('@/routes');
-  
+
   // Mapeamento de rotas para recursos
   const routeResourceMap: Record<string, Resource> = {
     dashboard: Resource.DASHBOARD,
@@ -501,7 +501,7 @@ export function canAccessRoute(
   };
 
   const resource = routeResourceMap[routeKey];
-  
+
   // Se não tem mapeamento de recurso, usar função original
   if (!resource) {
     return originalCanAccessRoute(routeKey, userRole, []);

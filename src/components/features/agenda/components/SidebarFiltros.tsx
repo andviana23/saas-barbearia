@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Paper, Stack, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import type { Professional } from '@/app/agenda/page';
+import type { Professional } from '@/app/(protected)/agenda/page';
 
 interface SidebarFiltrosProps {
   currentDate: string;

@@ -1,4 +1,5 @@
 # 🎨 DOCUMENTAÇÃO COMPLETA - FRONTEND
+
 # Sistema SaaS Barbearia - Trato
 
 **Versão:** 2.0.0  
@@ -101,7 +102,7 @@ export const routes: RouteConfig[] = [
     label: 'Dashboard',
     icon: 'Dashboard',
     description: 'Visão geral do negócio',
-    roles: ['admin', 'gerente', 'funcionario']
+    roles: ['admin', 'gerente', 'funcionario'],
   },
 
   // Gestão de Clientes
@@ -114,8 +115,8 @@ export const routes: RouteConfig[] = [
     roles: ['admin', 'gerente', 'funcionario'],
     children: [
       { id: 'clientes-list', path: '/clientes', label: 'Lista de Clientes' },
-      { id: 'clientes-import', path: '/clientes/import', label: 'Importar' }
-    ]
+      { id: 'clientes-import', path: '/clientes/import', label: 'Importar' },
+    ],
   },
 
   // Sistema de Agendamentos
@@ -125,7 +126,7 @@ export const routes: RouteConfig[] = [
     label: 'Agenda',
     icon: 'CalendarMonth',
     description: 'Sistema de agendamentos',
-    roles: ['admin', 'gerente', 'funcionario']
+    roles: ['admin', 'gerente', 'funcionario'],
   },
 
   // Features Avançadas
@@ -136,14 +137,15 @@ export const routes: RouteConfig[] = [
     icon: 'Store',
     featureFlag: 'ENABLE_MULTI_UNITS',
     badge: 'beta',
-    roles: ['admin']
-  }
+    roles: ['admin'],
+  },
 ];
 ```
 
 ### **2.2 Estrutura App Router**
 
 **Rotas Protegidas:** `src/app/(protected)/`
+
 ```
 (protected)/
 ├── dashboard/
@@ -165,6 +167,7 @@ export const routes: RouteConfig[] = [
 ```
 
 **Rotas Públicas:** `src/app/(public)/`
+
 ```
 (public)/
 ├── login/
@@ -180,6 +183,7 @@ export const routes: RouteConfig[] = [
 ### **2.3 Layouts Hierárquicos**
 
 **Layout Raiz:** `src/app/layout.tsx`
+
 ```typescript
 export default function RootLayout({
   children,
@@ -202,6 +206,7 @@ export default function RootLayout({
 ```
 
 **Layout Protegido:** `src/app/(protected)/layout.tsx`
+
 ```typescript
 export default function ProtectedLayout({
   children,
@@ -231,12 +236,12 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#F4A300',    // Dourado/Laranja
+      main: '#F4A300', // Dourado/Laranja
       light: '#FFB84D',
       dark: '#CC8500',
     },
     secondary: {
-      main: '#181818',    // Dark
+      main: '#181818', // Dark
       light: '#2D2D2D',
       dark: '#0D0D0D',
     },
@@ -249,7 +254,7 @@ export const theme = createTheme({
       secondary: '#A0A6B5',
     },
   },
-  
+
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", sans-serif',
     h1: { fontSize: '2rem', fontWeight: 600 },
@@ -258,7 +263,7 @@ export const theme = createTheme({
     body1: { fontSize: '1rem', fontWeight: 400 },
     button: { fontWeight: 600, textTransform: 'none' },
   },
-  
+
   shape: {
     borderRadius: 4, // Padronização global
   },
@@ -268,6 +273,7 @@ export const theme = createTheme({
 ### **3.2 Componentes do Design System**
 
 **DSButton:** `src/components/ui/DSButton.tsx`
+
 ```typescript
 interface DSButtonProps extends ButtonProps {
   variant?: 'contained' | 'outlined' | 'text';
@@ -275,12 +281,12 @@ interface DSButtonProps extends ButtonProps {
   icon?: ReactNode;
 }
 
-export function DSButton({ 
-  variant = 'contained', 
-  loading, 
-  icon, 
-  children, 
-  ...props 
+export function DSButton({
+  variant = 'contained',
+  loading,
+  icon,
+  children,
+  ...props
 }: DSButtonProps) {
   return (
     <Button
@@ -302,6 +308,7 @@ export function DSButton({
 ```
 
 **DSTable:** `src/components/ui/DSTable.tsx` (320 linhas)
+
 ```typescript
 interface DSTableProps<T> {
   columns: ColumnDef<T>[];
@@ -325,20 +332,21 @@ interface DSTableProps<T> {
   emptyState?: ReactNode;
 }
 
-export function DSTable<T>({ 
-  columns, 
-  data, 
-  loading, 
+export function DSTable<T>({
+  columns,
+  data,
+  loading,
   pagination,
   sorting,
   selection,
-  emptyState 
+  emptyState,
 }: DSTableProps<T>) {
   // Implementação completa com virtualização, ordenação, paginação
 }
 ```
 
 **DSTextField:** `src/components/ui/DSTextField.tsx`
+
 ```typescript
 interface DSTextFieldProps extends Omit<TextFieldProps, 'variant'> {
   loading?: boolean;
@@ -346,11 +354,11 @@ interface DSTextFieldProps extends Omit<TextFieldProps, 'variant'> {
   suffix?: ReactNode;
 }
 
-export function DSTextField({ 
-  loading, 
-  prefix, 
-  suffix, 
-  ...props 
+export function DSTextField({
+  loading,
+  prefix,
+  suffix,
+  ...props
 }: DSTextFieldProps) {
   return (
     <TextField
@@ -376,6 +384,7 @@ export function DSTextField({
 ### **3.3 Componentes Especializados**
 
 **KpiCard:** `src/components/dashboard/KpiCard.tsx`
+
 ```typescript
 interface KpiCardProps {
   title: string;
@@ -390,22 +399,22 @@ interface KpiCardProps {
   onClick?: () => void;
 }
 
-export function KpiCard({ 
-  title, 
-  value, 
-  trend, 
-  icon, 
-  loading, 
-  onClick 
+export function KpiCard({
+  title,
+  value,
+  trend,
+  icon,
+  loading,
+  onClick
 }: KpiCardProps) {
   return (
-    <Card 
-      sx={{ 
-        p: 3, 
+    <Card
+      sx={{
+        p: 3,
         cursor: onClick ? 'pointer' : 'default',
-        '&:hover': onClick ? { 
+        '&:hover': onClick ? {
           boxShadow: 2,
-          borderColor: 'primary.main' 
+          borderColor: 'primary.main'
         } : {},
       }}
       onClick={onClick}
@@ -421,7 +430,7 @@ export function KpiCard({
             {title}
           </Typography>
         </Box>
-        
+
         {loading ? (
           <Skeleton variant="text" width="60%" height={40} />
         ) : (
@@ -429,15 +438,15 @@ export function KpiCard({
             {value}
           </Typography>
         )}
-        
+
         {trend && (
           <Box display="flex" alignItems="center" mt={1}>
-            <TrendingUpIcon 
+            <TrendingUpIcon
               color={trend.direction === 'up' ? 'success' : 'error'}
-              sx={{ mr: 0.5 }} 
+              sx={{ mr: 0.5 }}
             />
-            <Typography 
-              variant="body2" 
+            <Typography
+              variant="body2"
               color={trend.direction === 'up' ? 'success.main' : 'error.main'}
             >
               {trend.label}
@@ -457,6 +466,7 @@ export function KpiCard({
 ### **4.1 React Query Configuration**
 
 **Provider:** `src/app/providers.tsx`
+
 ```typescript
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -495,6 +505,7 @@ export function Providers({ children }: { children: ReactNode }) {
 ### **4.2 Custom Hooks de Dados**
 
 **useClientes:** `src/hooks/use-clientes.ts`
+
 ```typescript
 export function useClientes(filters?: ClienteFilters) {
   return useQuery({
@@ -507,7 +518,7 @@ export function useClientes(filters?: ClienteFilters) {
 
 export function useCreateCliente() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: createCliente,
     onSuccess: () => {
@@ -522,10 +533,9 @@ export function useCreateCliente() {
 
 export function useUpdateCliente() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateClienteData }) =>
-      updateCliente(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateClienteData }) => updateCliente(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['clientes'] });
       queryClient.invalidateQueries({ queryKey: ['cliente', id] });
@@ -536,6 +546,7 @@ export function useUpdateCliente() {
 ```
 
 **useAuth:** `src/hooks/use-auth.ts`
+
 ```typescript
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -553,15 +564,15 @@ export function useAuth() {
     });
 
     // Escutar mudanças de auth
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchUserProfile(session.user.id);
-        }
-        setLoading(false);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        await fetchUserProfile(session.user.id);
       }
-    );
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -586,7 +597,7 @@ export function useAuth() {
       email,
       password,
     });
-    
+
     if (error) throw error;
     return data;
   };
@@ -594,7 +605,7 @@ export function useAuth() {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    
+
     setUser(null);
     setProfile(null);
   };
@@ -614,6 +625,7 @@ export function useAuth() {
 ### **4.3 Context Providers**
 
 **ColorModeProvider:** `src/theme/color-mode.tsx`
+
 ```typescript
 interface ColorModeContextType {
   mode: 'light' | 'dark';
@@ -665,6 +677,7 @@ export const useColorMode = () => useContext(ColorModeContext);
 ### **5.1 AppShell - Layout Principal**
 
 **Arquivo:** `src/components/features/layout/AppShell.tsx`
+
 ```typescript
 export function AppShell({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -674,20 +687,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <CssBaseline />
-      
+
       {/* Header Fixo */}
-      <TratoHeader 
+      <TratoHeader
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         sidebarOpen={sidebarOpen}
       />
-      
+
       {/* Sidebar */}
       <TratoSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         variant={isMobile ? 'temporary' : 'persistent'}
       />
-      
+
       {/* Conteúdo Principal */}
       <Box
         component="main"
@@ -709,11 +722,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 ### **5.2 Sidebar Dinâmico**
 
 **Arquivo:** `src/components/layout/TratoSidebar.tsx`
+
 ```typescript
 export function TratoSidebar({ open, onClose, variant }: SidebarProps) {
   const { profile } = useAuth();
   const location = usePathname();
-  
+
   // Filtrar rotas baseado no role do usuário
   const filteredRoutes = useMemo(() => {
     return routes.filter(route => {
@@ -745,9 +759,9 @@ export function TratoSidebar({ open, onClose, variant }: SidebarProps) {
           Trato
         </Typography>
       </Box>
-      
+
       <Divider />
-      
+
       <List sx={{ px: 1 }}>
         {filteredRoutes.map((route) => (
           <SidebarItem
@@ -765,9 +779,9 @@ export function TratoSidebar({ open, onClose, variant }: SidebarProps) {
 function SidebarItem({ route, isActive, depth }: SidebarItemProps) {
   const [expanded, setExpanded] = useState(false);
   const router = useRouter();
-  
+
   const hasChildren = route.children && route.children.length > 0;
-  
+
   return (
     <>
       <ListItem
@@ -793,28 +807,28 @@ function SidebarItem({ route, isActive, depth }: SidebarItemProps) {
         <ListItemIcon>
           <Icon name={route.icon} />
         </ListItemIcon>
-        
-        <ListItemText 
+
+        <ListItemText
           primary={route.label}
           primaryTypographyProps={{
             variant: 'body2',
             fontWeight: isActive ? 600 : 400,
           }}
         />
-        
+
         {route.badge && (
-          <Chip 
-            label={route.badge} 
-            size="small" 
+          <Chip
+            label={route.badge}
+            size="small"
             color="secondary"
           />
         )}
-        
+
         {hasChildren && (
           expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
         )}
       </ListItem>
-      
+
       {hasChildren && (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
@@ -837,18 +851,19 @@ function SidebarItem({ route, isActive, depth }: SidebarItemProps) {
 ### **5.3 Header com Breadcrumbs**
 
 **Arquivo:** `src/components/layout/TratoHeader.tsx`
+
 ```typescript
 export function TratoHeader({ onMenuClick, sidebarOpen }: HeaderProps) {
   const { profile, signOut } = useAuth();
   const { mode, toggleColorMode } = useColorMode();
   const pathname = usePathname();
-  
+
   const breadcrumbs = generateBreadcrumbs(pathname);
 
   return (
-    <AppBar 
-      position="fixed" 
-      sx={{ 
+    <AppBar
+      position="fixed"
+      sx={{
         zIndex: 1201,
         backgroundColor: 'background.paper',
         borderBottom: '1px solid',
@@ -863,7 +878,7 @@ export function TratoHeader({ onMenuClick, sidebarOpen }: HeaderProps) {
         >
           <MenuIcon />
         </IconButton>
-        
+
         {/* Breadcrumbs */}
         <Breadcrumbs separator="›" sx={{ flexGrow: 1 }}>
           {breadcrumbs.map((crumb, index) => (
@@ -877,19 +892,19 @@ export function TratoHeader({ onMenuClick, sidebarOpen }: HeaderProps) {
             </Link>
           ))}
         </Breadcrumbs>
-        
+
         {/* Actions */}
         <Box display="flex" alignItems="center" gap={1}>
           <IconButton onClick={toggleColorMode}>
             {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
-          
-          <Chip 
-            label={profile?.unit_name} 
-            size="small" 
+
+          <Chip
+            label={profile?.unit_name}
+            size="small"
             variant="outlined"
           />
-          
+
           <IconButton onClick={signOut}>
             <LogoutIcon />
           </IconButton>
@@ -907,6 +922,7 @@ export function TratoHeader({ onMenuClick, sidebarOpen }: HeaderProps) {
 ### **6.1 Dashboard - Visão Geral**
 
 **Arquivo:** `src/app/(protected)/dashboard/DashboardClient.tsx`
+
 ```typescript
 export function DashboardClient() {
   const { data: metrics, loading } = useDashboardMetrics();
@@ -914,11 +930,11 @@ export function DashboardClient() {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
-      <PageHeader 
-        title="Dashboard" 
-        subtitle="Visão geral do seu negócio" 
+      <PageHeader
+        title="Dashboard"
+        subtitle="Visão geral do seu negócio"
       />
-      
+
       {/* KPIs Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -934,7 +950,7 @@ export function DashboardClient() {
             loading={loading}
           />
         </Grid>
-        
+
         <Grid item xs={12} sm={6} md={3}>
           <KpiCard
             title="Agendamentos"
@@ -948,7 +964,7 @@ export function DashboardClient() {
             loading={loading}
           />
         </Grid>
-        
+
         <Grid item xs={12} sm={6} md={3}>
           <KpiCard
             title="Clientes Ativos"
@@ -957,7 +973,7 @@ export function DashboardClient() {
             loading={loading}
           />
         </Grid>
-        
+
         <Grid item xs={12} sm={6} md={3}>
           <KpiCard
             title="Ticket Médio"
@@ -967,7 +983,7 @@ export function DashboardClient() {
           />
         </Grid>
       </Grid>
-      
+
       {/* Charts Row */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} lg={8}>
@@ -977,7 +993,7 @@ export function DashboardClient() {
             loading={loading}
           />
         </Grid>
-        
+
         <Grid item xs={12} lg={4}>
           <BarChartCard
             title="Top Serviços"
@@ -986,7 +1002,7 @@ export function DashboardClient() {
           />
         </Grid>
       </Grid>
-      
+
       {/* Tables Row */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
@@ -1001,7 +1017,7 @@ export function DashboardClient() {
             loading={loading}
           />
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <TopTableCard
             title="Top Profissionais"
@@ -1023,6 +1039,7 @@ export function DashboardClient() {
 ### **6.2 Clientes - CRUD Completo**
 
 **Arquivo:** `src/app/(protected)/clientes/components/ClientesContent.tsx`
+
 ```typescript
 export function ClientesContent() {
   const [filters, setFilters] = useState<ClienteFilters>({});
@@ -1036,8 +1053,8 @@ export function ClientesContent() {
   const deleteMutation = useDeleteCliente();
 
   const columns: ColumnDef<Cliente>[] = [
-    { 
-      id: 'nome', 
+    {
+      id: 'nome',
       label: 'Nome',
       render: (cliente) => (
         <Box>
@@ -1050,15 +1067,15 @@ export function ClientesContent() {
         </Box>
       )
     },
-    { 
-      id: 'email', 
+    {
+      id: 'email',
       label: 'Email',
       render: (cliente) => cliente.email || '-'
     },
     {
       id: 'ultimo_atendimento',
       label: 'Último Atendimento',
-      render: (cliente) => cliente.ultimo_atendimento 
+      render: (cliente) => cliente.ultimo_atendimento
         ? formatDistance(new Date(cliente.ultimo_atendimento), new Date())
         : 'Nunca'
     },
@@ -1105,8 +1122,8 @@ export function ClientesContent() {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
-      <PageHeader 
-        title="Clientes" 
+      <PageHeader
+        title="Clientes"
         subtitle="Gestão completa de clientes"
         actions={
           <DSButton
@@ -1118,14 +1135,14 @@ export function ClientesContent() {
           </DSButton>
         }
       />
-      
+
       {/* Filtros */}
       <ClientesFilters
         filters={filters}
         onFiltersChange={setFilters}
         onClearFilters={() => setFilters({})}
       />
-      
+
       {/* Tabela */}
       <DSTable
         columns={columns}
@@ -1157,7 +1174,7 @@ export function ClientesContent() {
           />
         }
       />
-      
+
       {/* Modal de Criação/Edição */}
       <ClienteFormDialog
         open={dialogOpen}
@@ -1182,21 +1199,22 @@ export function ClientesContent() {
 ### **6.3 Agenda - Sistema de Agendamentos**
 
 **Arquivo:** `src/components/features/agenda/GradeHorarios.tsx`
+
 ```typescript
 export function GradeHorarios() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedProfissional, setSelectedProfissional] = useState<string>('');
-  
+
   const { data: agendamentos } = useAgendamentos({
     data_inicio: startOfDay(selectedDate).toISOString(),
     data_fim: endOfDay(selectedDate).toISOString(),
     profissional_id: selectedProfissional || undefined,
   });
-  
+
   const { data: profissionais } = useProfissionais();
-  
+
   const horarios = generateTimeSlots(8, 18, 30); // 8h às 18h, slots de 30min
-  
+
   return (
     <Box>
       {/* Filtros */}
@@ -1206,7 +1224,7 @@ export function GradeHorarios() {
           onChange={setSelectedDate}
           label="Data"
         />
-        
+
         <DSSelect
           value={selectedProfissional}
           onChange={setSelectedProfissional}
@@ -1220,7 +1238,7 @@ export function GradeHorarios() {
           ]}
         />
       </Box>
-      
+
       {/* Grade de Horários */}
       <Paper sx={{ overflow: 'hidden' }}>
         <Table stickyHeader>
@@ -1230,8 +1248,8 @@ export function GradeHorarios() {
               {profissionais?.map(profissional => (
                 <TableCell key={profissional.id} sx={{ minWidth: 200 }}>
                   <Box display="flex" alignItems="center" gap={1}>
-                    <Avatar 
-                      src={profissional.avatar_url} 
+                    <Avatar
+                      src={profissional.avatar_url}
                       sx={{ width: 32, height: 32 }}
                     >
                       {profissional.nome.charAt(0)}
@@ -1244,7 +1262,7 @@ export function GradeHorarios() {
               ))}
             </TableRow>
           </TableHead>
-          
+
           <TableBody>
             {horarios.map(horario => (
               <TableRow key={horario}>
@@ -1253,13 +1271,13 @@ export function GradeHorarios() {
                     {horario}
                   </Typography>
                 </TableCell>
-                
+
                 {profissionais?.map(profissional => {
-                  const agendamento = agendamentos?.find(a => 
+                  const agendamento = agendamentos?.find(a =>
                     a.profissional_id === profissional.id &&
                     format(new Date(a.data_agendamento), 'HH:mm') === horario
                   );
-                  
+
                   return (
                     <TableCell key={`${profissional.id}-${horario}`}>
                       {agendamento ? (
@@ -1296,8 +1314,8 @@ function AgendamentoCard({ agendamento }: { agendamento: Agendamento }) {
   } as const;
 
   return (
-    <Card 
-      sx={{ 
+    <Card
+      sx={{
         minHeight: 80,
         cursor: 'pointer',
         '&:hover': { boxShadow: 2 }
@@ -1307,11 +1325,11 @@ function AgendamentoCard({ agendamento }: { agendamento: Agendamento }) {
         <Typography variant="caption" fontWeight={600}>
           {agendamento.cliente_nome}
         </Typography>
-        
+
         <Typography variant="body2" sx={{ mt: 0.5 }}>
           {agendamento.servicos.map(s => s.nome).join(', ')}
         </Typography>
-        
+
         <Chip
           label={agendamento.status.replace('_', ' ')}
           color={statusColors[agendamento.status]}
@@ -1333,11 +1351,11 @@ function AgendamentoCard({ agendamento }: { agendamento: Agendamento }) {
 ```typescript
 // Material-UI Breakpoints
 const breakpoints = {
-  xs: 0,     // Mobile portrait
-  sm: 600,   // Mobile landscape
-  md: 900,   // Tablet
-  lg: 1200,  // Desktop
-  xl: 1536,  // Large desktop
+  xs: 0, // Mobile portrait
+  sm: 600, // Mobile landscape
+  md: 900, // Tablet
+  lg: 1200, // Desktop
+  xl: 1536, // Large desktop
 };
 
 // Uso em componentes
@@ -1349,6 +1367,7 @@ const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 ### **7.2 Estados de Interface**
 
 **LoadingScreen:** `src/components/ui/LoadingScreen.tsx`
+
 ```typescript
 export function LoadingScreen({ message = 'Carregando...' }: { message?: string }) {
   return (
@@ -1370,6 +1389,7 @@ export function LoadingScreen({ message = 'Carregando...' }: { message?: string 
 ```
 
 **EmptyState:** `src/components/ui/EmptyState.tsx`
+
 ```typescript
 interface EmptyStateProps {
   icon: ReactNode;
@@ -1389,9 +1409,9 @@ export function EmptyState({ icon, title, subtitle, action }: EmptyStateProps) {
       px={2}
       textAlign="center"
     >
-      <Box 
-        display="flex" 
-        alignItems="center" 
+      <Box
+        display="flex"
+        alignItems="center"
         justifyContent="center"
         sx={{
           width: 120,
@@ -1404,17 +1424,17 @@ export function EmptyState({ icon, title, subtitle, action }: EmptyStateProps) {
       >
         {icon}
       </Box>
-      
+
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
-      
+
       {subtitle && (
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           {subtitle}
         </Typography>
       )}
-      
+
       {action}
     </Box>
   );
@@ -1424,6 +1444,7 @@ export function EmptyState({ icon, title, subtitle, action }: EmptyStateProps) {
 ### **7.3 Acessibilidade**
 
 **Focus Management:**
+
 ```typescript
 // Focus ring global
 '&:focus-visible': {
@@ -1434,6 +1455,7 @@ export function EmptyState({ icon, title, subtitle, action }: EmptyStateProps) {
 ```
 
 **ARIA Labels e Roles:**
+
 ```typescript
 <IconButton
   aria-label="Editar cliente"
@@ -1480,7 +1502,7 @@ const KpiCard = memo(function KpiCard({ title, value, trend }: KpiCardProps) {
 // Hook com memoização
 function useDashboardMetrics() {
   const { profile } = useAuth();
-  
+
   return useQuery({
     queryKey: ['dashboard-metrics', profile?.unit_id],
     queryFn: () => getDashboardMetrics(profile?.unit_id),
@@ -1540,7 +1562,7 @@ describe('KpiCard', () => {
 
   it('should show loading state', () => {
     render(<KpiCard title="Test" value="100" loading />);
-    
+
     expect(screen.getByTestId('skeleton')).toBeInTheDocument();
   });
 });
@@ -1552,14 +1574,14 @@ describe('KpiCard', () => {
 // e2e/tests/dashboard.spec.ts
 test('dashboard should display KPIs', async ({ page }) => {
   await page.goto('/dashboard');
-  
+
   // Verificar KPIs principais
   await expect(page.locator('[data-testid="kpi-receita"]')).toBeVisible();
   await expect(page.locator('[data-testid="kpi-agendamentos"]')).toBeVisible();
-  
+
   // Verificar carregamento de dados
   await expect(page.locator('[data-testid="loading"]')).toBeHidden();
-  
+
   // Verificar gráficos
   await expect(page.locator('[data-testid="receita-chart"]')).toBeVisible();
 });
@@ -1648,6 +1670,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 ## 📊 MÉTRICAS E STATUS
 
 ### **Estatísticas Frontend:**
+
 - **Componentes UI:** 25+ componentes do Design System
 - **Páginas:** 40+ páginas implementadas
 - **Hooks:** 15+ hooks personalizados
@@ -1656,6 +1679,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 - **Lighthouse Score:** 95+ (Performance/Acessibilidade)
 
 ### **Features Implementadas:**
+
 - ✅ **Dashboard Analytics** com KPIs e gráficos
 - ✅ **CRUD Completo** para todas as entidades
 - ✅ **Sistema de Agendamentos** visual
@@ -1666,6 +1690,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 - ✅ **Acessibilidade** WCAG 2.1 AA
 
 ### **Performance Benchmarks:**
+
 - **First Contentful Paint:** < 1.5s
 - **Time to Interactive:** < 3.0s
 - **Cumulative Layout Shift:** < 0.1
@@ -1678,6 +1703,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 O frontend do Sistema SaaS Barbearia representa uma implementação **enterprise-grade** com:
 
 ### **Arquitetura Moderna:**
+
 1. **Next.js 14** - Framework React de última geração
 2. **Material-UI v6** - Design System profissional
 3. **TypeScript Strict** - Type safety completo
@@ -1685,13 +1711,15 @@ O frontend do Sistema SaaS Barbearia representa uma implementação **enterprise
 5. **Performance First** - Otimizações avançadas
 
 ### **UX/UI Excelente:**
+
 - **Design System Consistente** - Interface unificada
-- **Responsive Design** - Funciona em todos os dispositivos  
+- **Responsive Design** - Funciona em todos os dispositivos
 - **Acessibilidade** - Conformidade com padrões WCAG
 - **Dark Mode First** - Interface moderna e profissional
 - **Loading States** - Feedback visual em todas as interações
 
 ### **Qualidade de Código:**
+
 - **Componente-Driven** - Reutilização e manutenibilidade
 - **Error Boundaries** - Tratamento robusto de erros
 - **Testing Coverage** - Testes unitários e E2E

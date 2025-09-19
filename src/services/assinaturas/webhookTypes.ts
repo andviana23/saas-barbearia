@@ -4,8 +4,7 @@ export interface AsaasWebhookEvent {
   dateCreated: string;
   subscription?: { id: string };
   payment?: { id: string };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
 export interface WebhookProcessResult {

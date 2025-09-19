@@ -16,7 +16,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -25,7 +25,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { signIn, loading: authLoading, isAuthenticated } = useAuth();
+  const { signIn, loading: authLoading, isAuthenticated } = useAuthContext();
   const router = useRouter();
   const searchParams = useSearchParams();
 

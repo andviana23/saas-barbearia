@@ -58,6 +58,20 @@ if (typeof Request === 'undefined') {
   // @ts-ignore
   global.Request = class {};
 }
+
+// Mock BroadcastChannel for MSW
+if (typeof BroadcastChannel === 'undefined') {
+  // @ts-ignore
+  global.BroadcastChannel = class BroadcastChannel {
+    constructor(name) {
+      this.name = name;
+    }
+    postMessage() {}
+    close() {}
+    addEventListener() {}
+    removeEventListener() {}
+  };
+}
 // Mock environment variables
 process.env.NODE_ENV = 'test';
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://localhost:54321';

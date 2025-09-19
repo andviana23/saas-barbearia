@@ -20,7 +20,7 @@ export interface ApiErrorShape {
 export class ApiError extends Error implements ApiErrorShape {
   status: number;
   details?: unknown;
-  
+
   constructor(err: ApiErrorShape) {
     super(err.message);
     this.status = err.status;
@@ -134,7 +134,7 @@ export async function fetchJson<
         } catch {
           details = undefined;
         }
-        
+
         const apiError = new ApiError({
           status: res.status,
           message: httpStatusMessage(
@@ -158,7 +158,7 @@ export async function fetchJson<
           await sleep(retryDelayMs);
           continue;
         }
-        
+
         throw apiError;
       }
 

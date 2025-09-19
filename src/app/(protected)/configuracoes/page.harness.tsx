@@ -9,15 +9,17 @@ export default function ConfiguracoesHarness() {
           href="/configuracoes/perfil"
           style={{
             padding: 16,
-            background: '#f3f4f6',
+            background: 'var(--mui-palette-surfaces-surface2)',
             borderRadius: 8,
             textDecoration: 'none',
-            color: '#1f2937',
-            border: '1px solid #d1d5db',
+            color: 'var(--mui-palette-text-primary)',
+            border: '1px solid var(--mui-palette-divider)',
           }}
         >
           👤 Perfil
-          <div style={{ fontSize: '14px', color: '#6b7280', marginTop: 4 }}>
+          <div
+            style={{ fontSize: '14px', color: 'var(--mui-palette-text-secondary)', marginTop: 4 }}
+          >
             Dados pessoais e preferências
           </div>
         </a>

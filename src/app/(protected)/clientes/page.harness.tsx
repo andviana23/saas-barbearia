@@ -4,7 +4,12 @@ export default function ClientesHarness() {
     <div data-testid="clientes-content" style={{ padding: 24 }}>
       <div
         data-testid="clientes-list"
-        style={{ marginBottom: 16, background: '#f9fafb', padding: 16, borderRadius: 8 }}
+        style={{
+          marginBottom: 16,
+          background: 'var(--mui-palette-surfaces-surface2)',
+          padding: 16,
+          borderRadius: 8,
+        }}
       >
         <h3>Lista de Clientes</h3>
         <div>João Silva - (11) 99999-9999</div>
@@ -14,7 +19,7 @@ export default function ClientesHarness() {
         data-testid="novo-cliente-button"
         style={{
           padding: '8px 16px',
-          background: '#2563eb',
+          background: 'var(--mui-palette-primary-main)',
           color: 'white',
           border: 'none',
           borderRadius: 4,

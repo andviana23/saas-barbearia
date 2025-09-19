@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { z } from 'zod';
 import {
   Dialog,
   DialogTitle,
@@ -95,9 +96,20 @@ export default function TipoBandeiraModal({
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const isEditing = !!tipoBandeira;
-  const formSchema = isEditing
-    ? updateTipoBandeiraSchema.omit({ id: true })
-    : createTipoBandeiraSchema;
+  const formSchema = z.object({
+    nome: z.string().min(1, 'Nome é obrigatório'),
+    descricao: z.string().optional(),
+    codigo: z.string().min(1, 'Código é obrigatório'),
+    taxa_percentual: z.number().min(0, 'Taxa não pode ser negativa'),
+    ativo: z.boolean(),
+    logo_url: z.string().url('URL do logo inválida').optional(),
+    cor_primaria: z
+      .string()
+      .regex(/^#[0-9A-Fa-f]{6}$/, 'Cor deve estar no formato hexadecimal')
+      .optional(),
+    prefixo_cartao: z.string().optional(),
+    comprimento_cartao: z.number().int().min(13).max(19).optional(),
+  });
 
   const {
     control,
@@ -434,7 +446,7 @@ export default function TipoBandeiraModal({
                       content: '""',
                       width: 16,
                       height: 16,
-                      backgroundColor: corAtual || '#1976d2',
+                      backgroundColor: corAtual || '#4f8cff',
                       borderRadius: 1,
                       marginRight: 1,
                     },

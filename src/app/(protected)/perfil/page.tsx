@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Container,
   Box,
@@ -11,8 +13,17 @@ import {
   Divider,
   Chip,
 } from '@mui/material';
-import { Edit, Save, Cancel, Person, Email, Phone, Location, DateRange } from '@mui/icons-material';
-import PageHeader from '@/components/PageHeader';
+import {
+  Edit,
+  Save,
+  Cancel,
+  Person,
+  Email,
+  Phone,
+  LocationOn,
+  DateRange,
+} from '@mui/icons-material';
+import PageHeader from '@/components/ui/PageHeader';
 
 export default function PerfilPage() {
   // Mock dos dados do usuário
@@ -74,7 +85,7 @@ export default function PerfilPage() {
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Location sx={{ mr: 2, color: 'text.secondary' }} />
+                  <LocationOn sx={{ mr: 2, color: 'text.secondary' }} />
                   <Typography variant="body2" color="text.secondary">
                     {userData.address}
                   </Typography>

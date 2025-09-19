@@ -21,10 +21,28 @@ import { WhatsApp, Sms, Email, Notifications, Preview as PreviewIcon } from '@mu
 
 import { useNotificacaoHelpers } from '@/hooks/use-notificacoes';
 
+// Interface para template
+interface TemplateNotificacao {
+  id: string;
+  unidadeId: string;
+  canalId: string;
+  codigo: string;
+  nome: string;
+  descricao?: string;
+  titulo?: string;
+  mensagem: string;
+  ativo: boolean;
+  enviarAutomatico: boolean;
+  tempoAntecedencia?: string;
+  variaveis: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface TemplatePreviewDialogProps {
   open: boolean;
   onClose: () => void;
-  template?: any;
+  template?: TemplateNotificacao;
 }
 
 export default function TemplatePreviewDialog({
@@ -87,7 +105,8 @@ export default function TemplatePreviewDialog({
   };
 
   const renderPreviewCard = () => {
-    const canal = template.canais_notificacao?.codigo;
+    // Usando canalId para determinar o tipo de canal
+    const canal = template.canalId;
     const corCanal = getCanalColor(canal);
 
     return (
@@ -97,7 +116,7 @@ export default function TemplatePreviewDialog({
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             {getCanalIcon(canal)}
             <Typography variant="h6" sx={{ color: corCanal }}>
-              {template.canais_notificacao?.nome}
+              Canal: {canal}
             </Typography>
           </Box>
 
@@ -221,7 +240,7 @@ export default function TemplatePreviewDialog({
                   <strong>Código:</strong> {template.codigo}
                 </Typography>
                 <Typography variant="body2">
-                  <strong>Canal:</strong> {template.canais_notificacao?.nome}
+                  <strong>Canal:</strong> {template.canalId}
                 </Typography>
                 <Typography variant="body2">
                   <strong>Status:</strong>{' '}
@@ -235,15 +254,15 @@ export default function TemplatePreviewDialog({
                 <Typography variant="body2">
                   <strong>Envio Automático:</strong>{' '}
                   <Chip
-                    label={template.enviar_automatico ? 'Sim' : 'Não'}
+                    label={template.enviarAutomatico ? 'Sim' : 'Não'}
                     size="small"
-                    color={template.enviar_automatico ? 'success' : 'default'}
+                    color={template.enviarAutomatico ? 'success' : 'default'}
                     variant="outlined"
                   />
                 </Typography>
-                {template.tempo_antecedencia && (
+                {template.tempoAntecedencia && (
                   <Typography variant="body2">
-                    <strong>Antecedência:</strong> {template.tempo_antecedencia}
+                    <strong>Antecedência:</strong> {template.tempoAntecedencia}
                   </Typography>
                 )}
               </Box>

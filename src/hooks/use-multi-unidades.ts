@@ -26,6 +26,7 @@ import {
   RelatorioConsolidadoFilters,
   RelatorioPagination,
 } from '@/types/multi-unidades';
+import { UpdatePermissaoHierarquica, UpdateAcessoMultiUnidade } from '@/schemas/multi-unidades';
 
 // =====================================================
 // HOOKS PARA GESTÃO MULTI-UNIDADES
@@ -90,7 +91,8 @@ export function useUpdatePermissaoHierarquica() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updatePermissaoHierarquica(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdatePermissaoHierarquica }) =>
+      updatePermissaoHierarquica(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
         queryKey: multiUnidadesKeys.permissao(id),
@@ -133,7 +135,8 @@ export function useUpdateAcessoMultiUnidade() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => updateAcessoMultiUnidade(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateAcessoMultiUnidade }) =>
+      updateAcessoMultiUnidade(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: multiUnidadesKeys.acessos() });
     },

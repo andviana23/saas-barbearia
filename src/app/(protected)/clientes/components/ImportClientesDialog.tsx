@@ -267,17 +267,19 @@ export default function ImportClientesDialog({
             </Typography>
 
             <List dense sx={{ maxHeight: 200, overflow: 'auto' }}>
-              {errors.slice(0, 10).map((error: any, index: number) => (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <ErrorIcon color="error" fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={`Linha ${error.line || index + 1}`}
-                    secondary={error.message}
-                  />
-                </ListItem>
-              ))}
+              {errors
+                .slice(0, 10)
+                .map((error: { line?: number; message: string }, index: number) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <ErrorIcon color="error" fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={`Linha ${error.line || index + 1}`}
+                      secondary={error.message}
+                    />
+                  </ListItem>
+                ))}
 
               {errors.length > 10 && (
                 <ListItem>

@@ -25,12 +25,14 @@ import {
   Cake as CakeIcon,
   CalendarToday as CalendarIcon,
 } from '@mui/icons-material';
+import { Cliente } from '@/types/api';
 
 interface ClienteDetailDialogProps {
   open: boolean;
-  cliente?: any;
   onClose: () => void;
-  onEdit: (cliente: any) => void;
+  cliente?: Cliente;
+  onToggleStatus: (cliente: Cliente) => void;
+  onEdit: (cliente: Cliente) => void;
 }
 
 export default function ClienteDetailDialog({

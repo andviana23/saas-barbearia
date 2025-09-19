@@ -12,7 +12,7 @@ import {
   Alert,
   AlertTitle,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowsProp, GridRenderCellParams } from '@mui/x-data-grid';
 import * as Sentry from '@sentry/nextjs';
 import { Card } from '@/components/ui';
 import {
@@ -122,7 +122,8 @@ export default function TopTableCard(inputProps: TopTableCardAllProps) {
         width: col.width || 150,
         flex: 1,
         align: col.align || 'left',
-        renderCell: (params: any) => {
+        type: 'string',
+        renderCell: (params: GridRenderCellParams) => {
           const value = params.value;
 
           // Handle null/undefined values safely

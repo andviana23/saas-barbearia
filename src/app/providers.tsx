@@ -14,6 +14,7 @@ import { makeTheme } from '@/lib/theme';
 import { ErrorBoundary } from '@/components/ui';
 import { NotificationProvider } from '@/components/ui/NotificationSystem';
 import { AccessibilityProvider } from '@/lib/a11y';
+import { AuthProvider } from '@/lib/auth/AuthContext';
 
 dayjs.locale('pt-br');
 
@@ -46,7 +47,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
             <QueryClientProvider client={queryClient}>
               <AccessibilityProvider>
-                <NotificationProvider>{children}</NotificationProvider>
+                <NotificationProvider>
+                  <AuthProvider>{children}</AuthProvider>
+                </NotificationProvider>
               </AccessibilityProvider>
             </QueryClientProvider>
           </LocalizationProvider>

@@ -1,19 +1,96 @@
 # 📚 GUIA DE USO - COMPONENTES UI & DESIGN SYSTEM
 
-**Sistema:** Trato - Material-UI v6 Design System  
-**Baseado em:** Material-UI v6 + Sistema de Grid Responsivo  
-**Padrões:** Conforme GUIA_TECNOLOGIAS_INTEGRACOES.md
+**Sistema:** SaaS Barbearia - Design System Completo  
+**Baseado em:** Material-UI v6 + Componentes Padronizados
 
 ---
 
 ## 📋 ÍNDICE
 
 1. [Componentes Disponíveis](#componentes-disponíveis)
-2. [Sistema SX - Estilização](#sistema-sx---estilização)
-3. [Grid Responsivo](#grid-responsivo)
-4. [Breakpoints](#breakpoints)
-5. [Boas Práticas](#boas-práticas)
-6. [Exemplos de Uso](#exemplos-de-uso)
+2. [Design System Completo](#design-system-completo)
+3. [Sistema SX - Estilização](#sistema-sx---estilização)
+4. [Grid Responsivo](#grid-responsivo)
+5. [Breakpoints](#breakpoints)
+6. [Boas Práticas](#boas-práticas)
+7. [Exemplos de Uso](#exemplos-de-uso)
+
+---
+
+## 🎯 Design System Completo
+
+### Novos Componentes Padronizados
+
+```typescript
+import {
+  // Formulários
+  DSTextField,
+  DSSelect,
+  DSCheckbox,
+  DSRadioGroup,
+  DSTextArea,
+  DSAutocomplete,
+  DSSwitch,
+  DSButton,
+  
+  // Layout
+  DSContainer,
+  DSStack,
+  DSGrid,
+  
+  // Navegação
+  DSBreadcrumbs,
+  DSPageBreadcrumbs,
+  
+  // Tipografia
+  DSHeading,
+  DSDisplay,
+  DSLabel,
+  DSHelper,
+  DSError,
+  
+  // Ícones
+  DSIcon,
+  DSStatusIcon,
+  DSActionIcon,
+  
+  // Loading
+  DSLoading,
+  DSSkeleton,
+  DSPageLoading,
+  
+  // Estados Vazios
+  DSEmptyState,
+  DSEmptyAgendamentos,
+  DSEmptyClientes,
+  
+  // Tema
+  DSThemeProvider,
+  DSThemeToggle,
+  
+  // Feedback
+  DSNotificationProvider,
+  DSProgressFeedback,
+  
+  // Validação
+  DSFormValidation,
+  
+  // Hooks
+  useFeedback,
+  useFormValidation,
+  useLoading,
+  useThemeColors,
+  useSpacing,
+  useIcons,
+  
+  // Exemplo Completo
+  DesignSystemExample
+} from '@/components/ui';
+```
+
+### 📖 Documentação Completa
+- **Documentação detalhada:** `docs/DESIGN_SYSTEM.md`
+- **Exemplo prático:** `src/examples/DesignSystemExample.tsx`
 
 ---
 
@@ -33,7 +110,90 @@ import {
   Input,
   SelectInput,
   CheckboxInput,
+  DSConfirmDialog,
+  DSDeleteDialog,
 } from '@/components/ui';
+```
+
+### 🔔 Componentes de Confirmação
+
+#### DSConfirmDialog - Confirmações Gerais
+
+```typescript
+import { DSConfirmDialog } from '@/components/ui';
+
+<DSConfirmDialog
+  open={open}
+  onClose={() => setOpen(false)}
+  onConfirm={handleConfirm}
+  title="Confirmar Ação"
+  message="Tem certeza que deseja continuar?"
+  variant="warning" // 'warning' | 'error' | 'info' | 'delete'
+  confirmText="Sim, continuar"
+  cancelText="Cancelar"
+  loading={isLoading}
+  details="Informações adicionais sobre a ação"
+/>
+```
+
+#### DSDeleteDialog - Confirmação de Exclusão
+
+```typescript
+import { DSDeleteDialog } from '@/components/ui';
+
+<DSDeleteDialog
+  open={open}
+  onClose={() => setOpen(false)}
+  onConfirm={handleDelete}
+  title="Excluir Cliente"
+  itemName="João Silva"
+  itemType="Cliente"
+  requireNameConfirmation={true}
+  consequences={[
+    'Todos os agendamentos serão cancelados',
+    'Histórico será mantido para relatórios'
+  ]}
+  loading={isDeleting}
+/>
+```
+
+#### Hook useConfirmDialog
+
+```typescript
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+
+const { showConfirmDialog, showDeleteDialog } = useConfirmDialog();
+
+// Confirmação simples
+showConfirmDialog({
+  title: 'Confirmar',
+  message: 'Deseja continuar?',
+  onConfirm: () => performAction(),
+});
+
+// Confirmação de exclusão
+showDeleteDialog({
+  title: 'Excluir Item',
+  itemName: 'Nome do Item',
+  itemType: 'Tipo',
+  onConfirm: () => deleteItem(),
+});
+```
+
+#### Provider Global
+
+```typescript
+// app/layout.tsx
+import { DSConfirmationProvider } from '@/components/ui/DSConfirmationProvider';
+
+<DSConfirmationProvider>
+  {children}
+</DSConfirmationProvider>
+
+// Em qualquer componente
+import { useConfirmation } from '@/components/ui/DSConfirmationProvider';
+
+const { showConfirmDialog, showDeleteDialog } = useConfirmation();
 ```
 
 ### 🔴 Button

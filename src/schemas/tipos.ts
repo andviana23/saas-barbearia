@@ -19,17 +19,15 @@ export const tipoPagamentoSchema = baseTypeSchema.extend({
   taxa_percentual: z
     .number()
     .min(0, 'Taxa não pode ser negativa')
-    .max(100, 'Taxa não pode ser maior que 100%')
-    .default(0),
-  taxa_fixa: z.number().min(0, 'Taxa fixa não pode ser negativa').default(0),
-  aceita_parcelamento: z.boolean().default(false),
+    .max(100, 'Taxa não pode ser maior que 100%'),
+  taxa_fixa: z.number().min(0, 'Taxa fixa não pode ser negativa'),
+  aceita_parcelamento: z.boolean(),
   max_parcelas: z
     .number()
     .int()
     .min(1, 'Máximo de parcelas deve ser pelo menos 1')
-    .max(24, 'Máximo de 24 parcelas')
-    .default(1),
-  requer_autorizacao: z.boolean().default(false),
+    .max(24, 'Máximo de 24 parcelas'),
+  requer_autorizacao: z.boolean(),
   icon: z.string().optional(),
   cor: z
     .string()
@@ -146,7 +144,7 @@ export const tipoCategoriaSchema = baseTypeSchema.extend({
     .optional(),
   icon: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  configuracoes: z.record(z.any()).default({}),
+  configuracoes: z.record(z.string(), z.unknown()).default({}),
 });
 
 export const createTipoCategoriaSchema = tipoCategoriaSchema.omit({

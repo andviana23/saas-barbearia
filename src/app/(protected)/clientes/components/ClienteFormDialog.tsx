@@ -18,11 +18,12 @@ import { DSTextField, FormRow } from '@/components/ui';
 import { useCreateCliente, useUpdateCliente } from '@/hooks/use-clientes';
 import { safeValidate } from '@/lib/validation';
 import { CreateClienteSchema, UpdateClienteSchema } from '@/schemas';
+import { Cliente } from '@/types/api';
 
 interface ClienteFormDialogProps {
   open: boolean;
   mode: 'create' | 'edit';
-  cliente?: any;
+  cliente?: Cliente;
   onClose: () => void;
   onSuccess: (message: string) => void;
 }
@@ -98,7 +99,7 @@ export default function ClienteFormDialog({
       const schema = isEdit ? UpdateClienteSchema : CreateClienteSchema;
       const validation = safeValidate(
         schema as any,
-        isEdit ? { id: cliente.id, ...formData } : formData,
+        isEdit && cliente ? { id: cliente.id, ...formData } : formData,
       );
 
       if (!validation.success) {
@@ -117,12 +118,13 @@ export default function ClienteFormDialog({
       });
 
       // Submissão
-      const result = isEdit
-        ? await updateMutation.mutateAsync({
-            id: cliente.id,
-            formData: formDataObj,
-          })
-        : await createMutation.mutateAsync(formDataObj);
+      const result =
+        isEdit && cliente
+          ? await updateMutation.mutateAsync({
+              id: cliente.id,
+              formData: formDataObj,
+            })
+          : await createMutation.mutateAsync(formDataObj);
 
       if (result.success) {
         onSuccess(isEdit ? 'Cliente atualizado com sucesso!' : 'Cliente criado com sucesso!');

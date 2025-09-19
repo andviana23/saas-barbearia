@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Button, Alert } from '@mui/material';
 import { Plus } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Categorias de Receitas | Trato',
-  description: 'Gerenciar categorias de receitas',
-};
 
 export default function TiposReceitasPage() {
   return (

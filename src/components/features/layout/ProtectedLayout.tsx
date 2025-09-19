@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuthContext } from '@/lib/auth/AuthContext';
 import { useCurrentUnit } from '@/hooks/use-current-unit';
 import {
   AppBar,
@@ -22,7 +22,7 @@ interface ProtectedLayoutProps {
 }
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  const { user, signOut, loading: authLoading } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuthContext();
   const { currentUnit, loading: unitLoading } = useCurrentUnit();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -67,7 +67,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
           </Typography>
 
           {currentUnit && (
-            <Chip label={currentUnit.nome} color="secondary" size="small" sx={{ mr: 2 }} />
+            <Chip label={currentUnit.name} color="secondary" size="small" sx={{ mr: 2 }} />
           )}
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

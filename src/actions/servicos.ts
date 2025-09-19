@@ -70,29 +70,29 @@ export async function getServicosV2(
 ): Promise<ActionResult<Servico[]>> {
   try {
     const validatedFilters = ServicoFiltersSchema.parse(filters);
-    
+
     let query = createServerSupabase().from('services').select('*');
-    
+
     if (validatedFilters.nome) {
       query = query.ilike('nome', `%${validatedFilters.nome}%`);
     }
-    
+
     if (validatedFilters.categoria) {
       query = query.eq('categoria', validatedFilters.categoria);
     }
-    
+
     if (validatedFilters.ativo !== undefined) {
       query = query.eq('ativo', validatedFilters.ativo);
     }
-    
+
     if (validatedFilters.unidade_id) {
       query = query.eq('unit_id', validatedFilters.unidade_id);
     }
-    
+
     if (validatedFilters.preco_min !== undefined) {
       query = query.gte('preco', validatedFilters.preco_min);
     }
-    
+
     if (validatedFilters.preco_max !== undefined) {
       query = query.lte('preco', validatedFilters.preco_max);
     }

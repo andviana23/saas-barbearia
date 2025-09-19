@@ -1,4 +1,5 @@
 # 🔧 DOCUMENTAÇÃO COMPLETA - BACKEND
+
 # Sistema SaaS Barbearia - Trato
 
 **Versão:** 2.0.0  
@@ -25,6 +26,7 @@
 ## 1. VISÃO GERAL DA ARQUITETURA BACKEND
 
 ### **Arquitetura Escolhida**
+
 ```
 🏗️ Monólito Modular com Clean Architecture
 ├── Frontend: Next.js 14 (App Router) + React 18
@@ -35,6 +37,7 @@
 ```
 
 ### **Tecnologias Core**
+
 - **Framework:** Next.js 14.2.5 (App Router)
 - **Language:** TypeScript 5.x (Strict Mode)
 - **Database:** Supabase PostgreSQL + RLS
@@ -44,6 +47,7 @@
 - **Date:** dayjs 1.11.13
 
 ### **Padrões Arquiteturais**
+
 - **Server-First:** Server Actions como principal interface
 - **Type-Safe:** TypeScript end-to-end com inferência Zod
 - **Multi-Tenant:** Isolamento por unidade com RLS
@@ -74,21 +78,33 @@ src/actions/
 **Arquivo:** `src/actions/agendamentos.ts` (752 linhas)
 
 **Funcionalidades Implementadas:**
+
 ```typescript
 // Criar agendamento com validação de conflitos
-export async function createAgendamento(data: CreateAgendamentoData): Promise<ActionResult<Agendamento>>
+export async function createAgendamento(
+  data: CreateAgendamentoData,
+): Promise<ActionResult<Agendamento>>;
 
 // Reagendar com preservação de histórico
-export async function rescheduleAgendamento(id: string, newDate: string, newTime: string): Promise<ActionResult<Agendamento>>
+export async function rescheduleAgendamento(
+  id: string,
+  newDate: string,
+  newTime: string,
+): Promise<ActionResult<Agendamento>>;
 
 // Listar com filtros avançados
-export async function listAgendamentos(filters: AgendamentoFilters): Promise<ActionResult<PaginatedAgendamentos>>
+export async function listAgendamentos(
+  filters: AgendamentoFilters,
+): Promise<ActionResult<PaginatedAgendamentos>>;
 
 // Estatísticas em tempo real
-export async function getAgendamentoStats(dateRange: DateRange): Promise<ActionResult<AgendamentoStats>>
+export async function getAgendamentoStats(
+  dateRange: DateRange,
+): Promise<ActionResult<AgendamentoStats>>;
 ```
 
 **Validações Implementadas:**
+
 - ✅ **Conflito de Horários:** Prevenção de double-booking
 - ✅ **Disponibilidade:** Verificação de horários do profissional
 - ✅ **Duração Mínima:** Slots de 15 minutos
@@ -96,6 +112,7 @@ export async function getAgendamentoStats(dateRange: DateRange): Promise<ActionR
 - ✅ **Status Workflow:** criado → confirmado → em_atendimento → concluído
 
 **Integrações:**
+
 - **Supabase RLS:** Isolamento por unidade
 - **React Query:** Cache inteligente
 - **Zod Schema:** Validação completa
@@ -106,19 +123,24 @@ export async function getAgendamentoStats(dateRange: DateRange): Promise<ActionR
 **Arquivo:** `src/actions/clientes.ts` (431 linhas)
 
 **Funcionalidades Core:**
+
 ```typescript
 // CRUD Moderno (PT) + Migração (EN)
-export async function createCliente(data: CreateClienteData): Promise<ActionResult<Cliente>>
-export async function createClienteV2(data: CreateCustomerData): Promise<ActionResult<Customer>> // Nova versão
+export async function createCliente(data: CreateClienteData): Promise<ActionResult<Cliente>>;
+export async function createClienteV2(data: CreateCustomerData): Promise<ActionResult<Customer>>; // Nova versão
 
 // Importação em Massa
-export async function importClientes(csvData: string[]): Promise<ActionResult<ImportResult>>
+export async function importClientes(csvData: string[]): Promise<ActionResult<ImportResult>>;
 
 // Busca Inteligente
-export async function searchClientes(query: string, filters: ClienteFilters): Promise<ActionResult<Cliente[]>>
+export async function searchClientes(
+  query: string,
+  filters: ClienteFilters,
+): Promise<ActionResult<Cliente[]>>;
 ```
 
 **Validações Especiais:**
+
 - **Telefone Brasileiro:** Regex completo + formatação
 - **Duplicação:** Verificação por telefone/email
 - **LGPD Ready:** Soft delete e campos de consentimento
@@ -128,21 +150,32 @@ export async function searchClientes(query: string, filters: ClienteFilters): Pr
 **Arquivo:** `src/actions/financeiro.ts` (624 linhas)
 
 **Módulos Implementados:**
+
 ```typescript
 // Movimentações Financeiras
-export async function createMovimentacao(data: CreateMovimentacaoData): Promise<ActionResult<Movimentacao>>
+export async function createMovimentacao(
+  data: CreateMovimentacaoData,
+): Promise<ActionResult<Movimentacao>>;
 
 // Fechamento de Caixa
-export async function fecharCaixa(data: FechamentoCaixaData): Promise<ActionResult<FechamentoCaixa>>
+export async function fecharCaixa(
+  data: FechamentoCaixaData,
+): Promise<ActionResult<FechamentoCaixa>>;
 
 // Relatórios Financeiros
-export async function generateRelatorioFinanceiro(periodo: DateRange): Promise<ActionResult<RelatorioFinanceiro>>
+export async function generateRelatorioFinanceiro(
+  periodo: DateRange,
+): Promise<ActionResult<RelatorioFinanceiro>>;
 
 // Cálculo de Comissões
-export async function calculateComissoes(profissionalId: string, periodo: DateRange): Promise<ActionResult<ComissaoData>>
+export async function calculateComissoes(
+  profissionalId: string,
+  periodo: DateRange,
+): Promise<ActionResult<ComissaoData>>;
 ```
 
 **Features Avançadas:**
+
 - **Tipos de Movimentação:** Receita, Despesa, Transferência
 - **Categorização:** Sistema de categorias customizáveis
 - **Reconciliação:** Fechamento de caixa com conferência
@@ -156,7 +189,7 @@ export async function calculateComissoes(profissionalId: string, periodo: DateRa
 ```typescript
 export async function withValidationSchema<T extends z.ZodSchema, R>(
   schema: T,
-  handler: (data: z.infer<T>) => Promise<R>
+  handler: (data: z.infer<T>) => Promise<R>,
 ) {
   return async (formData: FormData | z.infer<T>): Promise<ActionResult<R>> => {
     try {
@@ -164,9 +197,9 @@ export async function withValidationSchema<T extends z.ZodSchema, R>(
       const result = await handler(validatedData);
       return { success: true, data: result };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error instanceof ZodError ? 'Dados inválidos' : 'Erro interno' 
+      return {
+        success: false,
+        error: error instanceof ZodError ? 'Dados inválidos' : 'Erro interno',
       };
     }
   };
@@ -174,6 +207,7 @@ export async function withValidationSchema<T extends z.ZodSchema, R>(
 ```
 
 **Benefícios:**
+
 - ✅ **DRY Principle:** Eliminação de código repetitivo
 - ✅ **Type Safety:** Validação automática com Zod
 - ✅ **Error Handling:** Tratamento consistente
@@ -188,6 +222,7 @@ export async function withValidationSchema<T extends z.ZodSchema, R>(
 **Arquivo Principal:** `src/schemas/index.ts` (1.241 linhas)
 
 **Schemas Base Reutilizáveis:**
+
 ```typescript
 // Base Universal
 export const BaseSchema = z.object({
@@ -213,19 +248,23 @@ export const ClienteSchema = BaseSchema.merge(UnidadeSchema).extend({
 ```
 
 **Validações Especializadas:**
+
 ```typescript
 // Telefone Brasileiro
-export const TelefoneSchema = z.string()
+export const TelefoneSchema = z
+  .string()
   .regex(/^(\+55\s?)?(\(?\d{2}\)?\s?)(\d{4,5}\-?\d{4})$/, 'Telefone brasileiro válido')
   .transform((val) => val.replace(/\D/g, ''));
 
 // CNPJ com Validação
-export const CNPJSchema = z.string()
+export const CNPJSchema = z
+  .string()
   .regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, 'CNPJ deve seguir formato XX.XXX.XXX/XXXX-XX')
   .refine(validateCNPJ, 'CNPJ inválido');
 
 // Preços em Centavos (Preparação Futura)
-export const PriceCentsSchema = z.number()
+export const PriceCentsSchema = z
+  .number()
   .int('Preço deve ser um número inteiro em centavos')
   .min(1, 'Preço deve ser maior que zero')
   .max(9999999, 'Preço não pode exceder R$ 99.999,99');
@@ -236,11 +275,10 @@ export const PriceCentsSchema = z.number()
 **Arquivo:** `src/types/index.ts` (261 linhas)
 
 **Tipos Core:**
+
 ```typescript
 // ActionResult Pattern
-export type ActionResult<T> = 
-  | { success: true; data: T }
-  | { success: false; error: string };
+export type ActionResult<T> = { success: true; data: T } | { success: false; error: string };
 
 // Paginação
 export interface PaginatedResponse<T> {
@@ -264,13 +302,14 @@ export type Database = {
 ```
 
 **Enums Tipados:**
+
 ```typescript
 export enum StatusAgendamento {
   CRIADO = 'criado',
   CONFIRMADO = 'confirmado',
   EM_ATENDIMENTO = 'em_atendimento',
   CONCLUIDO = 'concluido',
-  CANCELADO = 'cancelado'
+  CANCELADO = 'cancelado',
 }
 
 export enum FormaPagamento {
@@ -278,7 +317,7 @@ export enum FormaPagamento {
   CARTAO_DEBITO = 'cartao_debito',
   CARTAO_CREDITO = 'cartao_credito',
   PIX = 'pix',
-  TRANSFERENCIA = 'transferencia'
+  TRANSFERENCIA = 'transferencia',
 }
 ```
 
@@ -316,46 +355,49 @@ export const CreateAgendamentoSchema = z.object({
 **Estrutura:** `src/services/assinaturas/`
 
 **Cliente ASAAS:** `asaasClient.ts` (198 linhas)
+
 ```typescript
 export class AsaasClient {
   private baseURL: string;
   private apiKey: string;
 
   // Customers
-  async createCustomer(data: CreateCustomerData): Promise<AsaasCustomer>
-  async getCustomer(id: string): Promise<AsaasCustomer>
+  async createCustomer(data: CreateCustomerData): Promise<AsaasCustomer>;
+  async getCustomer(id: string): Promise<AsaasCustomer>;
 
   // Subscriptions
-  async createSubscription(data: CreateSubscriptionData): Promise<AsaasSubscription>
-  async cancelSubscription(id: string): Promise<void>
+  async createSubscription(data: CreateSubscriptionData): Promise<AsaasSubscription>;
+  async cancelSubscription(id: string): Promise<void>;
 
   // Invoices
-  async getInvoice(id: string): Promise<AsaasInvoice>
-  async payInvoice(id: string, data: PaymentData): Promise<AsaasPayment>
+  async getInvoice(id: string): Promise<AsaasInvoice>;
+  async payInvoice(id: string, data: PaymentData): Promise<AsaasPayment>;
 }
 ```
 
 **Webhook Processing:** `webhook.ts` (234 linhas)
+
 ```typescript
 export async function processAsaasWebhook(
   eventType: string,
-  payload: AsaasWebhookPayload
+  payload: AsaasWebhookPayload,
 ): Promise<ProcessingResult> {
   const processor = webhookProcessors[eventType];
-  
+
   if (!processor) {
     throw new Error(`Webhook type ${eventType} not supported`);
   }
-  
+
   // Idempotência via asaas_webhook_events
   const existingEvent = await checkEventExists(payload.event_id);
   if (existingEvent) return { status: 'already_processed' };
-  
+
   return await processor(payload);
 }
 ```
 
 **Mappers:** `mappers.ts` (156 linhas)
+
 ```typescript
 // ASAAS → Sistema
 export function mapAsaasCustomerToCliente(asaasCustomer: AsaasCustomer): Cliente {
@@ -398,10 +440,10 @@ export class MetricsService {
   }
 
   // Performance Profissionais
-  async getProfissionalPerformance(profissionalId: string): Promise<ProfissionalMetrics>
+  async getProfissionalPerformance(profissionalId: string): Promise<ProfissionalMetrics>;
 
   // Análise de Serviços
-  async getServicosAnalysis(unidadeId: string): Promise<ServicosMetrics>
+  async getServicosAnalysis(unidadeId: string): Promise<ServicosMetrics>;
 }
 ```
 
@@ -416,15 +458,15 @@ export class MetricsService {
 ```typescript
 export async function GET(): Promise<Response> {
   const startTime = Date.now();
-  
+
   const checks = await Promise.allSettled([
     checkDatabase(),
     checkEnvironment(),
     checkExternalServices(),
   ]);
-  
+
   const health: HealthStatus = {
-    status: checks.every(c => c.status === 'fulfilled') ? 'healthy' : 'unhealthy',
+    status: checks.every((c) => c.status === 'fulfilled') ? 'healthy' : 'unhealthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     response_time: Date.now() - startTime,
@@ -434,14 +476,15 @@ export async function GET(): Promise<Response> {
       external_services: checks[2].status === 'fulfilled' ? 'ok' : 'error',
     },
   };
-  
-  return Response.json(health, { 
-    status: health.status === 'healthy' ? 200 : 503 
+
+  return Response.json(health, {
+    status: health.status === 'healthy' ? 200 : 503,
   });
 }
 ```
 
 **Verificações Implementadas:**
+
 - ✅ **Database:** Conexão + query test
 - ✅ **Environment:** Variáveis obrigatórias
 - ✅ **Memory:** Uso atual vs limite
@@ -460,12 +503,12 @@ export async function POST(request: Request): Promise<Response> {
     if (signature !== process.env.ASAAS_WEBHOOK_SECRET) {
       return new Response('Unauthorized', { status: 401 });
     }
-    
+
     const payload = await request.json();
-    
+
     // Processamento Idempotente
     const result = await processAsaasWebhook(payload.event, payload);
-    
+
     return Response.json({ status: 'processed', result });
   } catch (error) {
     console.error('Webhook error:', error);
@@ -481,18 +524,18 @@ export async function POST(request: Request): Promise<Response> {
 ### **6.1 React Query Integration**
 
 **Keys Centralizadas:** `src/lib/react-query/keys.ts`
+
 ```typescript
 export const queryKeys = {
   // Agendamentos
   agendamentos: {
     all: ['agendamentos'] as const,
     lists: () => [...queryKeys.agendamentos.all, 'list'] as const,
-    list: (filters: AgendamentoFilters) => 
-      [...queryKeys.agendamentos.lists(), filters] as const,
+    list: (filters: AgendamentoFilters) => [...queryKeys.agendamentos.lists(), filters] as const,
     details: () => [...queryKeys.agendamentos.all, 'detail'] as const,
     detail: (id: string) => [...queryKeys.agendamentos.details(), id] as const,
   },
-  
+
   // Clientes
   clientes: {
     all: ['clientes'] as const,
@@ -505,6 +548,7 @@ export const queryKeys = {
 ### **6.2 Custom Hooks**
 
 **Hook de Autenticação:** `src/hooks/use-auth.ts` (148 linhas)
+
 ```typescript
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -519,14 +563,14 @@ export function useAuth() {
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          fetchProfile(session.user.id);
-        }
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchProfile(session.user.id);
       }
-    );
+    });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -536,8 +580,9 @@ export function useAuth() {
 ```
 
 **Hooks de Domínio:**
+
 - `use-agendamentos.ts` - Estado de agendamentos
-- `use-clientes.ts` - Gestão de clientes  
+- `use-clientes.ts` - Gestão de clientes
 - `use-financeiro.ts` - Dados financeiros
 - `use-profissionais.ts` - Profissionais
 - `use-current-unit.ts` - Multi-tenancy
@@ -549,10 +594,11 @@ export function useAuth() {
 ### **7.1 Supabase Integration**
 
 **Server Client:** `src/lib/supabase/server.ts` (39 linhas)
+
 ```typescript
 export function createClient() {
   const cookieStore = cookies();
-  
+
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -562,17 +608,18 @@ export function createClient() {
           return cookieStore.get(name)?.value;
         },
       },
-    }
+    },
   );
 }
 ```
 
 **Browser Client:** `src/lib/supabase/client.ts` (16 linhas)
+
 ```typescript
 export function createClient() {
   return createBrowserClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 }
 ```
@@ -580,6 +627,7 @@ export function createClient() {
 ### **7.2 Logging System**
 
 **Logger:** `src/lib/logging/logger.ts` (123 linhas)
+
 ```typescript
 export class Logger {
   constructor(private context: string) {}
@@ -615,20 +663,15 @@ export class Logger {
 ### **8.1 ActionResult Pattern**
 
 **Implementação Padrão:**
+
 ```typescript
-export type ActionResult<T> = 
-  | { success: true; data: T }
-  | { success: false; error: string };
+export type ActionResult<T> = { success: true; data: T } | { success: false; error: string };
 
 // Uso em Server Actions
 export async function createCliente(data: CreateClienteData): Promise<ActionResult<Cliente>> {
   try {
-    const cliente = await supabase
-      .from('clientes')
-      .insert(data)
-      .select()
-      .single();
-    
+    const cliente = await supabase.from('clientes').insert(data).select().single();
+
     return { success: true, data: cliente };
   } catch (error) {
     return { success: false, error: 'Erro ao criar cliente' };
@@ -639,6 +682,7 @@ export async function createCliente(data: CreateClienteData): Promise<ActionResu
 ### **8.2 Multi-tenancy Pattern**
 
 **RLS Helper Functions:**
+
 ```typescript
 // Função SQL helper
 CREATE OR REPLACE FUNCTION current_unidade_id()
@@ -661,12 +705,13 @@ export async function withUnidadeContext<T>(
 ### **8.3 Error Handling Pattern**
 
 **Erro Centralizado:**
+
 ```typescript
 export class ApplicationError extends Error {
   constructor(
     message: string,
     public code: string,
-    public statusCode: number = 400
+    public statusCode: number = 400,
   ) {
     super(message);
     this.name = 'ApplicationError';
@@ -677,11 +722,11 @@ export function handleActionError(error: unknown): ActionResult<never> {
   if (error instanceof ApplicationError) {
     return { success: false, error: error.message };
   }
-  
+
   if (error instanceof ZodError) {
     return { success: false, error: 'Dados inválidos' };
   }
-  
+
   return { success: false, error: 'Erro interno do sistema' };
 }
 ```
@@ -693,29 +738,28 @@ export function handleActionError(error: unknown): ActionResult<never> {
 ### **9.1 Sentry Integration**
 
 **Configuração:** `sentry.server.config.ts`
+
 ```typescript
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   tracesSampleRate: 0.1,
   debug: false,
-  integrations: [
-    new Sentry.Integrations.Http(),
-    new Sentry.Integrations.Console(),
-  ],
+  integrations: [new Sentry.Integrations.Http(), new Sentry.Integrations.Console()],
 });
 ```
 
 ### **9.2 Action Logging**
 
 **Logger para Actions:** `src/lib/logging/actionLogger.ts`
+
 ```typescript
 export function logAction(
   actionName: string,
   userId: string | null,
   unidadeId: string | null,
-  metadata?: Record<string, any>
+  metadata?: Record<string, any>,
 ) {
   const logger = new Logger('server-action');
   logger.info(`Action executed: ${actionName}`, {
@@ -733,6 +777,7 @@ export function logAction(
 ### **10.1 React Query Configuration**
 
 **Configuração Global:**
+
 ```typescript
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -752,23 +797,25 @@ export const queryClient = new QueryClient({
 ### **10.2 Database Optimizations**
 
 **Índices Estratégicos:**
+
 ```sql
 -- Agendamentos por data/profissional
-CREATE INDEX idx_agendamentos_data_profissional 
+CREATE INDEX idx_agendamentos_data_profissional
 ON agendamentos(data_agendamento, profissional_id);
 
 -- Clientes por unidade/telefone
-CREATE INDEX idx_clientes_unidade_telefone 
+CREATE INDEX idx_clientes_unidade_telefone
 ON clientes(unidade_id, telefone);
 
 -- Movimentações financeiras por período
-CREATE INDEX idx_financeiro_data_unidade 
+CREATE INDEX idx_financeiro_data_unidade
 ON financeiro_movimentacoes(data_movimentacao, unidade_id);
 ```
 
 ### **10.3 Connection Pooling**
 
 **Supabase Pooling:**
+
 ```typescript
 // Configuração automática via Supabase
 // Pool size: 25 conexões por projeto
@@ -781,6 +828,7 @@ ON financeiro_movimentacoes(data_movimentacao, unidade_id);
 ## 📊 MÉTRICAS E STATUS
 
 ### **Estatísticas do Backend:**
+
 - **Server Actions:** 15 arquivos principais (4.200+ linhas)
 - **Schemas Zod:** 1.900+ linhas de validação
 - **Types:** 920+ linhas de tipagem
@@ -790,6 +838,7 @@ ON financeiro_movimentacoes(data_movimentacao, unidade_id);
 - **Coverage:** 85%+ de cobertura de testes
 
 ### **Integrações Ativas:**
+
 - ✅ **Supabase:** PostgreSQL + Auth + RLS
 - ✅ **ASAAS:** Payments + Webhooks
 - ✅ **Sentry:** Error tracking + Performance
@@ -797,6 +846,7 @@ ON financeiro_movimentacoes(data_movimentacao, unidade_id);
 - ✅ **Zod:** Validação universal
 
 ### **Performance Benchmarks:**
+
 - **Action Response Time:** < 200ms (média)
 - **Database Queries:** < 50ms (média)
 - **Webhook Processing:** < 500ms
@@ -809,6 +859,7 @@ ON financeiro_movimentacoes(data_movimentacao, unidade_id);
 O backend do Sistema SaaS Barbearia representa uma arquitetura **enterprise-grade**, implementando:
 
 ### **Pontos Fortes:**
+
 1. **Type Safety Completo** - TypeScript + Zod end-to-end
 2. **Multi-tenancy Seguro** - RLS + validação de unidade
 3. **Error Handling Robusto** - ActionResult pattern
@@ -818,6 +869,7 @@ O backend do Sistema SaaS Barbearia representa uma arquitetura **enterprise-grad
 7. **Integração Externa** - ASAAS + webhooks assíncronos
 
 ### **Arquitetura Madura:**
+
 - **Escalável:** Preparado para crescimento
 - **Manutenível:** Código limpo e documentado
 - **Seguro:** RLS + validações em todas as camadas

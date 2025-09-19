@@ -38,7 +38,7 @@ import {
   createTipoCategoriasDespesa,
   updateTipoCategoriasDespesa,
   getTiposCategoriasDespesa,
-} from '@/actions/tipos-categoria-despesa';
+} from '@/actions/tipos-categoria-despesa-simple';
 
 const categoriasDespesaSchema = z.object({
   codigo: z
@@ -47,17 +47,14 @@ const categoriasDespesaSchema = z.object({
     .max(20, 'Código muito longo')
     .regex(/^[A-Z0-9_]+$/, 'Código deve conter apenas letras maiúsculas, números e underscore'),
   nome: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
-  descricao: z.string().max(500, 'Descrição muito longa').default(''),
-  cor: z
-    .string()
-    .regex(/^#[0-9A-Fa-f]{6}$/, 'Cor deve estar no formato hexadecimal')
-    .default('#1976d2'),
-  icon: z.string().default(''),
+  descricao: z.string().max(500, 'Descrição muito longa'),
+  cor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Cor deve estar no formato hexadecimal'),
+  icon: z.string(),
   categoria_pai_id: z.string().uuid().optional().nullable(),
-  obrigatoria: z.boolean().default(false),
-  centro_custo: z.string().max(50, 'Centro de custo muito longo').default(''),
+  obrigatoria: z.boolean(),
+  centro_custo: z.string().max(50, 'Centro de custo muito longo'),
   limite_mensal: z.number().min(0, 'Limite deve ser positivo').optional().nullable(),
-  ativo: z.boolean().default(true),
+  ativo: z.boolean(),
 });
 
 type CategoriaDespesaFormData = z.infer<typeof categoriasDespesaSchema>;
@@ -147,7 +144,7 @@ export default function TipoCategoriasDespesaModal({
           codigo: categoria.codigo || '',
           nome: categoria.nome || '',
           descricao: categoria.descricao || '',
-          cor: categoria.cor || '#1976d2',
+          cor: categoria.cor || '#4f8cff',
           icon: categoria.icon || '',
           categoria_pai_id: categoria.categoria_pai_id || null,
           obrigatoria: categoria.obrigatoria || false,
@@ -160,7 +157,7 @@ export default function TipoCategoriasDespesaModal({
           codigo: '',
           nome: '',
           descricao: '',
-          cor: '#1976d2',
+          cor: '#4f8cff',
           icon: '',
           categoria_pai_id: null,
           obrigatoria: false,
@@ -186,7 +183,7 @@ export default function TipoCategoriasDespesaModal({
       formData.append('codigo', data.codigo);
       formData.append('nome', data.nome);
       formData.append('descricao', data.descricao || '');
-      formData.append('cor_primaria', data.cor);
+      formData.append('cor', data.cor);
       formData.append('icone', data.icon || '');
       formData.append('parent_id', data.categoria_pai_id || '');
       formData.append('obrigatoria', data.obrigatoria.toString());

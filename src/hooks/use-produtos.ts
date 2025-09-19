@@ -11,6 +11,29 @@ import {
 import type { ActionResult } from '@/types';
 import type { ProdutoFilterData } from '@/schemas';
 
+// Interfaces para tipagem dos dados de produtos
+interface Produto {
+  id: string;
+  nome: string;
+  descricao?: string;
+  preco: number;
+  categoria?: string;
+  estoque: number;
+  estoque_minimo: number;
+  codigo_barras?: string;
+  ativo: boolean;
+  unidade_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ListProdutosResponse {
+  produtos: Produto[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 // Query Keys
 export const PRODUTOS_QUERY_KEY = ['produtos'] as const;
 
@@ -184,7 +207,7 @@ export function useProdutosPopulares(unidade_id?: string) {
 export function useProdutosEstoqueBaixo(unidade_id?: string, limite = 10) {
   return useQuery({
     queryKey: [...PRODUTOS_QUERY_KEY, 'estoque-baixo', unidade_id, limite],
-    queryFn: async () => {
+    queryFn: async (): Promise<ActionResult> => {
       const result = await listProdutos({
         page: 1,
         unidade_id,
@@ -193,19 +216,23 @@ export function useProdutosEstoqueBaixo(unidade_id?: string, limite = 10) {
         order: 'desc',
       });
 
-      if (result.success && (result.data as any)?.produtos) {
-        // Filtrar produtos com estoque <= limite
-        const produtosBaixoEstoque = (result.data as any).produtos.filter(
-          (produto: any) => produto.estoque <= limite,
-        );
+      if (result.success && result.data) {
+        const produtosData = result.data as ListProdutosResponse;
 
-        return {
-          ...result,
-          data: {
-            ...(result.data as any),
-            produtos: produtosBaixoEstoque,
-          },
-        };
+        if (produtosData.produtos) {
+          // Filtrar produtos com estoque <= limite
+          const produtosBaixoEstoque = produtosData.produtos.filter(
+            (produto: Produto) => produto.estoque <= limite,
+          );
+
+          return {
+            ...result,
+            data: {
+              ...produtosData,
+              produtos: produtosBaixoEstoque,
+            },
+          };
+        }
       }
 
       return result;

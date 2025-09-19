@@ -4,7 +4,12 @@ export default function FilaHarness() {
     <div data-testid="fila-content" style={{ padding: 24 }}>
       <div
         data-testid="painel-fila"
-        style={{ marginBottom: 16, background: '#f9fafb', padding: 16, borderRadius: 8 }}
+        style={{
+          marginBottom: 16,
+          background: 'var(--mui-palette-surfaces-surface2)',
+          padding: 16,
+          borderRadius: 8,
+        }}
       >
         <h3>Fila de Atendimento</h3>
         <div>1. João Silva - Aguardando</div>

@@ -1,6 +1,59 @@
 // Cliente ASAAS para integração com APIs de pagamento
 import { AsaasCustomer, AsaasSubscription, AsaasPayment } from '@/types/subscription';
 
+// Interface para dados de cliente do sistema Trato
+interface TratoCustomer {
+  id?: string;
+  name?: string;
+  nome?: string;
+  email?: string;
+  phone?: string;
+  telefone?: string;
+  mobilePhone?: string;
+  celular?: string;
+  cpf?: string;
+  cnpj?: string;
+  postalCode?: string;
+  cep?: string;
+  address?: string;
+  endereco?: string;
+  addressNumber?: string;
+  numero?: string;
+  complement?: string;
+  complemento?: string;
+  province?: string;
+  bairro?: string;
+  city?: string;
+  cidade?: string;
+  state?: string;
+  estado?: string;
+  observations?: string;
+  observacoes?: string;
+}
+
+// Interface para dados de chargeback e refunds
+interface AsaasChargeback {
+  id: string;
+  status: string;
+  reason: string;
+  amount: number;
+  date: string;
+}
+
+interface AsaasRefund {
+  id: string;
+  value: number;
+  description?: string;
+  status: string;
+  refundDate: string;
+}
+
+interface AsaasError {
+  message?: string;
+  code?: string;
+  details?: unknown;
+}
+
 class AsaasClient {
   private baseUrl: string;
   private apiKey: string;
@@ -20,12 +73,19 @@ class AsaasClient {
     this.apiKey = process.env.ASAAS_API_KEY || '';
     this.webhookToken = process.env.ASAAS_WEBHOOK_TOKEN || '';
 
-    if (!this.apiKey) {
-      throw new Error('ASAAS_API_KEY é obrigatória');
+    // Durante o build, não validar a presença da API key
+    if (!this.apiKey && process.env.NODE_ENV !== 'development' && typeof window === 'undefined') {
+      // Apenas avisar durante o build, não falhar
+      console.warn('ASAAS_API_KEY não configurada - algumas funcionalidades podem não funcionar');
     }
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    // Validar API key no momento da requisição
+    if (!this.apiKey) {
+      throw new Error('ASAAS_API_KEY é obrigatória para fazer requisições à API');
+    }
+
     const url = `${this.baseUrl}${endpoint}`;
 
     const defaultHeaders = {
@@ -110,7 +170,7 @@ class AsaasClient {
   }
 
   // Método utilitário para mapear dados do Trato para ASAAS
-  mapTratoCustomerToAsaas(tratoCustomer: any): Partial<AsaasCustomer> {
+  mapTratoCustomerToAsaas(tratoCustomer: TratoCustomer): Partial<AsaasCustomer> {
     return {
       name: tratoCustomer.name || tratoCustomer.nome,
       email: tratoCustomer.email,
@@ -131,7 +191,7 @@ class AsaasClient {
   }
 
   // Método para encontrar ou criar cliente no ASAAS
-  async findOrCreateCustomer(tratoCustomer: any): Promise<AsaasCustomer> {
+  async findOrCreateCustomer(tratoCustomer: TratoCustomer): Promise<AsaasCustomer> {
     try {
       // Primeiro tenta buscar por CPF/CNPJ
       const cpfCnpj = tratoCustomer.cpf || tratoCustomer.cnpj;
@@ -455,15 +515,15 @@ class AsaasClient {
   async getPaymentStatus(paymentId: string): Promise<
     AsaasPayment & {
       installments?: AsaasPayment[];
-      chargeback?: any;
-      refunds?: any[];
+      chargeback?: AsaasChargeback;
+      refunds?: AsaasRefund[];
     }
   > {
     return this.request<
       AsaasPayment & {
         installments?: AsaasPayment[];
-        chargeback?: any;
-        refunds?: any[];
+        chargeback?: AsaasChargeback;
+        refunds?: AsaasRefund[];
       }
     >(`/payments/${paymentId}?expand=installments,chargeback,refunds`);
   }
@@ -504,7 +564,7 @@ class AsaasClient {
 
   // ===== ERROR HANDLING =====
 
-  handleApiError(error: any): { message: string; code: string; details?: any } {
+  handleApiError(error: AsaasError): { message: string; code: string; details?: unknown } {
     if (error.message?.includes('ASAAS API Error')) {
       return {
         message: 'Erro na API ASAAS',

@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Button, Alert } from '@mui/material';
 import { Plus } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Categorias Gerais | Trato',
-  description: 'Gerenciar categorias gerais do sistema',
-};
 
 export default function TiposCategoriaPage() {
   return (

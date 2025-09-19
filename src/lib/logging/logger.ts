@@ -17,12 +17,15 @@ export enum LogCategory {
   BUSINESS = 'business',
 }
 
+// Tipos para contextos específicos
+export type LogContext = Record<string, unknown>;
+
 export interface LogEntry {
   timestamp: string;
   level: LogLevel;
   category: LogCategory;
   message: string;
-  context: Record<string, any>;
+  context: LogContext;
   userId?: string;
   unidadeId?: string;
   sessionId?: string;
@@ -73,7 +76,7 @@ class Logger {
     return messageLevelIndex >= currentLevelIndex;
   }
 
-  private sanitizeContext(context: Record<string, any>): Record<string, any> {
+  private sanitizeContext(context: LogContext): LogContext {
     const sanitized = { ...context };
 
     // Remover campos sensíveis
@@ -107,7 +110,7 @@ class Logger {
     level: LogLevel,
     category: LogCategory,
     message: string,
-    context: Record<string, any> = {},
+    context: LogContext = {},
   ): LogEntry {
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
@@ -185,11 +188,7 @@ class Logger {
   }
 
   // Métodos públicos de logging
-  debug(
-    message: string,
-    context: Record<string, any> = {},
-    category: LogCategory = LogCategory.SYSTEM,
-  ) {
+  debug(message: string, context: LogContext = {}, category: LogCategory = LogCategory.SYSTEM) {
     if (!this.shouldLog(LogLevel.DEBUG)) return;
 
     const entry = this.createLogEntry(LogLevel.DEBUG, category, message, context);
@@ -197,11 +196,7 @@ class Logger {
     this.addToBuffer(entry);
   }
 
-  info(
-    message: string,
-    context: Record<string, any> = {},
-    category: LogCategory = LogCategory.SYSTEM,
-  ) {
+  info(message: string, context: LogContext = {}, category: LogCategory = LogCategory.SYSTEM) {
     if (!this.shouldLog(LogLevel.INFO)) return;
 
     const entry = this.createLogEntry(LogLevel.INFO, category, message, context);
@@ -209,11 +204,7 @@ class Logger {
     this.addToBuffer(entry);
   }
 
-  warn(
-    message: string,
-    context: Record<string, any> = {},
-    category: LogCategory = LogCategory.SYSTEM,
-  ) {
+  warn(message: string, context: LogContext = {}, category: LogCategory = LogCategory.SYSTEM) {
     if (!this.shouldLog(LogLevel.WARN)) return;
 
     const entry = this.createLogEntry(LogLevel.WARN, category, message, context);
@@ -221,11 +212,7 @@ class Logger {
     this.addToBuffer(entry);
   }
 
-  error(
-    message: string,
-    context: Record<string, any> = {},
-    category: LogCategory = LogCategory.SYSTEM,
-  ) {
+  error(message: string, context: LogContext = {}, category: LogCategory = LogCategory.SYSTEM) {
     if (!this.shouldLog(LogLevel.ERROR)) return;
 
     const entry = this.createLogEntry(LogLevel.ERROR, category, message, context);
@@ -234,23 +221,23 @@ class Logger {
   }
 
   // Métodos específicos para categorias
-  auth(message: string, context: Record<string, any> = {}) {
+  auth(message: string, context: LogContext = {}) {
     this.info(message, context, LogCategory.AUTH);
   }
 
-  userAction(action: string, context: Record<string, any> = {}) {
+  userAction(action: string, context: LogContext = {}) {
     this.info(`User action: ${action}`, context, LogCategory.USER_ACTION);
   }
 
-  security(event: string, context: Record<string, any> = {}) {
+  security(event: string, context: LogContext = {}) {
     this.warn(`Security event: ${event}`, context, LogCategory.SECURITY);
   }
 
-  performance(metric: string, value: number, context: Record<string, any> = {}) {
+  performance(metric: string, value: number, context: LogContext = {}) {
     this.info(`Performance: ${metric} = ${value}ms`, context, LogCategory.PERFORMANCE);
   }
 
-  business(operation: string, context: Record<string, any> = {}) {
+  business(operation: string, context: LogContext = {}) {
     this.info(`Business operation: ${operation}`, context, LogCategory.BUSINESS);
   }
 
@@ -283,11 +270,11 @@ export function useLogger() {
 }
 
 // Utilitários para logging automático
-export function logUserAction(action: string, details: Record<string, any> = {}) {
+export function logUserAction(action: string, details: LogContext = {}) {
   logger.userAction(action, details);
 }
 
-export function logSecurityEvent(event: string, details: Record<string, any> = {}) {
+export function logSecurityEvent(event: string, details: LogContext = {}) {
   logger.security(event, details);
 }
 
@@ -296,6 +283,6 @@ export function logPerformance(metric: string, startTime: number) {
   logger.performance(metric, duration);
 }
 
-export function logBusinessOperation(operation: string, details: Record<string, any> = {}) {
+export function logBusinessOperation(operation: string, details: LogContext = {}) {
   logger.business(operation, details);
 }

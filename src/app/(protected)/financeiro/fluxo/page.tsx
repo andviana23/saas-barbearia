@@ -25,7 +25,7 @@ export default function FinanceiroFluxoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <DollarSign size={40} color="#1976d2" style={{ marginBottom: 8 }} />
+              <DollarSign size={40} color="#4f8cff" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Saldo Inicial
               </Typography>
@@ -38,7 +38,7 @@ export default function FinanceiroFluxoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <TrendingUp size={40} color="#2e7d32" style={{ marginBottom: 8 }} />
+              <TrendingUp size={40} color="#10b981" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Total Entradas
               </Typography>
@@ -51,7 +51,7 @@ export default function FinanceiroFluxoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <TrendingDown size={40} color="#d32f2f" style={{ marginBottom: 8 }} />
+              <TrendingDown size={40} color="#ef4444" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Total Saídas
               </Typography>
@@ -64,7 +64,7 @@ export default function FinanceiroFluxoPage() {
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent sx={{ textAlign: 'center' }}>
-              <Calendar size={40} color="#ed6c02" style={{ marginBottom: 8 }} />
+              <Calendar size={40} color="#f97316" style={{ marginBottom: 8 }} />
               <Typography variant="h6" color="text.secondary">
                 Saldo Final
               </Typography>

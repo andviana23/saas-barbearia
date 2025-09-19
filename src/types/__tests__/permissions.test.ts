@@ -39,7 +39,7 @@ describe('Sistema de Permissões', () => {
       // Gerente pode ver profissionais, funcionario não pode
       expect(can(Resource.PROFISSIONAIS, Action.READ, 'gerente')).toBe(true);
       expect(can(Resource.PROFISSIONAIS, Action.READ, 'funcionario')).toBe(false);
-      
+
       // Admin pode deletar profissionais, gerente não pode
       expect(can(Resource.PROFISSIONAIS, Action.DELETE, 'admin')).toBe(true);
       expect(can(Resource.PROFISSIONAIS, Action.DELETE, 'gerente')).toBe(false);
@@ -90,7 +90,7 @@ describe('Sistema de Permissões', () => {
   describe('Função getResourcePermissions()', () => {
     it('deve retornar todas as ações que admin pode fazer em clientes', () => {
       const actions = getResourcePermissions(Resource.CLIENTES, 'admin');
-      
+
       expect(actions).toContain(Action.READ);
       expect(actions).toContain(Action.CREATE);
       expect(actions).toContain(Action.UPDATE);
@@ -99,7 +99,7 @@ describe('Sistema de Permissões', () => {
 
     it('deve retornar ações limitadas para funcionario em clientes', () => {
       const actions = getResourcePermissions(Resource.CLIENTES, 'funcionario');
-      
+
       expect(actions).toContain(Action.READ);
       expect(actions).toContain(Action.CREATE);
       expect(actions).toContain(Action.UPDATE);
@@ -110,7 +110,7 @@ describe('Sistema de Permissões', () => {
   describe('Função getUserResources()', () => {
     it('deve retornar todos os recursos que admin pode acessar', () => {
       const resources = getUserResources('admin');
-      
+
       expect(resources).toContain(Resource.DASHBOARD);
       expect(resources).toContain(Resource.USUARIOS);
       expect(resources).toContain(Resource.CONFIGURACOES);
@@ -119,7 +119,7 @@ describe('Sistema de Permissões', () => {
 
     it('deve retornar recursos limitados para funcionario', () => {
       const resources = getUserResources('funcionario');
-      
+
       expect(resources).toContain(Resource.DASHBOARD);
       expect(resources).toContain(Resource.AGENDA);
       expect(resources).toContain(Resource.CLIENTES);
@@ -132,7 +132,7 @@ describe('Sistema de Permissões', () => {
     describe('Agenda', () => {
       it('deve permitir todas as ações de agenda para roles apropriados', () => {
         const roles: UserRole[] = ['admin', 'gerente', 'funcionario'];
-        
+
         roles.forEach((role) => {
           expect(can(Resource.AGENDA, Action.READ, role)).toBe(true);
           expect(can(Resource.AGENDA, Action.SCHEDULE, role)).toBe(true);
@@ -148,7 +148,7 @@ describe('Sistema de Permissões', () => {
         expect(can(Resource.FINANCEIRO, Action.READ, 'admin')).toBe(true);
         expect(can(Resource.FINANCEIRO, Action.READ, 'gerente')).toBe(true);
         expect(can(Resource.FINANCEIRO, Action.READ, 'funcionario')).toBe(false);
-        
+
         expect(can(Resource.FINANCEIRO, Action.VIEW_REVENUE, 'admin')).toBe(true);
         expect(can(Resource.FINANCEIRO, Action.VIEW_REVENUE, 'gerente')).toBe(true);
         expect(can(Resource.FINANCEIRO, Action.VIEW_REVENUE, 'funcionario')).toBe(false);
@@ -223,7 +223,7 @@ describe('Sistema de Permissões', () => {
       }));
 
       const { canAccessRoute } = require('../permissions');
-      
+
       expect(canAccessRoute('dashboard', 'admin')).toBe(true);
       expect(canAccessRoute('configuracoes', 'funcionario')).toBe(false);
     });

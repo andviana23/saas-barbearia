@@ -37,9 +37,9 @@ export const allHandlers = {
  * Lista completa de handlers para usar no server
  */
 export const handlers = [
+  ...errorHandlers, // Deve ser primeiro para interceptar cenários de erro globais
   ...authHandlers,
   ...agendamentosHandlers,
   ...servicosHandlers,
   ...marketplaceHandlers,
-  ...errorHandlers, // Deve ser por último para não interceptar outras rotas
 ];

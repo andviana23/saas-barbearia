@@ -38,10 +38,40 @@ import { useNotifications } from '@/components/ui/NotificationSystem';
 import TemplateFormDialog from './TemplateFormDialog';
 import TemplatePreviewDialog from './TemplatePreviewDialog';
 
+// Interfaces para tipagem
+interface TemplateNotificacao {
+  id: string;
+  unidadeId: string;
+  canalId: string;
+  codigo: string;
+  nome: string;
+  descricao?: string;
+  titulo?: string;
+  mensagem: string;
+  ativo: boolean;
+  enviarAutomatico: boolean;
+  tempoAntecedencia?: string;
+  variaveis: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface CanalNotificacao {
+  id: string;
+  nome: string;
+  codigo: string;
+  descricao?: string;
+  ativo: boolean;
+  configuracao: Record<string, unknown>;
+  ordem: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function TemplatesTab() {
   const [formOpen, setFormOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateNotificacao | null>(null);
 
   const { data: templates, isLoading } = useTemplatesNotificacao();
   const { data: canais } = useCanaisNotificacao();
@@ -78,7 +108,7 @@ export default function TemplatesTab() {
     }
   };
 
-  const handleToggleAtivo = async (template: any) => {
+  const handleToggleAtivo = async (template: TemplateNotificacao) => {
     try {
       const result = await updateTemplate.mutateAsync({
         templateId: template.id,
@@ -92,7 +122,7 @@ export default function TemplatesTab() {
           message: `Template ${template.ativo ? 'desativado' : 'ativado'} com sucesso`,
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       addNotification({
         type: 'error',
         title: 'Erro',
@@ -101,12 +131,12 @@ export default function TemplatesTab() {
     }
   };
 
-  const handleEditTemplate = (template: any) => {
+  const handleEditTemplate = (template: TemplateNotificacao) => {
     setSelectedTemplate(template);
     setFormOpen(true);
   };
 
-  const handlePreviewTemplate = (template: any) => {
+  const handlePreviewTemplate = (template: TemplateNotificacao) => {
     setSelectedTemplate(template);
     setPreviewOpen(true);
   };
@@ -163,7 +193,7 @@ export default function TemplatesTab() {
         <TemplateFormDialog
           open={formOpen}
           onClose={handleCloseForm}
-          template={selectedTemplate}
+          template={selectedTemplate || undefined}
           canais={canais?.data || []}
         />
       </Box>
@@ -172,14 +202,14 @@ export default function TemplatesTab() {
 
   // Agrupar templates por código
   const templatesPorCodigo = templates.data.reduce(
-    (acc: Record<string, any[]>, template: any) => {
+    (acc: Record<string, TemplateNotificacao[]>, template: TemplateNotificacao) => {
       if (!acc[template.codigo]) {
         acc[template.codigo] = [];
       }
       acc[template.codigo].push(template);
       return acc;
     },
-    {} as Record<string, any[]>,
+    {} as Record<string, TemplateNotificacao[]>,
   );
 
   return (
@@ -211,7 +241,7 @@ export default function TemplatesTab() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {templates.data.map((template: any) => (
+            {templates.data.map((template: TemplateNotificacao) => (
               <TableRow key={template.id}>
                 <TableCell>
                   <Box>
@@ -226,11 +256,11 @@ export default function TemplatesTab() {
 
                 <TableCell>
                   <Box display="flex" alignItems="center" gap={1}>
-                    {getCanalIcon(template.canais_notificacao?.codigo)}
+                    {getCanalIcon(template.canalId)}
                     <Chip
-                      label={template.canais_notificacao?.nome}
+                      label={template.canalId}
                       size="small"
-                      color={getCanalColor(template.canais_notificacao?.codigo)}
+                      color={getCanalColor(template.canalId)}
                       variant="outlined"
                     />
                   </Box>
@@ -255,9 +285,9 @@ export default function TemplatesTab() {
 
                 <TableCell>
                   <Chip
-                    label={template.enviar_automatico ? 'Sim' : 'Não'}
+                    label={template.enviarAutomatico ? 'Sim' : 'Não'}
                     size="small"
-                    color={template.enviar_automatico ? 'success' : 'default'}
+                    color={template.enviarAutomatico ? 'success' : 'default'}
                     variant="outlined"
                   />
                 </TableCell>
@@ -289,14 +319,14 @@ export default function TemplatesTab() {
       <TemplateFormDialog
         open={formOpen}
         onClose={handleCloseForm}
-        template={selectedTemplate}
+        template={selectedTemplate || undefined}
         canais={canais?.data || []}
       />
 
       <TemplatePreviewDialog
         open={previewOpen}
         onClose={handleClosePreview}
-        template={selectedTemplate}
+        template={selectedTemplate || undefined}
       />
     </Box>
   );

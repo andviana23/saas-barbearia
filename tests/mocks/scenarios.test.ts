@@ -265,7 +265,9 @@ describe('MSW Setup Integration', () => {
     const handlers = server.listHandlers();
 
     // Verifica se há handlers para cada domínio
-    const urls = handlers.map((h) => h.info.path);
+    const urls = handlers
+      .filter((h) => 'info' in h && h.info)
+      .map((h) => (h as any).info.path);
 
     expect(urls.some((url) => url.includes('/api/agendamentos'))).toBe(true);
     expect(urls.some((url) => url.includes('/api/servicos'))).toBe(true);

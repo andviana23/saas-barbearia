@@ -57,8 +57,8 @@ type ServicesResponse = {
 };
 
 export const metadata: Metadata = {
-  title: 'Serviços | Trato',
-  description: 'Lista de serviços com filtros e paginação',
+  title: 'Categorias de Serviços',
+  description: 'Gerencie as categorias de serviços da sua barbearia',
 };
 
 /**

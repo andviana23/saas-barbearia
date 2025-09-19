@@ -1,11 +1,7 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { Box, Typography, Alert, Grid, Card, CardContent, Button } from '@mui/material';
 import { BarChart3, Download, Filter, FileText } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Relatórios Financeiros | Trato',
-  description: 'Relatórios e análises financeiras detalhadas',
-};
 
 export default function FinanceiroRelatorioPage() {
   const relatorios = [

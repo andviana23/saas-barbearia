@@ -12,19 +12,15 @@ import {
 } from '@mui/material';
 import { Search as SearchIcon, FilterList as FilterIcon } from '@mui/icons-material';
 import { DSSelect } from '@/components/ui';
+import { ClienteFilters } from '@/types/api';
 
 interface ClientesFiltersProps {
-  filters: {
-    q: string;
-    ativo: boolean;
-    page: number;
-    limit: number;
-  };
-  onChange: (filters: any) => void;
+  filters: ClienteFilters;
+  onChange: (filters: Partial<ClienteFilters>) => void;
 }
 
 export default function ClientesFilters({ filters, onChange }: ClientesFiltersProps) {
-  const [localSearch, setLocalSearch] = useState(filters.q);
+  const [localSearch, setLocalSearch] = useState(filters.q ?? '');
 
   // Debounce da busca
   useEffect(() => {
